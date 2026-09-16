@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'self'; form-action 'self' https://appleid.apple.com; script-src 'self' https://appleid.cdn-apple.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.kubysh.com https://appleid.apple.com; frame-src https://appleid.apple.com; object-src 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>Оплата не прошла — Кубыш</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0a0a0a">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="stylesheet" href="/assets/pay.css?v=20260913a">
+<script src="/assets/pay-frame-guard.js?v=20260902b"></script>
+</head>
+<body>
+
+<header class="top">
+  <a class="logo" href="https://kubysh.com/">Кубы<span>ш</span></a>
+  <a class="top-link" href="/account/">Кабинет</a>
+</header>
+
+<main class="wrap">
+  <h1>Оплата не прошла</h1>
+  <p class="lead">
+    Деньги не списались. Обычно дело в лимите по карте или в отказе банка —
+    попробуй ещё раз или другой картой.
+  </p>
+
+  <div class="btn-row">
+    <a class="btn btn-primary" href="/account/">Попробовать ещё раз</a>
+    <a class="btn btn-ghost" href="https://t.me/kubyshka_user" target="_blank" rel="noopener">Написать нам</a>
+    <a class="btn btn-quiet" href="https://kubysh.com/">На главную</a>
+  </div>
+
+  <div class="notice notice--info gap-lg">
+    Если деньги всё-таки списались, а подписки нет — напиши нам с номером
+    платежа, проверим платёж и доступ.
+  </div>
+
+  <p class="small muted gap-sm" id="order-hint"></p>
+
+  <h2>Что обычно помогает</h2>
+  <ul class="small muted hint-list">
+    <li>Проверить, что на карте есть нужная сумма и не стоит лимит на интернет-платежи.</li>
+    <li>Попробовать другую карту — иногда банк отклоняет платёж без подробной причины.</li>
+    <li>Отключить VPN: некоторые банки не пропускают оплату из другой страны.</li>
+  </ul>
+</main>
+
+<footer class="foot">
+  <div class="foot-links">
+    <a href="/offer/">Оферта</a>
+    <a href="/recurrent/">Регулярные операции</a>
+    <a href="/privacy/">Политика ПД</a>
+    <a href="https://kubysh.com/terms/">Пользовательское соглашение</a>
+    <a href="https://t.me/kubyshka_user" target="_blank" rel="noopener">Поддержка</a>
+  </div>
+  <div class="foot-req">KubyshkaAI@Proton.Me</div>
+</footer>
+
+<script src="/assets/pay-fail.js?v=20260913a"></script>
+</body>
+</html>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Сколько можно тратить в день, чтобы хватило до зарплаты</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Как посчитать дневной лимит трат: формула, пример расчёта на реальных цифрах и что делать при нерегулярном доходе. Без таблиц и ручного пересчёта.">
+<meta name="theme-color" content="#000000">
+<meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large">
+<link rel="canonical" href="https://kubysh.com/skolko-mozhno-tratit/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Кубыш">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:url" content="https://kubysh.com/skolko-mozhno-tratit/">
+<meta property="og:title" content="Сколько можно тратить в день, чтобы хватило до зарплаты — формула и расчёт">
+<meta property="og:description" content="Как посчитать дневной лимит трат: формула, пример расчёта на реальных цифрах, что делать при нерегулярном доходе и почему расчёт на бумаге перестаёт работать через два дня.">
+<link rel="preload" href="../fonts/InterTight-700.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+@font-face{font-family:'Inter';src:url(/fonts/Inter-400.woff2)format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:'Inter Tight';src:url(/fonts/InterTight-700.woff2)format('woff2');font-weight:700;font-display:swap}
+:root{
+  --bg:#000;--ink:#fff;--lime:#cef16c;
+  --muted:rgba(255,255,255,.58);--line:rgba(255,255,255,.12);
+  --card:rgba(255,255,255,.04);
+  --display:'Inter Tight',system-ui,-apple-system,sans-serif;
+  --sans:'Inter',system-ui,-apple-system,sans-serif;
+}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);
+  font-size:17px;line-height:1.65;letter-spacing:-.01em;
+  -webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:0 22px}
+header{border-bottom:1px solid var(--line);position:sticky;top:0;
+  background:rgba(0,0,0,.86);backdrop-filter:blur(14px);z-index:10}
+header .wrap{display:flex;align-items:center;justify-content:space-between;
+  gap:16px;height:60px}
+.logo{font-family:var(--display);font-weight:700;font-size:19px;
+  letter-spacing:-.03em;color:var(--ink);text-decoration:none}
+.logo span{color:var(--lime)}
+.top-cta{font-size:14px;color:var(--lime);text-decoration:none;
+  border:1px solid rgba(206,241,108,.35);border-radius:99px;padding:7px 15px;
+  white-space:nowrap;transition:background .18s}
+.top-cta:hover{background:rgba(206,241,108,.1)}
+main{padding:46px 0 20px}
+.crumbs{font-size:13.5px;color:var(--muted);margin-bottom:22px}
+.crumbs a{color:var(--muted)}
+h1{font-family:var(--display);font-weight:700;letter-spacing:-.035em;
+  line-height:1.1;font-size:clamp(30px,6vw,44px);text-wrap:balance;
+  margin-bottom:20px}
+h2{font-family:var(--display);font-weight:700;letter-spacing:-.03em;
+  line-height:1.18;font-size:clamp(21px,3.6vw,27px);text-wrap:balance;
+  margin:44px 0 14px}
+h3{font-family:var(--display);font-weight:700;letter-spacing:-.02em;
+  font-size:18.5px;margin:28px 0 9px}
+p{margin-bottom:15px;color:rgba(255,255,255,.82)}
+.lead{font-size:19.5px;line-height:1.55;color:var(--ink);
+  border-left:2px solid var(--lime);padding-left:17px;margin-bottom:30px}
+a{color:var(--lime)}
+strong{color:var(--ink);font-weight:500}
+ul,ol{margin:0 0 16px 20px}
+li{margin-bottom:8px;color:rgba(255,255,255,.82)}
+.calc{background:var(--card);border:1px solid var(--line);border-radius:14px;
+  padding:19px 21px;margin:22px 0;font-size:16px}
+.calc .row{display:flex;justify-content:space-between;gap:14px;
+  padding:7px 0;border-bottom:1px solid var(--line)}
+.calc .row:last-child{border-bottom:0;padding-top:12px;margin-top:5px;
+  border-top:1px solid var(--line);color:var(--lime);font-weight:500}
+.calc .row span:last-child{font-variant-numeric:tabular-nums;white-space:nowrap}
+.tbl{width:100%;border-collapse:collapse;margin:22px 0;font-size:15.5px}
+.tbl th,.tbl td{text-align:left;padding:11px 12px 11px 0;
+  border-bottom:1px solid var(--line);vertical-align:top}
+.tbl td:not(:first-child){color:rgba(255,255,255,.86)}
+@media(max-width:560px){
+  .tbl,.tbl tr,.tbl td,.tbl th{display:block;width:100%}
+  .tbl th{display:none}
+  .tbl tr{border-bottom:1px solid var(--line);padding:13px 0}
+  .tbl td{border:0;padding:2px 0}
+  .tbl td:first-child{font-size:13px;text-transform:uppercase;
+    letter-spacing:.06em;color:var(--muted);margin-bottom:3px}
+  .tbl td:nth-child(2)::before{content:'Дзен-мани: ';color:var(--muted)}
+  .tbl td:nth-child(3)::before{content:'Кубыш: ';color:var(--lime)}
+  .tbl tr:first-child{display:none}
+}
+.tbl th{font-family:var(--display);font-weight:700;font-size:14px;
+  color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.tbl td:first-child{color:var(--muted)}
+.cta{background:var(--card);border:1px solid rgba(206,241,108,.22);
+  border-radius:16px;padding:26px;margin:44px 0 10px;text-align:center}
+.cta h2{margin-top:0}
+.cta .btn{display:inline-block;background:var(--lime);color:#0a0a0a;
+  font-weight:500;text-decoration:none;border-radius:99px;padding:13px 27px;
+  margin-top:6px}
+.cta .sub{font-size:14px;color:var(--muted);margin-top:13px;margin-bottom:0}
+.faq{margin-top:14px}
+.faq details{border-bottom:1px solid var(--line);padding:15px 0}
+.faq summary{font-family:var(--display);font-weight:700;font-size:17px;
+  cursor:pointer;list-style:none;display:flex;justify-content:space-between;
+  gap:14px;align-items:flex-start}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:'+';color:var(--lime);font-size:21px;line-height:1;
+  flex:none}
+.faq details[open] summary::after{content:'–'}
+.faq p{margin:11px 0 0}
+footer{border-top:1px solid var(--line);margin-top:56px;padding:26px 0 40px;
+  font-size:14px;color:var(--muted)}
+footer a{color:var(--muted);text-decoration:underline}
+footer .links{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:12px}
+footer .links a{color:var(--lime);text-decoration:none}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Кубыш",
+     "item": "https://kubysh.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Сколько можно тратить в день",
+     "item": "https://kubysh.com/skolko-mozhno-tratit/"
+    }
+   ]
+  },
+  {
+   "@type": "FAQPage",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "Сколько можно тратить в день при зарплате 100 000 ₽?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Зависит не от зарплаты, а от обязательных платежей. При доходе 100 000 ₽ и обязательных расходах 55 000 ₽ (аренда, кредиты, связь, подписки) свободными остаются 45 000 ₽. При отложенных 10 000 ₽ на цели и 30 днях до следующей зарплаты дневной лимит составит примерно 1 160 ₽."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Нужно ли включать в лимит продукты?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Да. В дневной лимит входит всё нерегулярное: продукты, транспорт, кафе, мелкие покупки. Отдельно из дохода вычитаются только платежи с фиксированной датой и суммой — аренда, кредит, подписки."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Что делать, если лимит уже превышен?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Пересчитать остаток на оставшиеся дни, а не пытаться «наверстать» экономией в конце периода. Новый лимит будет ниже, но он честный. Кубыш делает этот пересчёт автоматически после каждой траты."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Как считать дневной лимит вдвоём?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Считать общий бюджет на двоих: суммировать доходы, суммировать обязательные платежи, и делить общий остаток. Раздельный подсчёт не работает, если расходы на жильё и еду общие."
+     }
+    }
+   ]
+  },
+  {
+   "@type": "Article",
+   "headline": "Сколько можно тратить в день, чтобы хватило до зарплаты",
+   "description": "Как посчитать дневной лимит трат: формула, пример расчёта на реальных цифрах, что делать при нерегулярном доходе и почему расчёт на бумаге перестаёт работать через два дня.",
+   "inLanguage": "ru-RU",
+   "isPartOf": {
+    "@type": "WebSite",
+    "url": "https://kubysh.com/",
+    "name": "Кубыш"
+   },
+   "publisher": {
+    "@type": "Organization",
+    "name": "Кубыш",
+    "url": "https://kubysh.com/",
+    "logo": {
+     "@type": "ImageObject",
+     "url": "https://kubysh.com/icon-192.png",
+     "width": 192,
+     "height": 192
+    }
+   },
+   "mainEntityOfPage": "https://kubysh.com/skolko-mozhno-tratit/",
+   "datePublished": "2026-08-14",
+   "dateModified": "2026-08-25",
+   "author": {
+    "@type": "Organization",
+    "name": "Кубыш",
+    "url": "https://kubysh.com/"
+   },
+   "image": "https://kubysh.com/og-cover.png"
+  }
+ ]
+}
+</script>
+</head>
+<body>
+<header><div class="wrap">
+  <a class="logo" href="/">Кубы<span>ш</span></a>
+  <a class="top-cta" href="https://apps.apple.com/app/id6778792103">Установить</a>
+</div></header>
+
+<main><div class="wrap">
+  <nav class="crumbs"><a href="/">Кубыш</a> → Сколько можно тратить в день</nav>
+  <h1>Сколько можно тратить в день, чтобы хватило до зарплаты</h1>
+  <p class="lead">Дневной лимит — это остаток после обязательных платежей и накоплений, делённый на число дней до следующей получки. При 62 000 ₽ на карте и 40 000 ₽ обязательных платежей реально свободными остаются около 1 200 ₽ в день.</p>
+  
+<h2>Формула</h2>
+<p>Дневной лимит считается в три действия. Сначала из дохода вычитаются
+обязательные платежи, которые придут до следующей зарплаты: аренда, кредиты,
+подписки, связь. Затем из остатка вычитается сумма, которую вы решили отложить.
+То, что осталось, делится на число дней до получки. Результат — сколько можно
+тратить в день на еду, транспорт и всё остальное, не залезая в долги
+и не съедая накопления.</p>
+
+<div class="calc">
+  <div class="row"><span>Деньги на руках и на карте</span><span>62 000 ₽</span></div>
+  <div class="row"><span>Аренда 5-го числа</span><span>− 30 000 ₽</span></div>
+  <div class="row"><span>Кредит 10-го числа</span><span>− 8 000 ₽</span></div>
+  <div class="row"><span>Подписки и связь</span><span>− 2 000 ₽</span></div>
+  <div class="row"><span>Отложить на цель</span><span>− 5 000 ₽</span></div>
+  <div class="row"><span>Остаётся на 14 дней</span><span>17 000 ₽</span></div>
+  <div class="row"><span>Можно тратить в день</span><span>1 214 ₽</span></div>
+</div>
+
+<p>В примере выше человек с 62 000 ₽ на карте на самом деле располагает
+1 214 ₽ в день. Разница между «на карте много» и «в день чуть больше тысячи»
+и есть причина, по которой деньги заканчиваются за неделю до зарплаты.</p>
+
+<h2>Почему расчёт на бумаге разваливается</h2>
+<p>Однократный расчёт устаревает на второй день. Стоит один раз потратить
+больше лимита — и все последующие цифры неверны, потому что делить нужно уже
+другую сумму на другое число дней. Пересчитывать вручную каждый вечер никто
+не будет, поэтому таблица забрасывается за пару недель. Вторая причина —
+обязательные платежи с разными датами. Пока аренда не списалась, деньги лежат
+на карте и выглядят как доступные, хотя они уже потрачены. Человек видит
+остаток и считает его своим. Именно на этом разрыве между «остаток на карте»
+и «реально свободные деньги» и строится ощущение, что деньги исчезают
+непонятно куда.</p>
+
+<h2>Как считать, если доход нерегулярный</h2>
+<p>При нерегулярном доходе за основу берётся не средний заработок, а тот
+минимум, который приходит стабильно даже в плохой месяц. Всё, что приходит
+сверх минимума, распределяется отдельно: часть в подушку, часть на цели.
+Такой подход даёт лимит, который не придётся урезать задним числом.
+Если считать по среднему, то в слабый месяц лимит окажется завышенным —
+и разница уйдёт в кредитку.</p>
+
+<h2>Что делает Кубыш</h2>
+<p>Кубыш пересчитывает дневной лимит после каждой внесённой траты
+и с учётом дат обязательных платежей. Приложение спрашивает доход, регулярные
+расходы с датами списания и цели, а дальше держит план в актуальном состоянии
+само. Если сегодня потрачено больше лимита, завтрашняя цифра уменьшится —
+и будет видно сразу, а не в конце месяца. Отдельная функция отвечает
+на вопрос «могу ли я себе это позволить»: перед крупной покупкой видно,
+как она сдвинет накопления и цели. Подключение к банку не требуется —
+данные вносятся вручную или распознаются со скриншота из банковского
+приложения прямо на телефоне.</p>
+
+
+  <h2>Частые вопросы</h2>
+  <div class="faq"><details><summary>Сколько можно тратить в день при зарплате 100 000 ₽?</summary><p>Зависит не от зарплаты, а от обязательных платежей. При доходе 100 000 ₽ и обязательных расходах 55 000 ₽ (аренда, кредиты, связь, подписки) свободными остаются 45 000 ₽. При отложенных 10 000 ₽ на цели и 30 днях до следующей зарплаты дневной лимит составит примерно 1 160 ₽.</p></details><details><summary>Нужно ли включать в лимит продукты?</summary><p>Да. В дневной лимит входит всё нерегулярное: продукты, транспорт, кафе, мелкие покупки. Отдельно из дохода вычитаются только платежи с фиксированной датой и суммой — аренда, кредит, подписки.</p></details><details><summary>Что делать, если лимит уже превышен?</summary><p>Пересчитать остаток на оставшиеся дни, а не пытаться «наверстать» экономией в конце периода. Новый лимит будет ниже, но он честный. Кубыш делает этот пересчёт автоматически после каждой траты.</p></details><details><summary>Как считать дневной лимит вдвоём?</summary><p>Считать общий бюджет на двоих: суммировать доходы, суммировать обязательные платежи, и делить общий остаток. Раздельный подсчёт не работает, если расходы на жильё и еду общие.</p></details></div>
+
+  <div class="cta">
+    <h2>Посчитать на своих цифрах</h2>
+    <p>Кубыш задаст несколько вопросов о доходе и обязательных тратах
+       и покажет, сколько можно тратить в день до следующей получки.
+       Без подключения к банку.</p>
+    <a class="btn" href="https://apps.apple.com/app/id6778792103">Скачать в App Store</a>
+    <p class="sub">Бесплатно, iPhone. В App Store приложение называется
+       «Кубыш» — это то же самое приложение.</p>
+  </div>
+</div></main>
+
+<footer><div class="wrap">
+  <div class="links">
+    <a href="/">Главная</a>
+    <a href="https://t.me/kubyshka_user">Телеграм-канал</a>
+    <a href="https://apps.apple.com/app/id6778792103">App Store</a>
+    <a href="https://pay.kubysh.com/offer/">Оферта</a>
+    <a href="https://pay.kubysh.com/recurrent/">Регулярные операции</a>
+    <a href="/privacy/">Политика обработки персональных данных</a>
+    <a href="/terms/">Пользовательское соглашение</a>
+  </div>
+  <p>Кубыш — приложение для учёта расходов и планирования бюджета
+     между получками.</p>
+</div></footer>
+</body>
+</html>

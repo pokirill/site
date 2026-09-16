@@ -1,0 +1,372 @@
+/* Общие стили страниц оплаты и кабинета: /account, /pay/*, /offer, /recurrent.
+   Палитра и шрифты те же, что на лендинге, чтобы человек не думал, что попал
+   на чужой сайт: он может прийти сюда из приложения, из письма или по прямой
+   ссылке, и страница должна выглядеть своей.
+
+   Мобильный трафик основной, поэтому базовые размеры под телефон, а десктоп
+   получает надбавки через min()/clamp(). Проверять на 375pt без горизонтальной
+   прокрутки - это пункт приёмки. */
+
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/Inter-400.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/Inter-500.woff2') format('woff2');
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Inter Tight';
+  src: url('/fonts/InterTight-600.woff2') format('woff2');
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Inter Tight';
+  src: url('/fonts/InterTight-700.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+}
+
+:root {
+  --lime: #cef16c;
+  --ink: #ffffff;
+  --bg: #0a0a0a;
+  --card: #141414;
+  --card-hi: #1c1c1c;
+  --line: rgba(255, 255, 255, 0.12);
+  --muted: rgba(255, 255, 255, 0.55);
+  --muted-2: rgba(255, 255, 255, 0.38);
+  --danger: #ff6b5e;
+  --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --display: 'Inter Tight', -apple-system, BlinkMacSystemFont, sans-serif;
+  --radius: 16px;
+  --gap: 12px;
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.45;
+  /* Тёмная тема заявлена в ТЗ жёстко, поэтому светлую не поддерживаем:
+     страница оплаты должна выглядеть одинаково у всех. */
+  color-scheme: dark;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--lime); text-decoration: none; }
+a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+.wrap {
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 20px 16px 40px;
+}
+
+/* --- Шапка: логотип ведёт на главную, больше в ней ничего нет --- */
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
+}
+.logo {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+.logo span { color: var(--lime); }
+.top-link { font-size: 14px; color: var(--muted); }
+
+/* --- Заголовки --- */
+h1 {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(26px, 7vw, 34px);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  margin: 20px 0 8px;
+}
+h2 {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 19px;
+  letter-spacing: -0.02em;
+  margin: 28px 0 10px;
+}
+.lead { color: var(--muted); margin: 0 0 22px; }
+
+/* --- Карточки --- */
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: var(--gap);
+}
+
+/* --- Кнопки --- */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 52px;
+  padding: 14px 18px;
+  border: 1px solid transparent;
+  border-radius: 14px;
+  font-family: var(--sans);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.2;
+  text-align: center;
+  cursor: pointer;
+  transition: opacity 0.15s ease, background 0.15s ease;
+}
+.btn:active { opacity: 0.82; }
+.btn[disabled] { opacity: 0.45; cursor: not-allowed; }
+
+.btn-primary { background: var(--lime); color: #101010; }
+.btn-ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+.btn-quiet {
+  background: transparent;
+  color: var(--muted);
+  border-color: transparent;
+  min-height: 44px;
+  font-size: 15px;
+}
+.btn-danger { background: transparent; color: var(--danger); border-color: rgba(255, 107, 94, 0.35); }
+
+/* Кнопки входа: логотипы провайдеров нарисованы инлайновым SVG, чтобы
+   страница не тянула сторонние картинки (на странице с ПД это лишний канал). */
+.btn-provider { background: #fff; color: #101010; font-weight: 500; }
+.btn-provider svg { width: 20px; height: 20px; flex: 0 0 auto; }
+.btn-provider--apple { background: #fff; color: #000; }
+.btn-provider--yandex { background: #fc3f1d; color: #fff; }
+.btn-provider--google { background: #fff; color: #1f1f1f; }
+
+.btn-row { display: flex; flex-direction: column; gap: 10px; }
+
+/* --- Тарифы --- */
+.plans { display: flex; flex-direction: column; gap: 10px; margin: 6px 0 18px; }
+
+.plan {
+  position: relative;
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.plan:hover { background: var(--card-hi); }
+.plan[aria-pressed="true"] { border-color: var(--lime); background: var(--card-hi); }
+
+/* Год идёт первым и крупнее: так решено в постановке. */
+.plan--year { padding: 20px 18px; }
+.plan--year .plan-price { font-size: 30px; }
+
+.plan-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.plan-title { font-family: var(--display); font-weight: 600; font-size: 18px; }
+.plan-price { font-family: var(--display); font-weight: 700; font-size: 24px; letter-spacing: -0.02em; }
+.plan-note { color: var(--muted); font-size: 14px; margin-top: 6px; }
+
+/* --- Условия рядом с кнопкой оплаты (требование Т-Банка) --- */
+.terms {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin: 4px 0 14px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+.terms ul { margin: 8px 0 0; padding-left: 18px; }
+.terms li { margin-bottom: 5px; }
+.terms a { color: var(--ink); text-decoration: underline; text-underline-offset: 2px; }
+
+.consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 0 0 14px;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--muted);
+  cursor: pointer;
+}
+/* Крупная область нажатия: чекбокс на телефоне иначе не поймать. */
+.consent input {
+  width: 22px;
+  height: 22px;
+  margin: 0;
+  flex: 0 0 auto;
+  accent-color: var(--lime);
+}
+.consent a { color: var(--ink); text-decoration: underline; text-underline-offset: 2px; }
+
+/* --- Статус подписки --- */
+.status-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 15px;
+}
+.status-row:last-child { border-bottom: none; }
+.status-row dt { color: var(--muted); margin: 0; }
+.status-row dd { margin: 0; font-weight: 500; text-align: right; }
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+}
+.badge--on { background: rgba(206, 241, 108, 0.16); color: var(--lime); }
+.badge--off { background: rgba(255, 255, 255, 0.08); color: var(--muted); }
+
+/* --- Служебные состояния --- */
+.notice {
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: var(--gap);
+  font-size: 14px;
+  line-height: 1.45;
+}
+.notice--info { background: rgba(255, 255, 255, 0.06); color: var(--muted); }
+.notice--warn { background: rgba(255, 200, 80, 0.1); color: #ffd479; }
+.notice--error { background: rgba(255, 107, 94, 0.1); color: var(--danger); }
+
+.field {
+  width: 100%;
+  min-height: 52px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  background: var(--card-hi);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px; /* 16px обязательно: меньше - и iOS зумит страницу на фокусе */
+}
+.field:focus { outline: 2px solid var(--lime); outline-offset: 1px; }
+.field::placeholder { color: var(--muted-2); }
+
+.spinner {
+  width: 22px;
+  height: 22px;
+  border: 2.5px solid rgba(255, 255, 255, 0.18);
+  border-top-color: var(--lime);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .spinner { animation-duration: 2.4s; }
+}
+
+.center { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px; }
+.hidden { display: none !important; }
+.muted { color: var(--muted); }
+.small { font-size: 13px; line-height: 1.5; }
+
+/* --- Подвал: ссылки на документы обязаны быть на каждой странице --- */
+.foot {
+  border-top: 1px solid var(--line);
+  margin-top: 32px;
+  padding: 18px 16px 28px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--muted-2);
+}
+.foot-links { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-bottom: 12px; }
+.foot-links a { color: var(--muted); }
+.foot-req { color: var(--muted-2); }
+
+/* --- Юридические тексты (/offer, /recurrent) --- */
+.doc { max-width: 760px; }
+.doc h2 { font-size: 18px; margin-top: 30px; }
+.doc h3 { font-family: var(--display); font-size: 16px; margin: 22px 0 8px; }
+.doc p, .doc li { color: rgba(255, 255, 255, 0.78); font-size: 15px; line-height: 1.62; }
+.doc ul, .doc ol { padding-left: 22px; }
+.doc .updated { color: var(--muted-2); font-size: 13px; margin-bottom: 26px; }
+.doc table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 14px; }
+.doc th, .doc td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line); }
+.doc th { color: var(--muted); font-weight: 500; }
+/* Широкие таблицы скроллятся внутри себя, а не тянут страницу по горизонтали */
+.doc .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+@media (min-width: 640px) {
+  .wrap { padding: 28px 24px 48px; }
+  .top { padding: 16px 24px; }
+  .foot { padding: 22px 24px 34px; }
+}
+
+
+/* --- Отступы классами, а не через style= в разметке ---
+   Причина не в аккуратности: строгий CSP запрещает инлайн, а инлайн в стилях
+   пришлось бы разрешать целиком. Чем меньше разрешено, тем меньше вариантов
+   у чужого скрипта, если он всё-таки попадёт на страницу. */
+.gap-xs { margin-top: 6px }
+.gap-sm { margin-top: 10px }
+.gap-md { margin-top: 18px }
+.gap-lg { margin-top: 22px }
+.pad-xl { padding: 60px 0 }
+.flush { margin: 0 }
+.flush-top { margin: 0 0 12px }
+.or-divider { margin: 2px 0 10px }
+.ink { color: var(--ink) }
+
+/* Кнопка входа Apple. Требования Apple к виду: чёрный фон, белый текст и
+   логотип, высота не меньше 44 pt, скругление и внятный отступ вокруг текста.
+   Меньше 44 pt делать нельзя - и по правилам Apple, и потому что палец
+   не попадает. */
+.btn-apple {
+  background: #000;
+  color: #fff;
+  border: 1px solid #000;
+  min-height: 48px;
+  font-size: 16px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.btn-apple:active { background: #1a1a1a }
+.apple-logo {
+  width: 18px;
+  height: 18px;
+  /* Логотип чуть выше базовой линии текста - так он выглядит уравновешенным */
+  margin-top: -2px;
+  flex: 0 0 auto;
+}
+
+.pad-lg { padding: 50px 0 }
+.tight-title { margin-bottom: 4px }
+.gap-row { margin-top: 16px }
+.hint-list { padding-left: 20px; line-height: 1.7 }

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Финансовая подушка: сколько нужно и за сколько накопить</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Сколько денег должно быть в финансовой подушке, как посчитать размер от обязательных расходов и за какой срок она реально собирается при вашем доходе.">
+<meta name="theme-color" content="#000000">
+<meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large">
+<link rel="canonical" href="https://kubysh.com/finansovaya-podushka/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Кубыш">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:url" content="https://kubysh.com/finansovaya-podushka/">
+<meta property="og:title" content="Финансовая подушка: сколько нужно и за сколько реально накопить">
+<meta property="og:description" content="Сколько денег должно быть в финансовой подушке, как посчитать размер от обязательных расходов, за какой срок она собирается и что копить раньше — подушку или цели.">
+<link rel="preload" href="../fonts/InterTight-700.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+@font-face{font-family:'Inter';src:url(/fonts/Inter-400.woff2)format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:'Inter Tight';src:url(/fonts/InterTight-700.woff2)format('woff2');font-weight:700;font-display:swap}
+:root{
+  --bg:#000;--ink:#fff;--lime:#cef16c;
+  --muted:rgba(255,255,255,.58);--line:rgba(255,255,255,.12);
+  --card:rgba(255,255,255,.04);
+  --display:'Inter Tight',system-ui,-apple-system,sans-serif;
+  --sans:'Inter',system-ui,-apple-system,sans-serif;
+}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);
+  font-size:17px;line-height:1.65;letter-spacing:-.01em;
+  -webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:0 22px}
+header{border-bottom:1px solid var(--line);position:sticky;top:0;
+  background:rgba(0,0,0,.86);backdrop-filter:blur(14px);z-index:10}
+header .wrap{display:flex;align-items:center;justify-content:space-between;
+  gap:16px;height:60px}
+.logo{font-family:var(--display);font-weight:700;font-size:19px;
+  letter-spacing:-.03em;color:var(--ink);text-decoration:none}
+.logo span{color:var(--lime)}
+.top-cta{font-size:14px;color:var(--lime);text-decoration:none;
+  border:1px solid rgba(206,241,108,.35);border-radius:99px;padding:7px 15px;
+  white-space:nowrap;transition:background .18s}
+.top-cta:hover{background:rgba(206,241,108,.1)}
+main{padding:46px 0 20px}
+.crumbs{font-size:13.5px;color:var(--muted);margin-bottom:22px}
+.crumbs a{color:var(--muted)}
+h1{font-family:var(--display);font-weight:700;letter-spacing:-.035em;
+  line-height:1.1;font-size:clamp(30px,6vw,44px);text-wrap:balance;
+  margin-bottom:20px}
+h2{font-family:var(--display);font-weight:700;letter-spacing:-.03em;
+  line-height:1.18;font-size:clamp(21px,3.6vw,27px);text-wrap:balance;
+  margin:44px 0 14px}
+h3{font-family:var(--display);font-weight:700;letter-spacing:-.02em;
+  font-size:18.5px;margin:28px 0 9px}
+p{margin-bottom:15px;color:rgba(255,255,255,.82)}
+.lead{font-size:19.5px;line-height:1.55;color:var(--ink);
+  border-left:2px solid var(--lime);padding-left:17px;margin-bottom:30px}
+a{color:var(--lime)}
+strong{color:var(--ink);font-weight:500}
+ul,ol{margin:0 0 16px 20px}
+li{margin-bottom:8px;color:rgba(255,255,255,.82)}
+.calc{background:var(--card);border:1px solid var(--line);border-radius:14px;
+  padding:19px 21px;margin:22px 0;font-size:16px}
+.calc .row{display:flex;justify-content:space-between;gap:14px;
+  padding:7px 0;border-bottom:1px solid var(--line)}
+.calc .row:last-child{border-bottom:0;padding-top:12px;margin-top:5px;
+  border-top:1px solid var(--line);color:var(--lime);font-weight:500}
+.calc .row span:last-child{font-variant-numeric:tabular-nums;white-space:nowrap}
+.tbl{width:100%;border-collapse:collapse;margin:22px 0;font-size:15.5px}
+.tbl th,.tbl td{text-align:left;padding:11px 12px 11px 0;
+  border-bottom:1px solid var(--line);vertical-align:top}
+.tbl td:not(:first-child){color:rgba(255,255,255,.86)}
+@media(max-width:560px){
+  .tbl,.tbl tr,.tbl td,.tbl th{display:block;width:100%}
+  .tbl th{display:none}
+  .tbl tr{border-bottom:1px solid var(--line);padding:13px 0}
+  .tbl td{border:0;padding:2px 0}
+  .tbl td:first-child{font-size:13px;text-transform:uppercase;
+    letter-spacing:.06em;color:var(--muted);margin-bottom:3px}
+  .tbl td:nth-child(2)::before{content:'Дзен-мани: ';color:var(--muted)}
+  .tbl td:nth-child(3)::before{content:'Кубыш: ';color:var(--lime)}
+  .tbl tr:first-child{display:none}
+}
+.tbl th{font-family:var(--display);font-weight:700;font-size:14px;
+  color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.tbl td:first-child{color:var(--muted)}
+.cta{background:var(--card);border:1px solid rgba(206,241,108,.22);
+  border-radius:16px;padding:26px;margin:44px 0 10px;text-align:center}
+.cta h2{margin-top:0}
+.cta .btn{display:inline-block;background:var(--lime);color:#0a0a0a;
+  font-weight:500;text-decoration:none;border-radius:99px;padding:13px 27px;
+  margin-top:6px}
+.cta .sub{font-size:14px;color:var(--muted);margin-top:13px;margin-bottom:0}
+.faq{margin-top:14px}
+.faq details{border-bottom:1px solid var(--line);padding:15px 0}
+.faq summary{font-family:var(--display);font-weight:700;font-size:17px;
+  cursor:pointer;list-style:none;display:flex;justify-content:space-between;
+  gap:14px;align-items:flex-start}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:'+';color:var(--lime);font-size:21px;line-height:1;
+  flex:none}
+.faq details[open] summary::after{content:'–'}
+.faq p{margin:11px 0 0}
+footer{border-top:1px solid var(--line);margin-top:56px;padding:26px 0 40px;
+  font-size:14px;color:var(--muted)}
+footer a{color:var(--muted);text-decoration:underline}
+footer .links{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:12px}
+footer .links a{color:var(--lime);text-decoration:none}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Кубыш",
+     "item": "https://kubysh.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Финансовая подушка",
+     "item": "https://kubysh.com/finansovaya-podushka/"
+    }
+   ]
+  },
+  {
+   "@type": "FAQPage",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "Сколько месяцев расходов должно быть в подушке?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Три месяца обязательных расходов — минимальная рабочая цель, шесть — комфортный уровень. При нестабильном доходе или единственном кормильце в семье ориентируются на шесть месяцев и больше."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Считать подушку от дохода или от расходов?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "От обязательных расходов. Подушка нужна, чтобы прожить без заработка, поэтому доход в расчёте не участвует. Считать от дохода — распространённая ошибка, которая завышает цель и делает её недостижимой."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Можно ли копить подушку и на отпуск одновременно?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Можно, но медленнее вдвое. Разумнее сначала собрать подушку размером в один месяц расходов, а дальше вести цели параллельно — тогда срочная трата не обнулит накопления на отпуск."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Что считается обязательными расходами?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "То, что придётся платить без заработка: жильё, еда, транспорт, связь, лекарства, платежи по кредитам. Подписки, кафе и одежда не входят — в трудный месяц от них отказываются."
+     }
+    }
+   ]
+  },
+  {
+   "@type": "Article",
+   "headline": "Финансовая подушка: сколько нужно и как её собрать",
+   "description": "Сколько денег должно быть в финансовой подушке, как посчитать размер от обязательных расходов, за какой срок она собирается и что копить раньше — подушку или цели.",
+   "inLanguage": "ru-RU",
+   "isPartOf": {
+    "@type": "WebSite",
+    "url": "https://kubysh.com/",
+    "name": "Кубыш"
+   },
+   "publisher": {
+    "@type": "Organization",
+    "name": "Кубыш",
+    "url": "https://kubysh.com/",
+    "logo": {
+     "@type": "ImageObject",
+     "url": "https://kubysh.com/icon-192.png",
+     "width": 192,
+     "height": 192
+    }
+   },
+   "mainEntityOfPage": "https://kubysh.com/finansovaya-podushka/",
+   "datePublished": "2026-08-14",
+   "dateModified": "2026-08-25",
+   "author": {
+    "@type": "Organization",
+    "name": "Кубыш",
+    "url": "https://kubysh.com/"
+   },
+   "image": "https://kubysh.com/og-cover.png"
+  }
+ ]
+}
+</script>
+</head>
+<body>
+<header><div class="wrap">
+  <a class="logo" href="/">Кубы<span>ш</span></a>
+  <a class="top-cta" href="https://apps.apple.com/app/id6778792103">Установить</a>
+</div></header>
+
+<main><div class="wrap">
+  <nav class="crumbs"><a href="/">Кубыш</a> → Финансовая подушка</nav>
+  <h1>Финансовая подушка: сколько нужно и как её собрать</h1>
+  <p class="lead">Финансовая подушка считается от обязательных расходов, а не от дохода. Минимальная рабочая цель — три месяца обязательных расходов, комфортная — шесть. При расходах 62 000 ₽ в месяц это 186 000 ₽ и 372 000 ₽ соответственно.</p>
+  
+<h2>Сколько нужно накопить</h2>
+<p>Размер подушки считается от обязательных расходов, а не от дохода.
+Обязательные расходы — это то, что придётся платить, даже если завтра
+не будет заработка: жильё, еда, транспорт, связь, лекарства, платежи
+по кредитам. Кафе, подписки и покупки одежды в расчёт не входят, потому что
+в трудный месяц от них можно отказаться. Полученную сумму умножают на число
+месяцев, которые нужно продержаться. Три месяца — минимальная рабочая цель,
+шесть — комфортный уровень.</p>
+
+<div class="calc">
+  <div class="row"><span>Жильё</span><span>30 000 ₽</span></div>
+  <div class="row"><span>Еда</span><span>18 000 ₽</span></div>
+  <div class="row"><span>Транспорт и связь</span><span>6 000 ₽</span></div>
+  <div class="row"><span>Кредиты</span><span>8 000 ₽</span></div>
+  <div class="row"><span>Обязательные за месяц</span><span>62 000 ₽</span></div>
+  <div class="row"><span>Подушка на 3 месяца</span><span>186 000 ₽</span></div>
+  <div class="row"><span>Подушка на 6 месяцев</span><span>372 000 ₽</span></div>
+</div>
+
+<h2>Сколько времени это займёт</h2>
+<p>Срок накопления считается делением цели на сумму, которую удаётся
+откладывать ежемесячно. При обязательных расходах 62 000 ₽ и возможности
+откладывать 10 000 ₽ в месяц подушка на три месяца собирается примерно
+за полтора года. Это долго, и на этом сроке большинство бросает. Работают
+два ускорителя: направлять в подушку нерегулярные поступления целиком —
+премии, возвраты налога, подарки — и начинать с цели в один месяц расходов
+вместо трёх. Один месяц собирается за полгода и уже закрывает большинство
+бытовых аварий: ремонт техники, лечение зуба, срочная поездка.</p>
+
+<h2>Подушка или цели — что вперёд</h2>
+<p>Подушка идёт первой. Причина арифметическая: без неё любая непредвиденная
+трата закрывается кредиткой, а проценты по ней съедают больше, чем приносит
+любое накопление. Пока подушки нет, цели вроде отпуска или техники регулярно
+обнуляются — деньги с них уходят на срочные расходы, и накопление начинается
+заново. После того как подушка собрана хотя бы на месяц, можно вести её
+и цели параллельно, разделяя ежемесячную сумму.</p>
+
+<h2>Где хранить</h2>
+<p>Подушка должна быть доступна в течение одного-двух дней и не должна
+меняться в цене. Подходят накопительный счёт и вклад с возможностью снятия.
+Не подходят акции, валюта и вложения с блокировкой на срок: деньги нужны
+именно в тот момент, когда продавать невыгодно. Держать подушку на той же
+карте, с которой идут ежедневные траты, — тоже плохая идея: она незаметно
+расходуется. Отдельный счёт решает проблему лучше любой силы воли.</p>
+
+<h2>Как это устроено в Кубыше</h2>
+<p>В Кубыше подушка — не отдельный счёт, а первая цель, которая считается
+автоматически. Приложение берёт обязательные расходы, введённые при
+настройке, умножает на выбранное число месяцев и показывает дату, к которой
+подушка соберётся при текущем темпе. Если параллельно идут другие цели,
+видно, как они конкурируют за одни и те же деньги, и что произойдёт со
+сроками, если приоритеты поменять.</p>
+
+
+  <h2>Частые вопросы</h2>
+  <div class="faq"><details><summary>Сколько месяцев расходов должно быть в подушке?</summary><p>Три месяца обязательных расходов — минимальная рабочая цель, шесть — комфортный уровень. При нестабильном доходе или единственном кормильце в семье ориентируются на шесть месяцев и больше.</p></details><details><summary>Считать подушку от дохода или от расходов?</summary><p>От обязательных расходов. Подушка нужна, чтобы прожить без заработка, поэтому доход в расчёте не участвует. Считать от дохода — распространённая ошибка, которая завышает цель и делает её недостижимой.</p></details><details><summary>Можно ли копить подушку и на отпуск одновременно?</summary><p>Можно, но медленнее вдвое. Разумнее сначала собрать подушку размером в один месяц расходов, а дальше вести цели параллельно — тогда срочная трата не обнулит накопления на отпуск.</p></details><details><summary>Что считается обязательными расходами?</summary><p>То, что придётся платить без заработка: жильё, еда, транспорт, связь, лекарства, платежи по кредитам. Подписки, кафе и одежда не входят — в трудный месяц от них отказываются.</p></details></div>
+
+  <div class="cta">
+    <h2>Посчитать на своих цифрах</h2>
+    <p>Кубыш задаст несколько вопросов о доходе и обязательных тратах
+       и покажет, сколько можно тратить в день до следующей получки.
+       Без подключения к банку.</p>
+    <a class="btn" href="https://apps.apple.com/app/id6778792103">Скачать в App Store</a>
+    <p class="sub">Бесплатно, iPhone. В App Store приложение называется
+       «Кубыш» — это то же самое приложение.</p>
+  </div>
+</div></main>
+
+<footer><div class="wrap">
+  <div class="links">
+    <a href="/">Главная</a>
+    <a href="https://t.me/kubyshka_user">Телеграм-канал</a>
+    <a href="https://apps.apple.com/app/id6778792103">App Store</a>
+    <a href="https://pay.kubysh.com/offer/">Оферта</a>
+    <a href="https://pay.kubysh.com/recurrent/">Регулярные операции</a>
+    <a href="/privacy/">Политика обработки персональных данных</a>
+    <a href="/terms/">Пользовательское соглашение</a>
+  </div>
+  <p>Кубыш — приложение для учёта расходов и планирования бюджета
+     между получками.</p>
+</div></footer>
+</body>
+</html>

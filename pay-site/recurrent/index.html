@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<!-- Политика безопасности содержимого. Дубль заголовка из .htaccess:
+     если mod_headers на хостинге выключен, работает хотя бы это.
+     Смысл строки - на странице с деньгами разрешено только своё и форма
+     входа Google, больше ничего и никуда. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'self'; form-action 'self' https://appleid.apple.com; script-src 'self' https://appleid.cdn-apple.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.kubysh.com https://appleid.apple.com; frame-src https://appleid.apple.com; object-src 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>Порядок проведения регулярных операций — Кубыш</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Порядок проведения регулярных операций (автоматических списаний) по подписке на Кубыш.">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#0a0a0a">
+<link rel="canonical" href="https://pay.kubysh.com/recurrent/">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="stylesheet" href="/assets/pay.css?v=20260902b">
+<script src="/assets/pay-frame-guard.js?v=20260902b"></script>
+<!--
+  ЗАГЛУШКА ВЁРСТКИ. Форма документа требуется Т-Банком для активации магазина. Текст даёт Кирилл после юриста. Адрес /recurrent постоянный.
+-->
+</head>
+<body>
+
+<header class="top">
+  <a class="logo" href="https://kubysh.com/">Кубы<span>ш</span></a>
+  <a class="top-link" href="/account/">Кабинет</a>
+</header>
+
+<main class="wrap doc">
+  <h1>Порядок проведения регулярных операций</h1>
+  <p class="updated">Редакция от __ __________ 2026 г.</p>
+
+  <div class="notice notice--warn">
+    ⚠️ Черновик вёрстки. Финальный текст готовит юрист по форме Т-Банка.
+    Разделы ниже — обязательный минимум, который банк проверяет при активации
+    магазина: без них магазин не активируют.
+  </div>
+
+  <h2>1. Что такое регулярный платёж</h2>
+  <p>Текст от юриста.</p>
+
+  <h2>2. Периодичность и сумма списания</h2>
+  <p>Текст от юриста. Периодичность зависит от выбранного тарифа, актуальная
+    сумма показывается в <a href="/account/">личном кабинете</a> до оплаты и
+    подтверждается галочкой согласия.</p>
+
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr><th>Тариф</th><th>Периодичность списания</th><th>Где видна сумма</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Год</td><td>Раз в 12 месяцев</td><td>В кабинете до оплаты</td></tr>
+        <tr><td>Месяц</td><td>Раз в месяц</td><td>В кабинете до оплаты</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>3. Согласие на регулярные списания</h2>
+  <p>Текст от юриста. Согласие даётся отметкой в кабинете перед первой оплатой,
+    без предварительного проставления.</p>
+
+  <h2>4. Как отказаться от продления</h2>
+  <p>Отключить автоматическое продление можно самостоятельно в
+    <a href="/account/">личном кабинете</a> в любой момент, без обращения в
+    поддержку. Доступ сохраняется до конца уже оплаченного периода.</p>
+
+  <h2>5. Уведомления о списаниях</h2>
+  <p>Текст от юриста.</p>
+
+  <h2>6. Данные карты</h2>
+  <p>Данные банковской карты вводятся на стороне платёжного сервиса и на нашей
+    стороне не сохраняются.</p>
+
+  <h2>7. Возврат и спорные списания</h2>
+  <p>Текст от юриста. Обращения принимаются на почту, указанную в реквизитах.</p>
+
+  <h2>Реквизиты</h2>
+  <p>
+    Индивидуальный предприниматель Попов Кирилл Александрович<br>
+    ОГРНИП 324774600538387<br>
+    ИНН 340703580750<br>
+    Адрес: 123056, г. Москва, ул. Васильевская, д. 3, кв. 17<br>
+    Почта: <a href="mailto:KubyshkaAI@Proton.Me">KubyshkaAI@Proton.Me</a>
+  </p>
+</main>
+
+<footer class="foot">
+  <div class="foot-links">
+    <a href="/offer/">Оферта</a>
+    <a href="/recurrent/">Регулярные операции</a>
+    <a href="/privacy/">Политика ПД</a>
+    <a href="https://kubysh.com/terms/">Пользовательское соглашение</a>
+    <a href="https://t.me/kubyshka_user" target="_blank" rel="noopener">Поддержка</a>
+  </div>
+  <div class="foot-req">
+    ИП Попов Кирилл Александрович · ОГРНИП 324774600538387 · ИНН 340703580750<br>
+    KubyshkaAI@Proton.Me
+  </div>
+</footer>
+</body>
+</html>

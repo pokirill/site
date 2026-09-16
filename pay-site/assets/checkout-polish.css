@@ -1,0 +1,127 @@
+/* PAY-CHECKOUT-2 — продуктовая полировка выбора тарифа.
+   Только визуальный слой: тарифы, цены и платёжная логика остаются в account.js/API. */
+
+#state-plans {
+  padding-bottom: 8px;
+}
+
+#state-plans > h1 {
+  max-width: 520px;
+  font-size: clamp(30px, 8vw, 42px);
+}
+
+#state-plans > .lead {
+  max-width: 520px;
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+.checkout-value {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  margin: 2px 0 20px;
+}
+
+.value-point {
+  display: grid;
+  grid-template-columns: 104px 1fr;
+  gap: 12px;
+  align-items: start;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.value-point strong {
+  color: var(--lime);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.value-point span {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+#state-plans .plans {
+  margin-top: 0;
+}
+
+#state-plans .plan {
+  min-height: 92px;
+}
+
+/* Год остаётся рекомендуемым вариантом, но не выглядит выбранным сам по себе. */
+#state-plans .plan--year {
+  border-color: var(--line);
+  background: var(--card);
+}
+
+#state-plans .plan--year:hover {
+  background: var(--card-hi);
+}
+
+#state-plans .plan--year::before {
+  content: 'Основной выбор';
+  display: inline-flex;
+  margin: 0 0 10px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(206, 241, 108, 0.14);
+  color: var(--lime);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* Активная подсветка зависит только от фактически выбранного тарифа. */
+#state-plans .plan[aria-pressed="true"] {
+  border-color: var(--lime);
+  background: var(--card-hi);
+  box-shadow: 0 0 0 1px rgba(206, 241, 108, 0.18) inset;
+}
+
+.checkout-trust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  margin: -2px 0 14px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.checkout-trust span::before {
+  content: '✓';
+  margin-right: 5px;
+  color: var(--lime);
+}
+
+#state-plans .terms {
+  margin-top: 8px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+#state-plans #pay-btn {
+  min-height: 56px;
+  font-weight: 600;
+}
+
+#state-plans #pay-hint {
+  text-align: center;
+}
+
+@media (min-width: 520px) {
+  .checkout-value {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .value-point {
+    grid-template-columns: 1fr;
+    gap: 4px;
+    min-height: 104px;
+  }
+}

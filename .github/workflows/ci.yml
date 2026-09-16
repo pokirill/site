@@ -1,0 +1,46 @@
+name: Site CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Contract tests
+        run: |
+          python -m pip install --upgrade pip pytest
+          pytest -q
+
+      - name: Build image
+        run: docker build -t kubysh-site:test .
+
+      - name: Validate nginx config
+        run: docker run --rm kubysh-site:test nginx -t
+
+      - name: Smoke image
+        run: |
+          docker run -d --rm --name kubysh-site-ci -p 127.0.0.1:18082:80 kubysh-site:test
+          trap 'docker rm -f kubysh-site-ci >/dev/null 2>&1 || true' EXIT
+          for i in $(seq 1 20); do
+            curl -fsS http://127.0.0.1:18082/healthz >/dev/null && break
+            sleep 1
+          done
+          code() { curl -sS -o /dev/null -w '%{http_code}' -H "Host: $1" "http://127.0.0.1:18082$2"; }
+          test "$(code kubysh.com /)" = 200
+          test "$(code kubysh.com /kontrol-finansov/)" = 200
+          test "$(code kubysh.com /definitely-missing/)" = 404
+          test "$(code www.kubysh.com /)" = 301
+          test "$(code pay.kubysh.com /account/)" = 200
+          test "$(code pay.kubysh.com /pay/success/)" = 200
+          test "$(code unknown.example /)" = 404
+          curl -sSI -H "Host: pay.kubysh.com" http://127.0.0.1:18082/account/ | grep -qi 'cache-control: no-store'

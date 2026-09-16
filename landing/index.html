@@ -1,0 +1,1960 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="build" content="2026-09-15-40">  <!-- метка сборки, видно в исходнике страницы -->
+<title>Кубыш — сколько можно потратить сегодня до получки</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Кубыш сам строит план до следующей получки и каждый день показывает, сколько можно потратить, чтобы цели не сдвинулись. Скриншот из банка вместо учёта.">
+<meta name="theme-color" content="#000000">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Кубыш">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:title" content="Кубыш — сколько можно потратить сегодня до получки">
+<meta property="og:description" content="Другие приложения объясняют, куда ушли деньги. Кубыш сам строит план до получки и каждый день говорит сумму, с которой цели не сдвинутся.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://kubysh.com/">
+<link rel="alternate" hreflang="ru" href="https://kubysh.com/">
+<script>
+// Адрес вида /index.html выглядит неаккуратно и для поисковиков это дубль главной.
+// На сервере это лечит 301 в .htaccess, но он может быть не залит или mod_rewrite
+// выключен — поэтому чистим адрес и на стороне страницы. replaceState меняет строку
+// браузера без перезагрузки, так что для человека это незаметно, а из истории и
+// подсказок браузера грязный адрес постепенно вытесняется чистым.
+(function () {
+  try {
+    var p = location.pathname;
+    var q = location.search;
+    // Метка ?from=privacy нужна только чтобы обойти застрявший в браузере
+    // редирект с kubysh.com на kubysh.ru: адреса с меткой в его кэше нет,
+    // поэтому переход идёт на сервер, а не по старой записи. Сразу стираем.
+    if (/[?&]from=privacy\b/.test(q)) {
+      q = q.replace(/[?&]from=privacy\b/, '').replace(/^&/, '?');
+      if (q === '?') q = '';
+    }
+    if (/\/index\.html$/i.test(p)) p = p.replace(/index\.html$/i, '');
+    if (p !== location.pathname || q !== location.search) {
+      history.replaceState(null, '', p + q + location.hash);
+    }
+  } catch (e) { /* file:// и приватные режимы могут запрещать replaceState — не страшно */ }
+})();
+</script>
+<link rel="preload" href="fonts/InterTight-500.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/Inter-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>
+@font-face { font-family:'Inter'; src:url('fonts/Inter-400.woff2') format('woff2'); font-weight:400; font-style:normal; font-display:swap; }
+@font-face { font-family:'Inter'; src:url('fonts/Inter-500.woff2') format('woff2'); font-weight:500; font-style:normal; font-display:swap; }
+@font-face { font-family:'Inter Tight'; src:url('fonts/InterTight-500.woff2') format('woff2'); font-weight:500; font-style:normal; font-display:swap; }
+@font-face { font-family:'Inter Tight'; src:url('fonts/InterTight-600.woff2') format('woff2'); font-weight:600; font-style:normal; font-display:swap; }
+@font-face { font-family:'Inter Tight'; src:url('fonts/InterTight-700.woff2') format('woff2'); font-weight:700; font-style:normal; font-display:swap; }
+
+:root{
+  --lime:#cef16c; --ink:#ffffff; --bg:#000000;
+  --sans:'Inter', -apple-system, sans-serif;
+  --display:'Inter Tight', -apple-system, sans-serif;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg); color:var(--ink); font-family:var(--sans);
+  overflow-x:hidden; -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%; display:block;}
+button{font-family:inherit; cursor:pointer; border:none; background:none; color:inherit;}
+.wrap{max-width:1728px; margin:0 auto; padding:0 40px;}
+/* ---------- Header / Hero ---------- */
+header.top{
+  /* one source for the headline size: the chip field is anchored off it too */
+  --h1fs:clamp(40px,12.5vw,216px);
+  position:relative; min-height:100vh; background:#000;
+  padding-top:28px; overflow:hidden;
+}
+nav.pill{
+  /* Reference: not a floating chip - a panel welded into the top-right corner, running off
+     the right edge with no air around it. Rounded on the bottom-left only. */
+  position:absolute; top:0; right:0; z-index:5;
+  background:var(--lime); border-radius:0 0 0 999px; padding:0 34px 0 40px; height:58px;
+  display:flex; align-items:center; gap:26px;
+  font-family:var(--display); font-size:20px; font-weight:400; text-transform:uppercase;
+}
+nav.pill a{color:#000; text-decoration:none;}
+
+.chip-field{
+  /* Flow layout, not seven hand-placed coordinates: those were measured at one width and
+     piled the chips on top of each other everywhere else. Wrapping flex rows cannot
+     overlap, so the only overlap left is the few px the rotation adds - which is the
+     "they touch each other" the brief asks for.
+     The bottom edge is pinned to the headline cap line: the h1 box starts 224px down and
+     its glyphs stick out .256em above that box (line-height .7), so bottoming out 2px
+     below that line puts the chips exactly 2px onto the letters at every width. */
+  position:absolute; left:0; right:0;
+  bottom:calc(100% - 219px + .256 * var(--h1fs));   /* -7px: the rotated corners dip below the flex box */
+  display:flex; justify-content:space-between; align-items:flex-end;
+  padding:0 14px; gap:24px; pointer-events:none; z-index:3;
+}
+.chip-cluster{display:flex; flex-wrap:wrap; align-items:flex-end; gap:10px;}
+.chip-cluster--left{max-width:46%;}
+.chip-cluster--right{
+  /* pulled in from the edge: flush right would tuck the top chip under the nav pill,
+     and the mock has this cluster sitting mid-right anyway */
+  max-width:min(24%,300px); justify-content:flex-end; margin-right:min(18%,260px);
+}
+.chip{
+  position:relative; border:1px solid rgba(255,255,255,.32); background:#000; border-radius:22px;
+  padding:10px 18px; font-size:13px; color:rgba(255,255,255,.75); white-space:normal;
+  transform:translateY(0) rotate(var(--rot)); opacity:1;
+  /* `both`, not `forwards`: the 0% frame has to apply during the stagger delay too,
+     otherwise a chip waiting its turn renders at its final resting spot and then jumps
+     back up to fall. */
+  animation:chip-fall 2100ms both;
+  animation-delay:var(--d);
+  will-change:transform;
+}
+/* Soft fall: a gentle acceleration in, one shallow rebound, then a long settle. Per-keyframe
+   timing functions do the accelerate-then-decelerate that a single curve can't. The tile is
+   already part-way to its rest angle at the start so it drifts down rather than tumbling. */
+@keyframes chip-fall{
+  0%{
+    transform:translateY(var(--drop)) rotate(calc(var(--rot) * .55)); opacity:0;
+    animation-timing-function:cubic-bezier(.25,.1,.5,.7);   /* long, gentle glide */
+  }
+  45%{  /* fade carries most of the "appearing" — it is well lit before it lands */
+    opacity:.72; animation-timing-function:cubic-bezier(.22,.4,.35,.95);
+  }
+  72%{  /* settles onto the headline, a hair past its rest angle */
+    transform:translateY(var(--dy,0px)) rotate(calc(var(--rot) * 1.04)); opacity:1;
+    animation-timing-function:cubic-bezier(.3,.6,.4,1);
+  }
+  86%{  /* barely-there float back up */
+    transform:translateY(calc(var(--dy,0px) - 3px)) rotate(calc(var(--rot) * .98));
+    animation-timing-function:cubic-bezier(.45,0,.7,.7);
+  }
+  100%{ transform:translateY(var(--dy,0px)) rotate(var(--rot)); opacity:1; }
+}
+
+.hero-headline{
+  position:relative; z-index:2; padding:196px 40px 0; text-align:center;
+}
+.hero-headline h1{
+  font-family:var(--display); font-weight:500;
+  font-size:var(--h1fs); line-height:.7; letter-spacing:-.04em;
+}
+.hero-sub{
+  max-width:38.2vw; margin:40px auto 0; text-align:center; color:#fff;
+  font-family:'Inter',sans-serif; font-size:clamp(16px,2.3vw,40px); line-height:.85; letter-spacing:-.01em;
+}
+.hero-cta-wrap{text-align:center; margin:32px 0 0; position:relative; z-index:2;}
+
+.btn-lime{
+  display:inline-block; background:var(--lime); color:#0a0a0a; font-weight:600;
+  font-family:var(--display); font-size:15px; letter-spacing:.04em; text-transform:uppercase;
+  padding:20px 30px; border-radius:40px; text-decoration:none; transition:transform .18s ease;
+}
+.btn-lime:hover{transform:scale(1.04);}
+
+.block2{
+  background:linear-gradient(180deg,#000 0%,#0d1250 45%,#1b1f8a 85%,#8082e3 100%);
+  padding:96px 0 44px; overflow:hidden;
+}
+.mockup--hero{
+  /* Новый мокап 0.798 Ш/В вместо прежних 0.599 — при старой ширине он выходил
+     на 240px короче текстовой колонки. Дизайнер просил, чтобы телефон и текст
+     начинались и заканчивались на одном уровне: мокап крупнее, текст мельче. */
+  /* 60vh — потолок по высоте экрана. На макбуке (900px) мокап был 938px в высоту,
+     то есть не влезал на экран целиком. На больших мониторах ограничение не
+     срабатывает и размер остаётся прежним. */
+  width:min(52vw,915px,72vh); flex:0 0 auto;
+}
+.hero-phone-block{
+  position:relative; z-index:1; max-width:1728px; margin:0 auto; padding:0 40px;
+  display:flex; align-items:center; justify-content:center; gap:70px; flex-wrap:wrap;
+}
+
+
+
+/* "ЗАГОЛОВОК 2" from the founder's type spec — Inter Tight 80 / 85% / -4% / medium.
+   The spec sheet notes this style is *also* used in block 2 with the mockup, i.e. here. */
+.hero-side-text{
+  /* Потолки по высоте зеркалят мокап: дизайнер просил, чтобы телефон и текст
+     начинались и заканчивались на одном уровне, поэтому ужимать надо оба сразу. */
+  position:relative; z-index:2; max-width:min(34vw,600px,48vh); font-family:var(--display); font-weight:500;
+  font-size:clamp(22px,min(4.8vw,6.7vh),84px); line-height:.85; letter-spacing:-.04em;
+  
+}
+/* Scroll-linked fill. Characters are wrapped individually so the fill advances a letter at
+   a time (designer: "на пару букв"), and each word is an inline-block wrapper so wrapping
+   still only ever breaks between words. */
+.hero-side-text .w{display:inline-block; white-space:pre;}
+.hero-side-text .w>span{color:rgba(255,255,255,.22); transition:color .12s linear;}
+.hero-side-text .w>span.lit{color:#fff;}
+
+/* ---------- gradient transitions with snow ---------- */
+.snowzone{position:relative; overflow:hidden;}
+/* A few of the Figma flake coordinates land close to (or past) their zone's bottom edge, so
+   overflow:hidden cut them flat and left a visible straight contour. Fading the flake layer
+   out at both edges means an overhanging flake dissolves instead of being sliced — and the
+   mocked positions stay untouched. Only the flakes are masked, not the zone's gradient. */
+.snow-layer{
+  position:absolute; inset:0; pointer-events:none;
+  mask-image:linear-gradient(to bottom, transparent 0, #000 min(70px,8%), #000 calc(100% - min(320px,22%)), transparent 100%);
+  -webkit-mask-image:linear-gradient(to bottom, transparent 0, #000 min(70px,8%), #000 calc(100% - min(320px,22%)), transparent 100%);
+  /* no-repeat matters: a mask defaults to repeating, which tiled the gradient past the
+     layer box and let the overhanging flake bleed back into view below the zone. */
+  mask-repeat:no-repeat; -webkit-mask-repeat:no-repeat;
+  mask-size:100% 100%; -webkit-mask-size:100% 100%;
+}
+.snow{
+  position:absolute; border-radius:50%; will-change:transform;
+  /* Reference measures a HARD edge (bg 197 -> fill 225 in a single step) and a constant
+     81px diameter at 1276 wide. The look comes from per-circle opacity, not blur - the old
+     radial-gradient + blur(9px) is what made them mushy and read as "only five of them". */
+  background:#fff;
+}
+.grad-blue{
+  height:clamp(360px,64.6875vw,1118px); background-repeat:no-repeat;
+  /* The crop turns pure white at 75% of its own height; the reference only gets there at
+     ~90%. Drawn at 123% and top-anchored, white lands at the very bottom of the zone -
+     which is what keeps the lower circles readable instead of white-on-white. */
+  background-size:100% 123%; background-position:0 0;
+  position:relative;
+}
+/* У экспортированного градиента последняя строка пикселей светло-серая (#e0e0e0) —
+   на белом фоне секции ниже она читается как линия-разделитель через всю страницу.
+   Накрываем её белой полоской: градиент в этом месте и так уже белый. */
+.grad-blue::after{
+  content:''; position:absolute; left:0; right:0; bottom:0; height:3px; background:#fff;
+}
+.grad-pink1{ height:clamp(430px,79.2vw,1369px); background-size:100% 100%; background-repeat:no-repeat; }
+.grad-blue2{ position:relative; height:clamp(360px,64.6875vw,1118px); background-size:100% 100%; background-repeat:no-repeat;   /* lifted under the carousel so the feathered edge has something to reveal */
+  margin-top:-160px; z-index:0;
+}
+
+/* Physically blurs the seam between a preceding section and a gradient-image zone —
+   backdrop-filter softens whatever's actually rendered on both sides (color-agnostic,
+   so it works no matter which carousel slide's end-color is behind it), rather than
+   painting a colour patch over the join. */
+.seam-wrap{position:relative; height:0;}
+.seam-blur{
+  position:absolute; left:0; right:0; top:-65px; height:130px; z-index:3; pointer-events:none;
+  backdrop-filter:blur(30px); -webkit-backdrop-filter:blur(30px);
+  mask-image:linear-gradient(to bottom, transparent, black 25%, black 75%, transparent);
+  -webkit-mask-image:linear-gradient(to bottom, transparent, black 25%, black 75%, transparent);
+}
+/* The carousel's bottom edge dissolves progressively as you advance through the cards:
+   card 1 keeps a crisp line, card 2 goes hazier, and by card 3 the bottom has melted away
+   entirely — which is what visually "opens the way" onward to the FAQ block, matching the
+   point at which the scroll lock releases. Driven off body[data-slide] because .grad-blue2
+   is a sibling of the carousel section, not a descendant. */
+.seam-blur--tight{
+  /* top stays >= 0 at every step: this element paints above the whole carousel section, so
+     reaching up over the join is what smeared the mockup. It only softens its own side. */
+  top:0; height:52px;
+  backdrop-filter:blur(3px); -webkit-backdrop-filter:blur(3px);
+  opacity:.5;
+  mask-image:linear-gradient(to bottom, transparent, black 22%, black 68%, transparent);
+  -webkit-mask-image:linear-gradient(to bottom, transparent, black 22%, black 68%, transparent);
+  transition:top .85s ease, height .85s ease, opacity .85s ease,
+             backdrop-filter .85s ease, -webkit-backdrop-filter .85s ease;
+}
+body[data-slide="1"] .seam-blur--tight{
+  top:0; height:120px; opacity:.95;
+  backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
+}
+body[data-slide="2"] .seam-blur--tight{
+  top:0; height:240px; opacity:1;
+  backdrop-filter:blur(38px); -webkit-backdrop-filter:blur(38px);
+}
+
+/* ---------- Benefits (5 cards) ---------- */
+.benefits{background:#fff; padding:70px 0 30px;}
+.benefits h2{
+  font-family:var(--display); font-weight:500; font-size:clamp(32px,7.8vw,135px);
+  letter-spacing:-.04em; line-height:.81; margin-bottom:44px; color:#0a0a0a;
+}
+.benefit-row{display:flex; gap:3.37%; height:min(43.3vw,748px);}
+.benefit-card{
+  /* No border: the reference has none, and it is what makes the white glyphs read as cut
+     OUT of the card rather than drawn inside a framed box. Widths are the measured
+     378:147 ratio from the reference. */
+  position:relative; flex:147 0 0; background:#0b0b0b; border:none;
+  border-radius:24px; overflow:hidden; cursor:pointer;
+  transition:flex-grow .55s cubic-bezier(.22,.61,.36,1);
+}
+.benefit-card.active{flex:378 0 0;}
+/* Badge keeps ONE width in both states (measured 129 vs 136): centred while the card is
+   collapsed - where it nearly fills it - and right-aligned once the card opens. */
+.benefit-top{position:absolute; top:2.9%; left:6%; right:6%; display:flex; justify-content:center; z-index:3;}
+.benefit-card.active .benefit-top{left:auto; right:1%; justify-content:flex-end;}
+.benefit-num{
+  width:min(10.1vw,174px); height:min(3.13vw,54px);
+  display:flex; align-items:center; justify-content:center;
+  border:1px solid rgba(255,255,255,.30); border-radius:10px;
+  font-size:clamp(11px,1.05vw,18px); font-weight:600; color:rgba(255,255,255,.40);
+  font-family:var(--display); transition:color .3s ease, border-color .3s ease;
+}
+/* active: fully white number and frame; collapsed: semi-transparent so it recedes */
+.benefit-card.active .benefit-num{color:#fff; border-color:#fff;}
+.benefit-icon{
+  position:absolute; left:50%; top:38.7%; transform:translate(-50%,-50%);
+  width:88%; height:auto; max-width:none; object-fit:contain; opacity:0; transition:opacity .3s ease;
+}
+.benefit-card.active .benefit-icon{opacity:1;}
+.benefit-icon-closed{
+  /* Measured: 36% of the card height, centred at 43% of it, and flush to the LEFT edge so
+     the card clips it - that clipping is what makes the shape read as cut out of the card. */
+  position:absolute; left:0; top:43%; transform:translateY(-50%);
+  height:36%; width:auto; max-width:none; object-fit:contain;
+  opacity:1; transition:opacity .3s ease;
+}
+.benefit-card.active .benefit-icon-closed{opacity:0;}
+.benefit-card.active .benefit-icon-closed{opacity:0;}
+.benefit-text{
+  position:absolute; left:2.1%; right:2.1%; bottom:4.2%; text-align:left;
+  opacity:0; transition:opacity .3s ease .1s; z-index:2;
+}
+.benefit-card.active .benefit-text{opacity:1;}
+/* "ЗАГОЛОВОК 4 - карточки 1": Inter 25 / 110% / -6% / regular */
+.benefit-text h3{
+  font-family:var(--sans); font-weight:400; font-size:clamp(18px,1.95vw,34px);
+  line-height:1.1; letter-spacing:-.06em; margin-bottom:12px;
+ text-transform:uppercase;}
+.benefit-text p{color:rgba(255,255,255,.55); font-size:14.5px; line-height:1.55; max-width:min(40.625vw,702px);}
+/* ---------- Carousel ---------- */
+.carousel-section{
+  /* Everything in a card is sized off this unit instead of raw vw. At the mock ratio
+     (1280x813) 1vw == 1.574vh, so --cu IS 1vw there; on a laptop, which is wider than it
+     is tall, the vh term wins and the type shrinks to keep fitting the 100vh card. */
+  --cu:min(1vw, 1.574vh);
+  /* Transparent, and the dissolve lives on --feather: what shows through the fading
+     bottom edge has to be the next block lifted underneath, not this section's own fill.
+     .carousel-fade supplies the black so a cross-fade between cards stays opaque. */
+  position:relative; z-index:1; height:100vh; background:transparent; overflow:hidden;
+  --feather:0px;
+}
+.carousel-fade{position:absolute; inset:0; background:#000; z-index:0;}
+.carousel-fade, .slide{
+  mask-image:linear-gradient(to bottom, #000 calc(100% - var(--feather, 0px)), transparent 100%);
+  -webkit-mask-image:linear-gradient(to bottom, #000 calc(100% - var(--feather, 0px)), transparent 100%);
+}
+.carousel-viewport{position:sticky; top:0; height:100vh; overflow:hidden;}
+.slide{
+  position:absolute; inset:0; opacity:0; pointer-events:none; transition:opacity .9s ease-in-out; z-index:0;
+  display:flex; align-items:center;
+}
+.slide.active{opacity:1; pointer-events:auto; z-index:1; transition:opacity .9s ease-in-out .15s;}
+/* "Карточки должны вылетать плавно… стрелочки и буллеты остаются на месте, меняется
+   градиент и, следовательно, мокап и контент" — so the background crossfades in place while
+   the card's content flies in from the right (or from the left when stepping back), and the
+   outgoing content clears out the opposite way. Arrows and bullets live outside .slide, so
+   they never move. */
+.slide .slide-inner{transition:transform .78s cubic-bezier(.2,.62,.3,1);}
+.slide.enter-right .slide-inner{transform:translateX(58%);}
+.slide.enter-left .slide-inner{transform:translateX(-58%);}
+.slide.active .slide-inner{transform:translateX(0);}
+.slide.leave-left .slide-inner{transform:translateX(-22%);}
+.slide.leave-right .slide-inner{transform:translateX(22%);}
+/* The phone is layered OVER the text rather than sitting beside it: in the founder's
+   frames the long headings ("Все накопления на одном счете…") run the full width and
+   disappear behind the mockup, which a side-by-side flex row can't do. */
+/* Reference grid: the heading starts near the top (~11% of the section), the green copy
+   runs to 49.6% of the width, and the arrows sit at ~76% - not vertically centred. */
+.slide-inner{
+  position:relative; z-index:1;
+  width:100%; max-width:1728px; height:100%; margin:0 auto; padding:calc(7 * var(--cu)) 60px 0;
+  display:flex; flex-direction:column; justify-content:flex-start;
+}
+.slide-text{max-width:min(68.75vw,1188px); position:relative; z-index:0;}
+/* "ЗАГОЛОВОК 2": Inter Tight 80 / 85% / -4% / medium */
+.slide-text h2{
+  font-family:var(--display); font-weight:500; font-size:clamp(28px,calc(7 * var(--cu)),121px);
+  line-height:.85; letter-spacing:-.04em; margin-bottom:26px;
+
+  /* Ширина заголовка считается от фактического левого края мокапа. Раньше здесь
+     стояли 101.5vw (след отрицательного right:-1.5%) и прежняя ширина телефона
+     70vh — после уменьшения мокапа формула устарела, и жёсткие переносы <br>
+     ложились не по смыслу. Теперь мокап стоит right:4% и уже, отсюда 96vw и 56vh. */
+  max-width:calc(96vw - min(46vw,795px,64vh) - 90px);
+  /* Если строка всё же переносится сама — распределяем строки ровно, а не
+     оставляем висящее слово в конце. */
+  text-wrap:balance;
+}
+/* "Основной": Inter 30 / 85% / -1% / regular */
+.slide-text p{
+  color:var(--lime); font-family:var(--sans); font-weight:400;
+  font-size:clamp(15px,calc(2.3 * var(--cu)),40px); line-height:.85; letter-spacing:-.01em; max-width:min(49.6vw,857px);
+}
+/* The bottom of the CARD itself melts as you advance through the carousel: card 1 keeps a
+   defined edge, card 2 goes hazy, card 3 dissolves completely — that is what visually opens
+   the way on to the FAQ block, and it lands on the same card where the scroll lock releases.
+   z-index 0 keeps it BELOW .slide-text (z1) and .slide-phone (z2), so backdrop-filter only
+   softens the card's own gradient — the mockup stays sharp and the haze never lies over it. */
+.slide-fade{
+  /* Sits between .slide-text (z0) and .slide-phone (z3), so backdrop-filter softens the card
+     background AND the tail of the copy — which is what actually reads as "низ размывается" —
+     while the mockup, painted above, stays perfectly sharp.
+     It melts to #82bdd9, the measured top colour of the block below, so card 3's bottom edge
+     runs straight into the next block instead of ending on a line. */
+  position:absolute; left:-60px; right:-60px; bottom:0; height:0; z-index:1;
+  pointer-events:none; opacity:0;
+  background:linear-gradient(to bottom, rgba(130,189,217,0) 0%, rgba(130,189,217,.92) 100%);
+  backdrop-filter:blur(0px); -webkit-backdrop-filter:blur(0px);
+  mask-image:linear-gradient(to bottom, transparent, black 46%);
+  -webkit-mask-image:linear-gradient(to bottom, transparent, black 46%);
+  transition:height .9s ease, opacity .9s ease,
+             backdrop-filter .9s ease, -webkit-backdrop-filter .9s ease;
+}
+/* Bounded by where the copy ends (measured: y=587 on card 2, y=620 on card 3 against a
+   section bottom of 813) — a taller band reached up into the last lines of the paragraph.
+   The step-up between cards is carried by blur strength instead of band height. The arrows
+   are z-index 6, above every slide, so they stay crisp either way. */
+body[data-slide="1"] .slide-fade{
+  height:120px; opacity:.55;
+  backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+}
+body[data-slide="2"] .slide-fade{
+  height:185px; opacity:1;
+  backdrop-filter:blur(42px); -webkit-backdrop-filter:blur(42px);
+}
+/* Isometric renders supplied by the designer, used as-is - the tilt and the screen are
+   baked into the artwork, so there is no CSS frame to keep in sync any more.
+   Reference: the mockup fills the right ~52% and bleeds off the right edge. */
+/* width is scoped per usage: a bare .mockup{width:100%} was overriding .mockup--hero
+   (same specificity, later in the sheet) and blew block 2 up to 3021px tall. */
+.mockup{display:block; height:auto; max-width:none;}
+.slide-phone .mockup{width:100%;}
+.slide-phone{
+  /* Было right:-1.5% — мокап намеренно свисал за правый край. После уменьшения
+     размера этот приём перестал читаться и телефон стал выглядеть приклеенным
+     к правой стенке, поэтому отступ положительный и соразмерен левому полю. */
+  position:absolute; right:4%; top:50%; transform:translateY(-50%); z-index:3;
+  /* Новые мокапы 0.788 Ш/В вместо прежних 1:1, поэтому потолок по высоте
+     пересчитан: 70vh ширины дают 89vh высоты — влезает в 100vh секции с полями. */
+  width:min(46vw,795px,64vh);
+}
+/* deliberately smaller than block 2's: the carousel viewport is only 100vh tall, and at
+   the previous size the device ran into the section's bottom edge and got clipped. */
+.carousel-bullets{
+  position:absolute; top:4.7%; left:50%; transform:translateX(-50%); z-index:6;
+  display:flex; gap:16px;
+}
+.bullet{width:12px; height:12px; border-radius:50%; background:#3a3a3a; transition:background .3s ease;}
+.bullet.active{background:var(--lime);}
+/* Bare long arrows sitting at the bottom of the text column, spanning its width —
+   dim white for "back", lime for "next" (founder's carousel frames), not bordered circles. */
+.carousel-arrows{
+  position:absolute; left:5.1%; width:39%; bottom:4%; z-index:6;
+  display:flex; justify-content:space-between; align-items:center;
+}
+.carousel-arrow{
+  display:flex; align-items:center; justify-content:center; padding:6px;
+  transition:opacity .3s ease, transform .2s ease;
+}
+.carousel-arrow.prev{color:rgba(255,255,255,.45);}
+.carousel-arrow.next{color:var(--lime);}
+.carousel-arrow:hover{transform:scale(1.08);}
+.carousel-arrow.disabled{opacity:.2; pointer-events:none;}
+.carousel-arrow svg{width:min(6.3vw,109px); height:auto;}
+/* Card 3 fades into the next block, so its bottom third is pale by design and a white or
+   lime arrow disappears into it. Same shape and size, ink taken from that card's own
+   gradient stop (#123a4d) so it still belongs to the palette. */
+body[data-slide="2"] .carousel-arrow.prev{color:rgba(18,58,77,.72);}
+body[data-slide="2"] .carousel-arrow.next{color:#123a4d;}
+/* ---------- FAQ ---------- */
+.faq-section{background:#000; padding:78px 0;}
+.faq-section h2{
+  font-family:var(--display); font-weight:500; font-size:clamp(28px,5.4vw,94px);
+  letter-spacing:-.04em; margin-bottom:min(2.1vw,34px); max-width:min(70.3125vw,1215px); line-height:.81;
+}
+.faq-item{border-top:1px solid rgba(255,255,255,.14); transition:border-color .3s ease;}
+.faq-item:last-child{border-bottom:1px solid rgba(255,255,255,.14);}
+/* "ЗАГОЛОВОК 4 - список": Inter 30 / 110% / -6% / regular (-6% of 30px = -1.8px) */
+/* Row pitch is 152px at 1276 wide in the reference; the plus is 68px, so 42px of padding
+   above and below it lands the row exactly on that pitch. */
+.faq-q{
+  width:100%; display:flex; align-items:center; justify-content:space-between; gap:24px;
+  /* Было min(3.29vw,57px): на 1280 это давало шаг строки 152px и весь блок
+     на 2.34 экрана. Уплотняем отступами и иконкой, не кеглем. */
+  padding:min(1.25vw,21px) 0; text-align:left; font-family:var(--sans); font-weight:400;
+  color:#fff; text-transform:uppercase;
+}
+.faq-q>span:first-child{
+  max-width:min(64vw,1010px); font-size:clamp(15px,1.9vw,32px); line-height:1.08; letter-spacing:-.05em;
+}
+/* + collapsed → × open: rotating the whole glyph 45° keeps both strokes crossed. */
+/* 68px at 1276 in the reference - roughly the height of the two-line question, as asked. */
+.faq-icon{
+  position:relative; width:min(2.6vw,44px); aspect-ratio:1; flex:0 0 auto; margin-left:20px;
+  transition:transform .45s cubic-bezier(.4,.1,.3,1);
+}
+.faq-icon span{position:absolute; background:rgba(255,255,255,.45); transition:background .3s ease;}
+.faq-icon span:nth-child(1){left:0; right:0; top:calc(50% - 1.5px); height:3px;}
+.faq-icon span:nth-child(2){top:0; bottom:0; left:calc(50% - 1.5px); width:3px;}
+/* 225deg, not 45: a plus is symmetric, so a plain 180 turn would look like nothing moved.
+   180 + 45 reads as a real flip that lands on the cross, and unwinds on close. */
+.faq-item.open .faq-icon{transform:rotate(225deg);}
+/* the open row is delimited by its own top border and the next row's - light both */
+.faq-item.open{border-top-color:#fff;}
+.faq-item.open + .faq-item{border-top-color:#fff;}
+.faq-item.open:last-child{border-bottom-color:#fff;}
+.faq-item.open .faq-icon span{background:#fff;}
+.faq-a{max-height:0; overflow:hidden; transition:max-height .4s ease;}
+.faq-a p{padding-bottom:26px; color:var(--lime); font-size:min(1.72vw,30px); line-height:1.18; max-width:73%;}
+.faq-a p a{color:#fff; text-decoration:underline; text-underline-offset:3px;}
+/* Honeypot увозим за пределы экрана, а НЕ display:none: часть ботов пропускает
+   поля, скрытые через display, а уехавшее за край остаётся для них «настоящим».
+   position:absolute вынимает его из флекс-потока, поэтому на вёрстку не влияет. */
+
+/* ---------- Final CTA + footer ---------- */
+/* The scallop is 1288x613 but only its top ~40% carries the circles — the rest is flat
+   black, so the reserved strip is capped and the image cropped from the top rather than
+   scaled, which shortens the black band without shrinking the circles. */
+.final-cta{
+  /* Art geometry (footer_scallop.svg, viewBox 1288x613): head ellipse at cy=71.5, the
+     scalloped circles at cy=257.5 r=71.5 (so they occupy y 186..329) and the solid rect
+     from y=257. The band therefore has to be ~340px at 1280 or the circles get cropped off.
+     Extra padding beyond it adds PINK above the art, pushing the headline clear of the
+     character's head without making the black any taller. */
+  --scallop-h:min(26.5625vw,459px);
+  position:relative; padding:78px 40px calc(var(--scallop-h) + 34px); text-align:center; overflow:hidden;
+  background:linear-gradient(180deg,#bb2e8b 0%,#fb3eba 45%,#fb3eba 100%);
+}
+.final-cta-inner{max-width:min(92.1875vw,1593px); margin:0 auto; position:relative; z-index:2;}
+/* Fills the band below the scalloped circles edge-to-edge. Sits UNDER the artwork, so the
+   circles and the pink between them are untouched — it only removes the pink wedge the
+   cropped figure leaves against the right edge. */
+.final-cta::after{
+  content:''; position:absolute; left:0; right:0; bottom:0; z-index:0;
+  /* 23%: the art's solid rect starts at viewBox y=257 of 613, and the band shows its top
+     ~336 units — so anything taller than this reaches up over the scalloped circles and
+     flattens them into a straight edge. */
+  height:calc(var(--scallop-h) * .23); background:#000;
+}
+/* No fill in the right-hand corner: the pink beside the figure is intentional — the
+   character needs air on that side. Only the band BELOW the circles is backed (::after),
+   which is where the real gap was. */
+.final-cta h2{
+  font-family:var(--display); font-weight:500; font-size:clamp(36px,12.5vw,216px);
+  line-height:.81; letter-spacing:-.04em;
+}
+.final-cta h2 em{color:var(--lime); font-style:normal;}
+.final-cta .btn-lime{
+  display:block; width:max-content; margin:44px min(12.4vw,214px) 0 auto;
+}
+.footer-scallop{
+  /* Height must equal the reserved band (--scallop-h). It was hard-coded 140px taller, so
+     the art stuck up out of its own space and pushed the character's head into the headline
+     row — which is what made the full stop of "сейчас." sit on top of him.
+     Anchored left and ~24px wider than the box, so object-fit scales every shape slightly
+     right and gives him a little more clearance, while the left edge stays covered. */
+  position:absolute; left:0; right:auto; bottom:0; width:calc(100% + 24px); display:block;
+  height:var(--scallop-h); object-fit:cover; object-position:top left;
+}
+footer{background:#000; padding:26px 40px 24px;}
+/* Two shared columns so "Политика конфиденциальности" lands under TELEGRAM and
+   "Все права защищены" under INSTAGRAM, with the reference's 19% column pitch. */
+.footer-links{
+  display:grid; grid-template-columns:min(19vw,328px) auto; justify-content:start;
+  margin-bottom:18px;
+  /* и подстраховка: строка ссылок всегда выше почты по стеку */
+  position:relative; z-index:1;
+}
+.footer-links a{color:var(--lime); text-decoration:none; font-size:13px; font-weight:700; letter-spacing:.04em; font-family:var(--display);}
+.footer-email{
+  font-family:var(--display); font-weight:500; color:var(--lime);
+  /* 10.15vw makes the fixed string span ~99% of the viewport at every width — measured
+     at 1280: 8.2vw filled only 79.6%. Capped at the same 1728px freeze point. */
+  /* Measured: this string renders 9.7095x its font-size wide, so this fills the viewport
+     minus 5px of air on each side at ANY width, exactly as the designer asked. */
+  font-size:calc((100vw - 10px) / 9.7095); letter-spacing:-.05em; line-height:.81;
+  white-space:nowrap; text-align:center;
+  margin-left:-40px; margin-right:-40px; width:calc(100% + 80px);
+}
+.footer-email a{
+  /* display:block, иначе кликабельная область строчной ссылки считается от кегля
+     (147px на 1440), а не от строки с line-height:.81 — и торчит на 12px вверх,
+     накрывая TELEGRAM и INSTAGRAM: клик по ним открывал почтовый клиент. */
+  display:block; color:inherit; text-decoration:none;
+}
+.footer-legal{display:grid; grid-template-columns:min(19vw,328px) auto; justify-content:start;
+  /* clears the descenders of .footer-email, whose .81 line-height makes its box shorter
+     than its glyphs - they were landing on this row */
+  margin-top:calc(2.6vw + 4px); color:rgba(255,255,255,.4); font-size:11.5px;}
+.footer-legal a, .footer-legal span{color:inherit; text-decoration:none;}
+
+/* ---------- адаптив ----------
+   Media queries live at the very end on purpose: several of them were sitting ABOVE the
+   base rules they were meant to override, so the desktop value simply won on cascade
+   order (that is why the phone mockup kept its desktop placement on a phone). */
+@media (max-width:900px){
+  /* FAQ is sized in vw for the desktop composition: at 390px that made the answers 6.7px */
+  .faq-q{padding:15px 0; font-size:14px; gap:12px;}
+  .faq-icon{width:22px;}
+  .faq-a p{font-size:14px; line-height:1.4; max-width:none; padding-bottom:16px;}
+  .faq-section h2{font-size:clamp(26px,7.4vw,40px);}
+
+}
+
+@media (max-width:720px){
+  .wrap{padding:0 20px;}
+  /* The 19vw first column is 74px on a phone, so TELEGRAM ran straight into INSTAGRAM
+     and the legal line pair had no room to sit side by side. */
+  footer{padding:22px 20px 22px;}
+  .footer-links{grid-template-columns:auto auto; gap:22px; justify-content:start;}
+  .footer-legal{grid-template-columns:1fr; gap:6px; margin-top:14px;}
+  .footer-email{margin-left:-20px; margin-right:-20px; width:calc(100% + 40px);}
+}
+
+@media (max-width:960px){
+  /* Плашки нужны и на телефоне. Раскладка другая: один поток вместо двух кластеров,
+     кегль мельче, и низ поля привязан к линии букв через мобильный отступ заголовка
+     (19vh), а не через десктопные 219px. */
+  .chip-field{
+    display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:flex-start;
+    gap:6px; padding:0 16px;
+    /* якорь считаем от того же отступа заголовка, что действует на этой ширине:
+       здесь это 142px (см. .hero-headline ниже), плюс 28px паддинга шапки */
+    bottom:calc(100% - 172px + .256 * var(--h1fs));
+  }
+  .chip-cluster{max-width:none; margin:0; gap:6px;}
+  .chip-cluster--right{margin-right:0; justify-content:flex-start;}
+  .chip{font-size:10.5px; padding:6px 11px; border-radius:15px; --rot:0deg;}
+  /* Семь плашек на телефоне занимают 250px по высоте и уезжают за верх экрана,
+     да ещё под плашку меню. Оставляем четыре самые короткие — эффект тот же,
+     а читать можно. */
+  .chip-cluster--left .chip:nth-child(3),
+  .chip-cluster--left .chip:nth-child(4),
+  .chip-cluster--right .chip:nth-child(2){display:none;}
+  .hero-headline{
+    /* Left-aligned, per the designer. The mock only LOOKS centred because each line
+       carries leading spaces - see the &nbsp; runs in the markup. */
+    position:relative; z-index:2; padding:142px 40px 0; text-align:left;
+  }
+}
+
+@media (max-width:760px){
+  /* The &nbsp; runs only exist to fake optical centring in the desktop mock; at phone
+     width they turn the headline into a ragged staircase. */
+  .lead-sp{display:none;}
+  .hero-headline{padding:9.5vh 20px 0;}
+  /* отступ заголовка здесь 19vh, значит и низ поля плашек считаем от него */
+  .chip-field{bottom:auto; top:64px; padding:0 20px;}
+  .hero-headline h1{font-size:clamp(38px,11.8vw,66px); line-height:.88;}
+  .hero-sub{max-width:none; margin:26px 0 0; text-align:left; font-size:16px; line-height:1.3;}
+  .hero-cta-wrap{text-align:left; margin-top:28px;}
+  .btn-lime{font-size:14px; padding:18px 26px;}
+  nav.pill{height:48px; padding:0 22px 0 30px; font-size:16px; gap:18px;}
+}
+
+@media (max-width:900px){
+  /* Narrow screens: the desktop row is five side-by-side columns, which on a phone
+     collapsed into overlapping slivers. Same idea turned 90 degrees - a vertical
+     accordion. A closed card is a bar with the glyph still cut out of its LEFT edge
+     (the detail that makes it read as carved out of the card) and the number on the
+     right; the open one lays the icon, title and copy out in normal flow. */
+  .benefit-row{flex-direction:column; height:auto; gap:12px;}
+  .benefit-card{
+    flex:0 0 auto !important; height:auto; min-height:88px;
+    /* на телефоне раскрывается высота, а не flex-grow; конкретное значение
+       max-height ставит JS, потому что итоговая высота у карточек разная */
+    transition:max-height .44s cubic-bezier(.33,1,.68,1);
+  }
+  .benefit-card.active .benefit-icon{animation:card-reveal .42s ease .10s both;}
+  .benefit-card.active .benefit-text{animation:card-reveal .42s ease .17s both;}
+  .benefit-card:is(.active,.closing){padding:18px 18px 22px;}
+  @keyframes card-reveal{
+    from{opacity:0; transform:translateY(9px);}
+    to{opacity:1; transform:none;}
+  }
+
+  .benefit-top{position:absolute; top:14px; right:14px; left:auto; justify-content:flex-end;}
+  .benefit-card:is(.active,.closing) .benefit-top{position:static; margin-bottom:16px;}
+  .benefit-num{width:58px; height:26px; font-size:11px; border-radius:8px;}
+
+  /* closed: only the carved glyph and the number */
+  .benefit-icon-closed{height:52px; top:50%;}
+  .benefit-icon{display:none;}
+  .benefit-text{display:none;}
+
+  /* open: normal flow, nothing absolutely placed */
+  .benefit-card:is(.active,.closing) .benefit-icon-closed{display:none;}
+  .benefit-card:is(.active,.closing) .benefit-icon{
+    display:block; position:static; transform:none;
+    width:min(52%,190px); opacity:1; margin:2px 0 18px;
+  }
+  .benefit-card:is(.active,.closing) .benefit-text{
+    display:block; position:static; opacity:1; left:auto; right:auto; bottom:auto;
+  }
+  .benefit-text h3{font-size:20px; letter-spacing:-.035em; margin-bottom:10px;}
+  .benefit-text p{font-size:14px; line-height:1.5; max-width:none;}
+}
+
+@media (max-width:900px){
+  /* No room for the side-by-side composition, and the leftover rule here was truncated
+     mid-selector, so the mockup kept its desktop absolute placement and floated in the
+     middle of the card. The card becomes a plain column: bullets, copy, then the mockup
+     at a size you can actually read, with the arrows pinned to the bottom edge. */
+  .slide-inner{
+    flex-direction:column; align-items:flex-start; justify-content:flex-start;
+    padding:58px 22px 92px; gap:0;
+  }
+  .slide-text{max-width:none; width:100%;}
+  /* на телефоне мокап стоит СНИЗУ, а не сбоку, поэтому десктопное ограничение
+     ширины заголовка (оно считается от левого края мокапа) тут не нужно —
+     иначе заголовок ужимается в колонку шириной 137px */
+  .slide-text h2{font-size:clamp(26px,7.2vw,40px); line-height:.94; max-width:none;}
+  .slide-text p{font-size:15px; line-height:1.45; max-width:none; margin-top:14px;}
+  .slide-phone{
+    position:static; transform:none; margin:18px auto 0;
+    width:min(60vw,260px); right:auto; top:auto;
+  }
+  .carousel-bullets{top:24px;}
+  .carousel-arrows{left:22px; right:22px; width:auto; bottom:26px;}
+  .carousel-arrow svg{width:54px;}
+
+  /* Блок 2 остаётся в одну строку и на телефоне: по умолчанию flex-wrap уносил текст
+     под мокап, а он должен стоять рядом, как на десктопе. */
+  /* На телефоне мокап сверху, текст под ним — так попросил владелец.
+     Вариант «в одну строку, как на десктопе» пробовали: телефон ужимался
+     до 200px и экран приложения становился нечитаемым. */
+  .hero-phone-block{flex-wrap:wrap; align-items:center; gap:30px; padding:0 20px;}
+  .mockup--hero{width:min(66vw,285px);}
+  .hero-side-text{max-width:none; font-size:clamp(17px,5.2vw,30px); line-height:.95;}
+}
+
+@media (max-width:900px){
+  .carousel-arrows{left:24px; right:24px; width:auto; bottom:6%;}
+}
+
+@media (prefers-reduced-motion: reduce){
+  .chip, .snow{animation:none !important; transition:none !important;}
+  .benefit-card{transition:none !important;}
+  .benefit-card.active .benefit-icon,
+  .benefit-card.active .benefit-text{animation:none !important;}
+}
+/* ---- правки 24.08.2026 (задача Кирилла 19.08): кадр в герое, бейдж, доказательство ---- */
+.hero-headline{display:block;}
+@media (min-width:961px){
+  /* Заголовок делит первый экран с кадром, поэтому кегль мельче макетных 160px:
+     на 56% ширины «Сколько можно тратить сегодня» иначе рассыпается на четыре строки. */
+  /* Кегль задаём через --h1fs, а не через font-size: от этой же переменной считается
+     якорь плашек болей (.chip-field), иначе они отрываются от букв заголовка. */
+  /* Крупнее по просьбе основателя. От --h1fs считается и якорь плашек,
+     поэтому кегль задаём только через неё, а не через font-size. */
+  /* Кадр приложения на первом экране: текст слева, телефон справа.
+     Плашки болей остаются абсолютными над заголовком, поэтому трогать
+     .chip-field не нужно — меняется только внутренняя раскладка. */
+  .hero-headline{
+    /* Возврат к макету: одна колонка, заголовок во всю ширину, кадра приложения
+       на первом экране НЕТ — телефон живёт в блоке ниже. */
+    display:block; text-align:left; padding:clamp(140px,15vh,170px) 40px 0;
+  }
+  .hero-copy{max-width:none;}
+  /* лесенка первой строки: в макете строки заголовка начинаются с разным отступом
+     (там это делали пробелами &nbsp;), text-indent сдвигает ровно первую строку */
+  /* 🚨 Итог трёх заходов (Кирилл, 25.08): «они не должны выпирать вообще, строки идут
+     ровно друг под другом». Никаких лесенок: и `text-indent` (сдвигает ПЕРВУЮ строку),
+     и сдвиг второй строки давали ощущение кривизны — у одной строки левый край
+     выпирал относительно другой. Обе строки от одного левого края. */
+  /* Оптическая компенсация, а не отступ: замер краёв дал «Сколько» на 3–4px левее
+     «тратить» — это боковой свес круглой «С». Технически строки уже выровнены, но
+     глаз видит выступ, о котором и было замечание. text-indent сдвигает ровно
+     первую строку, поэтому лечится одной величиной в em и не зависит от кегля. */
+  /* Итог: основатель выбрал РОВНОЕ выравнивание («прошлая версия была ровнее»), а не
+     лесенку. Остаётся только оптическая компенсация: у круглой «С» боковой свес, и без
+     неё первая строка кажется левее второй. 0.012em ≈ 2px при кегле 160 — ровно свес,
+     и теперь он ложится ТОЛЬКО на первую строку (наследование у второй снято ниже). */
+  /* Заголовок по центру (просьба основателя 25.08): подзаголовок и кнопки уже
+     центрированы, и левый заголовок над ними читался как рассинхрон. Отступ первой
+     строки обнулён — при центрировании он сдвигал бы строку от центра. */
+  .hero-headline h1{text-indent:0; text-align:center;}
+  /* 🚨 `text-indent` НАСЛЕДУЕТСЯ, а вторая строка — inline-block, то есть свой
+     блочный контекст: без обнуления она применяла отступ первой строки к себе,
+     и обе строки уезжали вправо вместе. Поймано замером краёв, не глазами. */
+  .h1-line2{display:inline-block; margin-left:0; text-indent:0;}
+  /* прежнее выравнивание влево снято: заголовок центрируется выше */
+  .hero-sub{
+    /* 55px от заголовка по разметке; сам блок по центру страницы и чуть крупнее */
+    margin:55px auto 0; max-width:min(44vw,600px); text-align:center;
+    font-size:clamp(17px,1.75vw,24px); line-height:1.2;
+  }
+  .hero-cta-wrap{margin:20px 0 0; justify-content:center;}   /* 20px по разметке, кнопки по центру */
+  /* Заголовок больше не начинается на 196px: в две колонки он центрируется по кадру,
+     поэтому якорь плашек считаем от их собственной линии, а не от прежней капы. */
+  /* Плашки подняты к шапке: раньше висели в 296px от верха — на широком экране
+     это середина пустоты между навигацией и заголовком. */
+  .chip-field{top:52px; bottom:auto;}
+  /* правый кластер плашек уводим левее: иначе он ложится на кадр приложения */
+  /* один кластер вместо двух: правая плашка висела в одиночестве посреди экрана
+     и на широких мониторах наезжала на кадр приложения */
+  .chip-field{justify-content:flex-start; gap:10px;}
+  .chip-cluster--left{max-width:56%;}
+  .chip-cluster--right{max-width:32%;}
+  .chip-cluster--left{max-width:none;}
+  .chip-cluster--right{max-width:none; margin-right:0; justify-content:flex-start;}
+}
+@media (max-width:960px){
+  .hero-sub{line-height:1.3;}
+}
+/* Узкие экраны: «тратить сегодня» — самая длинная строка заголовка, на 375-430px
+   при 12.5vw она встаёт вплотную к краю. Проверить headless тут нельзя (минимум 500px),
+   поэтому оставляем запас по кеглю осознанно. */
+@media (max-width:480px){
+  header.top{--h1fs:clamp(32px,10.6vw,52px);}
+  .hero-sub{font-size:15px;}
+}
+/* Кнопки первого экрана: официальный бейдж + неяркая кнопка ожидания Android */
+.hero-cta-wrap{display:flex; align-items:center; gap:16px; flex-wrap:wrap;}
+.btn-appstore{display:inline-block; line-height:0;}
+.btn-appstore img{display:block; height:64px; width:auto;}   /* под увеличенный заголовок */
+.btn-ghost{
+  /* это и <a>, и <button> — у кнопки свой фон и шрифт по умолчанию, гасим */
+  display:inline-block; background:transparent; cursor:pointer; -webkit-appearance:none; appearance:none;
+  color:rgba(255,255,255,.72); text-decoration:none;
+  font-family:var(--sans); font-size:15px; letter-spacing:-.01em;
+  padding:16px 22px; border:1px solid rgba(255,255,255,.22); border-radius:40px;
+  transition:border-color .18s ease, color .18s ease;
+}
+.btn-ghost:hover{color:#fff; border-color:rgba(255,255,255,.55);}
+/* Доказательство перед финальным призывом */
+/* ---- правки 25.08: разлёт плашек и диалог про Android ---- */
+.chip{transform:translateY(var(--dy,0px)) rotate(var(--rot));}
+@media (max-width:960px){
+  /* Кадра в первом экране больше нет, а шапка занимала ровно экран — под кнопками
+     оставалась пустая чернота на пол-экрана. Делаем шапку по высоте содержимого:
+     сразу за кнопками начинается блок с телефоном. */
+  header.top{min-height:0; padding-bottom:clamp(28px,7vh,64px);}
+  /* на телефоне восемь плашек занимают пол-экрана — оставляем костяк из четырёх */
+  .chip--extra{display:none;}
+  .chip{transform:rotate(var(--rot));}
+}
+.android-dialog{position:fixed; inset:0; z-index:99; display:flex; align-items:center; justify-content:center; padding:20px;}
+.android-dialog[hidden]{display:none;}
+.android-dialog__backdrop{position:absolute; inset:0; background:rgba(0,0,0,.72); backdrop-filter:blur(6px);}
+.android-dialog__card{
+  /* box-sizing на странице не глобальный: без него паддинги распирают карточку
+     шире экрана на 430px */
+  position:relative; box-sizing:border-box; width:min(440px,100%); background:#0d0d10; border:1px solid rgba(255,255,255,.14);
+  border-radius:28px; padding:34px 30px 28px; text-align:left;
+  animation:android-pop .22s cubic-bezier(.22,.61,.36,1) both;
+}
+@keyframes android-pop{from{opacity:0; transform:translateY(12px) scale(.98);} to{opacity:1; transform:none;}}
+.android-dialog__card h3{
+  font-family:var(--display); font-weight:500; font-size:30px; line-height:1.05;
+  letter-spacing:-.03em; color:#fff; margin-bottom:12px;
+}
+.android-dialog__card p{
+  font-family:var(--sans); font-size:15px; line-height:1.5; color:rgba(255,255,255,.62); margin-bottom:24px;
+}
+.android-dialog__card .btn-lime{display:inline-block;}
+.android-dialog__later{
+  display:block; margin:16px 0 0; padding:0; background:none; border:0; cursor:pointer;
+  font-family:var(--sans); font-size:14px; color:rgba(255,255,255,.45);
+}
+.android-dialog__later:hover{color:rgba(255,255,255,.75);}
+.android-dialog__x{
+  position:absolute; top:14px; right:18px; background:none; border:0; cursor:pointer;
+  font-size:26px; line-height:1; color:rgba(255,255,255,.4);
+}
+.android-dialog__x:hover{color:#fff;}
+@media (prefers-reduced-motion: reduce){ .android-dialog__card{animation:none;} }
+/* ---- Мобильная версия, правки 25.08 по приёмке основателя на телефоне ----
+   Пять дефектов, и все от одной причины: блоки, спроектированные под широкий экран,
+   на 375–430px переносились по-своему. Поэтому здесь не подкрутка кегля, а явная
+   раскладка для узких экранов. */
+@media (max-width:760px){
+  /* 1. Плашки болей перекрывали заголовок. Они были ПОЗИЦИОНИРОВАНЫ абсолютно
+     (top:64px), а на узком экране переносятся в три ряда и растут вниз — прямо на
+     буквы. Ставим их в общий поток: тогда наложение невозможно по построению. */
+  .chip-field{
+    position:static; inset:auto; top:auto; bottom:auto;
+    justify-content:center; gap:6px; padding:0 16px; margin:0 0 20px;
+  }
+  .chip-cluster{justify-content:center; max-width:none; margin:0;}
+  header.top{padding-top:96px;}
+  .hero-headline{padding:0 18px 0;}
+
+  /* 2. Заголовок, подзаголовок и кнопки — по центру. */
+  .hero-headline h1{text-align:center; text-indent:0;}
+  .h1-line2{margin-left:0;}
+  .hero-sub{text-align:center; margin:18px auto 0; max-width:34ch;}
+  .hero-cta-wrap{justify-content:center; margin-top:22px;}
+
+  /* 3. Кнопки рядом, а не одна под другой: на 375px бейдж высотой 64px и кнопка
+     ожидания вместе не влезали и переносились. Обе ужимаем и запрещаем перенос. */
+  .hero-cta-wrap{flex-wrap:nowrap; gap:10px;}
+  .btn-appstore img{height:46px;}
+  .btn-ghost{font-size:12.5px; padding:12px 14px; white-space:nowrap;}
+
+  /* 4. Мокап и текст «После каждой получки…» рядом, как на компьютере. */
+  .hero-phone-block{
+    flex-wrap:nowrap; align-items:center; gap:14px; padding:0 16px;
+  }
+  .mockup--hero{width:44vw; flex:0 0 auto;}
+  .hero-side-text{
+    flex:1 1 auto; max-width:none; font-size:clamp(13px,3.5vw,18px); line-height:1.05;
+  }
+
+  /* 5. «46%» рядом с фразой, а не над ней. */
+      }
+/* ---- «Убрать пустоту между блоками» (Кирилл, 25.08.2026) ----
+   Пустота — это три декоративные градиентные прослойки. На телефоне каждая занимала
+   по 360–430px, то есть почти экран, и человек листал пустой градиент между смысловыми
+   блоками. Уменьшаем их и поджимаем вертикальные отступы секций; сами градиенты
+   остаются — они держат переходы между чёрными и белыми блоками. */
+/* Итерация 26.08 (Кирилл прислал три скрина: синяя полоса, розовая полоса и полоса под
+   каруселью — каждая занимает почти экран пустого градиента, «пустота снижает доходимость»).
+   Отступов секций уже не хватает: на 500px три полосы = 1150px из 5146px страницы (22%),
+   на 1280px — 2670px из 8934px (30%). Поэтому режем сами полосы.
+   Почему это безопасно, в отличие от прошлой попытки: background-size у всех трёх задан
+   в ПРОЦЕНТАХ от блока, то есть картинка не обрезается, а масштабируется целиком —
+   крайние пиксели (верх и низ) остаются те же, что и были, и стыки с чёрными/белыми
+   секциями не меняют цвет. Меняется только крутизна градиента. Проверено попиксельно
+   на 500px и 1280px: цвета на всех шести стыках совпадают со старой сборкой.
+   Полосу под каруселью (.grad-blue2) режем меньше: у неё margin-top:-260px завязан
+   на FEATHER_MAX в JS, и высота не должна опускаться близко к 260px. */
+/* Переход блок 2 -> блок 3 сокращён вдвое (просьба 31.08.2026). Полоса
+   декоративная: background-size задан в процентах, поэтому картинка целиком
+   масштабируется, а не обрезается - крайние пиксели те же, стыки с чёрным и
+   белым блоками не меняют цвет. Проверено попиксельно на 500 и 1280. */
+.grad-blue{height:clamp(95px,18vw,310px);}
+.grad-pink1{height:clamp(210px,42vw,720px);}
+.grad-blue2{height:clamp(210px,26vw,450px);}
+.block2{padding:72px 0 36px;}
+.benefits{padding:56px 0 26px;}
+.faq-section{padding:34px 0;}
+@media (max-width:760px){
+  .block2{padding:40px 0 26px;}
+  .benefits{padding:36px 0 20px;}
+  .faq-section{padding:40px 0;}
+}
+
+/* ---- Баннер согласия на cookie ---- */
+.cookie-bar{
+  position:fixed; left:16px; right:16px; bottom:16px; z-index:60;
+  transform:translateY(140%); opacity:0; transition:transform .45s cubic-bezier(.2,.8,.2,1), opacity .35s ease;
+  max-width:760px; margin:0 auto; display:flex; align-items:center; gap:18px;
+  padding:16px 18px; border-radius:18px; background:#111; color:#fff;
+  box-shadow:0 18px 48px rgba(0,0,0,.45); font-size:14px; line-height:1.4;
+}
+.cookie-bar__text{margin:0; flex:1 1 auto;}
+.cookie-bar__text a{color:var(--lime); text-underline-offset:3px;}
+.cookie-bar__btns{display:flex; gap:10px; flex:0 0 auto;}
+.cookie-bar button{
+  font:inherit; font-weight:600; cursor:pointer; white-space:nowrap;
+  padding:11px 18px; border-radius:999px; border:1px solid rgba(255,255,255,.28);
+}
+.cookie-bar__no{background:transparent; color:#fff;}
+.cookie-bar__yes{background:var(--lime); color:#0d0d0d; border-color:var(--lime);}
+@media (max-width:760px){
+  .cookie-bar{flex-direction:column; align-items:stretch; gap:12px; padding:14px 16px; font-size:13px;}
+  .cookie-bar__btns{justify-content:stretch;}
+  .cookie-bar button{flex:1 1 50%;}
+}
+
+/* Метка сборки в футере: по ней сразу видно, какой файл реально открыт в браузере —
+   при проверках половина «багов» оказывалась старой версией из кэша. */
+.footer-build{opacity:.35; font-size:12px; letter-spacing:.02em;}
+.cookie-bar--in{transform:translateY(0); opacity:1;}
+@media (prefers-reduced-motion:reduce){ .cookie-bar{transition:none;} }
+</style>
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:site_name" content="Кубыш">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://kubysh.com/">
+<meta property="og:image" content="https://kubysh.com/og-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Экран Кубыша: сколько можно потратить сегодня">
+<meta name="twitter:image" content="https://kubysh.com/og-cover.png">
+<meta name="twitter:title" content="Кубыш — сколько можно потратить сегодня">
+<meta name="twitter:description" content="План до получки Кубыш строит сам и каждый день говорит сумму, с которой цели не сдвинутся.">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "Organization",
+   "@id": "https://kubysh.com/#org",
+   "name": "Кубыш",
+   "logo": {
+    "@type": "ImageObject",
+    "url": "https://kubysh.com/icon-192.png",
+    "width": 192,
+    "height": 192
+   },
+   "url": "https://kubysh.com/",
+   "description": "Разработчик приложения «Кубыш» — финансового планировщика между получками.",
+   "sameAs": [
+    "https://t.me/kubyshka_user",
+    "https://www.instagram.com/kubyshkaai",
+    "https://apps.apple.com/app/id6778792103"
+   ]
+  },
+  {
+   "@type": "WebSite",
+   "@id": "https://kubysh.com/#website",
+   "url": "https://kubysh.com/",
+   "name": "Кубыш — финансовый план между получками",
+   "inLanguage": "ru-RU",
+   "publisher": {
+    "@id": "https://kubysh.com/#org"
+   }
+  },
+  {
+   "@type": "SoftwareApplication",
+   "@id": "https://kubysh.com/#app",
+   "name": "Кубыш",
+   "applicationCategory": "FinanceApplication",
+   "operatingSystem": "iOS 17.0+",
+   "url": "https://apps.apple.com/app/id6778792103",
+   "inLanguage": "ru-RU",
+   "publisher": {
+    "@id": "https://kubysh.com/#org"
+   },
+   "description": "Кубыш держит живой финансовый план между получками: считает, сколько можно потратить сегодня, пересчитывает план после каждой траты и отвечает, можно ли позволить себе покупку. Не подключается к банковским счетам — траты вносятся скриншотом, фото чека или вручную.",
+   "featureList": [
+    "План между получками",
+    "Пересчёт после каждой траты",
+    "Ответ «могу ли я себе это позволить»",
+    "Цели и подушка безопасности с прогнозными датами",
+    "Внесение трат скриншотом из банка",
+    "Распознавание на устройстве"
+   ],
+   "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "RUB"
+   }
+  },
+  {
+   "@type": "FAQPage",
+   "@id": "https://kubysh.com/#faq",
+   "inLanguage": "ru-RU",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "Чем Кубыш отличается от zen-money и coin keeper?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Zen-Money и CoinKeeper — это учёт того, что уже произошло: вы фиксируете траты и смотрите отчёты постфактум. Кубыш вместо этого держит живой план до следующей получки и каждый день честно говорит, сколько ещё можно потратить, чтобы всё запланированное — от аренды до отпуска — случилось вовремя."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Кому точно подойдёт Кубыш?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Тем, кто устал держать в голове, сколько уже отложено на отпуск, машину или подушку безопасности, и не хочет вести таблицы. Кубыш сам распределяет накопления между целями и показывает, сколько уже готово, а сколько ещё осталось."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Подходит ли людям с нерегулярным доходом?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Да. План строится не на «среднем доходе», а на реальных датах и суммах поступлений — аванс, зарплата, разовые платежи. Если доход в этом периоде другой, Кубыш пересчитывает бюджет на день и прогноз целей заново, а не держится за устаревшую цифру."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Нужно ли подключать банк?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Нет. Достаточно скриншота из банка, фото чека с кассы самообслуживания или простого ручного ввода — Кубыш сам распознает сумму и дату. Банковские данные и пароли Кубышу не нужны вообще."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Как Кубыш рассчитывает бюджет?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "От дохода в периоде отнимаются обязательные платежи и запланированные категории расходов, откладывается небольшой кошелёк на спонтанные покупки — а из того, что остаётся, считается честный бюджет на каждый день до следующей получки."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Как работает финансовый план?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "После онбординга Кубыш строит план на весь период между получками: обязательные платежи, категории расходов, вклад в цели и подушку. После каждой внесённой траты план пересчитывается заново, чтобы прогноз всегда отражал реальность, а не то, что вы задумали в начале месяца."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Когда появится версия для Android?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Пока Кубыш выходит только на iOS — версия для Android в работе. О дате запуска объявим в нашем телеграм-канале , подпишитесь, чтобы не пропустить."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Нужно ли вносить каждую трату вручную?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Нет. Можно загрузить скриншот из банковского приложения или сфотографировать чек — Кубыш сам распознает сумму и дату. Ручной ввод остаётся на случай, когда так быстрее."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Что будет, если я потрачу больше, чем запланировал?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Ничего не сломается. Кубыш пересчитает остаток периода и заранее покажет, какие цели сдвинутся по срокам и где появился риск, — чтобы решение принимали вы, а не календарь."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Что происходит с моими данными?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Кубыш не подключается к банковским счетам: логины, пароли, коды из СМС и номера карт ей не нужны. Что именно обрабатывается и зачем — в политике конфиденциальности ."
+     }
+    }
+   ]
+  }
+ ]
+}
+</script>
+<script>
+/* Аналитика kubysh.com. METRIKA_ID пустой => счётчик не грузится и ошибок нет.
+   Впиши номер счётчика Яндекс.Метрики — и заработает и он, и цели ниже. */
+(function(){
+  var METRIKA_ID = "44147844"; // Яндекс.Метрика Кубыш
+
+  /* ---- Согласие на cookie (проверка 26.08.2026: «баннер согласия не найден,
+     при этом установлена аналитика» — ч. 2 ст. 13.11 КоАП, до 700 000 ₽) ----
+     Метрика НЕ загружается, пока человек не нажал «Принять»: скрипт вставляется
+     только из startMetrika(), а не при разборе страницы. Отказ тоже запоминаем,
+     чтобы не показывать баннер на каждой странице. */
+  var CONSENT_KEY = "kubysh_cookie_consent_v2";
+  if (location.search.indexOf("cookie=reset") > -1) { try { localStorage.removeItem(CONSENT_KEY); } catch(e) {} }
+  function consent(){ try { return localStorage.getItem(CONSENT_KEY); } catch(e) { return null; } }
+  function setConsent(v){ try { localStorage.setItem(CONSENT_KEY, v); } catch(e) {} }
+
+  var metrikaStarted = false;
+  function startMetrika(){
+    if (metrikaStarted || !METRIKA_ID) return;
+    metrikaStarted = true;
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();for(var j=0;j<document.scripts.length;j++){if(document.scripts[j].src===r){return;}}
+    k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window,document,"script","https://mc.yandex.ru/metrika/tag.js","ym");
+    ym(METRIKA_ID,"init",{clickmap:true,trackLinks:true,accurateTrackBounce:true,webvisor:true});
+  }
+  if (consent() === "yes") startMetrika();
+
+  window.addEventListener("DOMContentLoaded", function(){
+    var bar = document.getElementById("cookieBar");
+    if (!bar) return;
+    if (consent()) { bar.parentNode.removeChild(bar); return; }
+    bar.hidden = false;
+    setTimeout(function(){ bar.classList.add("cookie-bar--in"); }, 600);
+    bar.addEventListener("click", function(e){
+      var b = e.target.closest("[data-consent]");
+      if (!b) return;
+      var v = b.getAttribute("data-consent");
+      setConsent(v);
+      if (v === "yes") startMetrika();
+      bar.parentNode.removeChild(bar);
+    });
+  });
+
+  /* Цели: клик в телеграм и клик на App Store — то, ради чего сайт и нужен.
+     Слушаем на document, поэтому работает и для ссылок, добавленных позже. */
+  function goal(name){ if (METRIKA_ID && window.ym) { ym(METRIKA_ID,"reachGoal",name); } }
+  document.addEventListener("click", function(e){
+    if (!e.target || !e.target.closest) return;
+    /* data-goal висит и на кнопке «Хочу Android-версию», а она не ссылка */
+    var g = e.target.closest("[data-goal]");
+    if (g) goal(g.getAttribute("data-goal"));
+    var a = e.target.closest("a[href]");
+    if (!a) return;
+    var href = a.getAttribute("href") || "";
+    /* Кириллу нужно видеть, откуда конверсия выше — из верхней кнопки или из нижней.
+       Поэтому на каждый клик отправляем ДВЕ цели: общую (сколько всего ушло в стор)
+       и с позицией (appstore_click_hero / appstore_click_final). У самой ссылки при этом
+       свой Apple-параметр ct=, чтобы те же две точки различались и в отчётах App Store,
+       когда у нас появится provider token. */
+    var pos = a.getAttribute("data-pos");
+    if (href.indexOf("t.me/") > -1) { goal("tg_click"); if (pos) goal("tg_click_" + pos); }
+    else if (href.indexOf("apps.apple.com") > -1) { goal("appstore_click"); if (pos) goal("appstore_click_" + pos); }
+    else if (href.indexOf("instagram.com") > -1) goal("instagram_click");
+  }, true);
+})();
+</script>
+</head>
+<body>
+
+<header class="top">
+  <nav class="pill">
+    <a href="#footer-contacts">КОНТАКТЫ</a>
+    <a href="#faq">FAQ</a>
+    <a href="https://pay.kubysh.com/account/">ВХОД</a>
+  </nav>
+  <div class="chip-field">
+    <div class="chip-cluster chip-cluster--left">
+      <div class="chip" style="--rot:-10deg; --dy:0px;   max-width:130px; --d:120ms; --drop:-366px; z-index:13;">Тратите больше, чем планировали?</div>
+      <div class="chip" style="--rot:7deg;  --dy:12px;  max-width:150px; --d:420ms; --drop:-304px; z-index:16;">Не успеваете накопить к нужной дате?</div>
+      <div class="chip chip--extra" style="--rot:-8deg; --dy:-8px; max-width:165px; --d:250ms; --drop:-418px; z-index:10;">Открываете Excel, чтобы пересчитать одну покупку?</div>
+      <div class="chip" style="--rot:9deg;  --dy:10px;  max-width:200px; --d:560ms; --drop:-340px; z-index:15;">Не понимаете, как покупка повлияет на остальные цели?</div>
+      <div class="chip chip--extra" style="--rot:-13deg; --dy:-6px; max-width:175px; --d:340ms; --drop:-386px; z-index:11;">Откладываете покупки, хотя деньги вроде есть?</div>
+      <div class="chip chip--extra" style="--rot:6deg;  --dy:14px; max-width:170px; --d:480ms; --drop:-330px; z-index:9;">В конце месяца непонятно, куда всё ушло?</div>
+    </div>
+    <div class="chip-cluster chip-cluster--right">
+      <div class="chip" style="--rot:8deg;  --dy:0px;  max-width:155px; --d:200ms; --drop:-362px; z-index:14;">Проверяете на глаз, хватит ли денег?</div>
+      <div class="chip chip--extra" style="--rot:-7deg; --dy:10px;  max-width:195px; --d:640ms; --drop:-386px; z-index:12;">После получки снова решаете, как её распределить?</div>
+    </div>
+  </div>
+  <div class="hero-headline">
+   <div class="hero-copy">
+    <h1>Сколько можно<br><span class="h1-line2">тратить сегодня</span></h1>
+    <p class="hero-sub">Другие приложения объясняют, куда ушли деньги. Кубыш сам строит план до получки и каждый день говорит сумму, с которой цели не сдвинутся.</p>
+    <div class="hero-cta-wrap">
+      <a href="https://apps.apple.com/app/id6778792103?ct=lp_hero&amp;mt=8" class="btn-appstore" data-appstore data-pos="hero" target="_blank" rel="noopener" aria-label="Скачать в App Store">
+        <img src="data:image/svg+xml;base64,PHN2ZyBpZD0ibGl2ZXR5cGUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjExOS42NjQwNyIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDExOS42NjQwNyA0MCI+CiAgPHRpdGxlPkRvd25sb2FkX29uX3RoZV9BcHBfU3RvcmVfQmFkZ2VfUlVfUkdCX2Jsa18xMDAzMTc8L3RpdGxlPgogIDxnPgogICAgPGc+CiAgICAgIDxnPgogICAgICAgIDxwYXRoIGQ9Ik0xMTAuMTM0NzcsMEg5LjUzNDY4Yy0uMzY2NywwLS43MjksMC0xLjA5NDczLjAwMi0uMzA2MTUuMDAyLS42MDk4Ni4wMDc4MS0uOTE4OTUuMDEyN0ExMy4yMTQ3NiwxMy4yMTQ3NiwwLDAsMCw1LjUxNzEuMTkxNDFhNi42NjUwOSw2LjY2NTA5LDAsMCwwLTEuOTAwODguNjI3QTYuNDM3NzksNi40Mzc3OSwwLDAsMCwxLjk5NzU3LDEuOTk3MDcsNi4yNTg0NCw2LjI1ODQ0LDAsMCwwLC44MTkzNSwzLjYxODE2YTYuNjAxMTksNi42MDExOSwwLDAsMC0uNjI1LDEuOTAzMzIsMTIuOTkzLDEyLjk5MywwLDAsMC0uMTc5MiwyLjAwMkMuMDA1ODcsNy44MzAwOC4wMDQ4OSw4LjEzNzcsMCw4LjQ0NDM0VjMxLjU1ODZjLjAwNDg5LjMxMDUuMDA1ODcuNjExMy4wMTUxNS45MjE5YTEyLjk5MjMyLDEyLjk5MjMyLDAsMCwwLC4xNzkyLDIuMDAxOSw2LjU4NzU2LDYuNTg3NTYsMCwwLDAsLjYyNSwxLjkwNDNBNi4yMDc3OCw2LjIwNzc4LDAsMCwwLDEuOTk3NTcsMzguMDAxYTYuMjc0NDUsNi4yNzQ0NSwwLDAsMCwxLjYxODY1LDEuMTc4Nyw2LjcwMDgyLDYuNzAwODIsMCwwLDAsMS45MDA4OC42MzA4LDEzLjQ1NTE0LDEzLjQ1NTE0LDAsMCwwLDIuMDAzOS4xNzY4Yy4zMDkwOS4wMDY4LjYxMjguMDEwNy45MTg5NS4wMTA3QzguODA1NjcsNDAsOS4xNjgsNDAsOS41MzQ2OCw0MEgxMTAuMTM0NzdjLjM1OTQsMCwuNzI0NiwwLDEuMDg0LS4wMDIuMzA0NywwLC42MTcyLS4wMDM5LjkyMTktLjAxMDdhMTMuMjc5LDEzLjI3OSwwLDAsMCwyLS4xNzY4LDYuODA0MzIsNi44MDQzMiwwLDAsMCwxLjkwODItLjYzMDgsNi4yNzc0Miw2LjI3NzQyLDAsMCwwLDEuNjE3Mi0xLjE3ODcsNi4zOTQ4Miw2LjM5NDgyLDAsMCwwLDEuMTgxNi0xLjYxNDMsNi42MDQxMyw2LjYwNDEzLDAsMCwwLC42MTkxLTEuOTA0MywxMy41MDY0MywxMy41MDY0MywwLDAsMCwuMTg1Ni0yLjAwMTljLjAwMzktLjMxMDYuMDAzOS0uNjExNC4wMDM5LS45MjE5LjAwNzgtLjM2MzMuMDA3OC0uNzI0Ni4wMDc4LTEuMDkzOFY5LjUzNjEzYzAtLjM2NjIxLDAtLjcyOTQ5LS4wMDc4LTEuMDkxNzksMC0uMzA2NjQsMC0uNjE0MjYtLjAwMzktLjkyMDlhMTMuNTA3MSwxMy41MDcxLDAsMCwwLS4xODU2LTIuMDAyLDYuNjE3Nyw2LjYxNzcsMCwwLDAtLjYxOTEtMS45MDMzMiw2LjQ2NjE5LDYuNDY2MTksMCwwLDAtMi43OTg4LTIuNzk5OCw2Ljc2NzU0LDYuNzY3NTQsMCwwLDAtMS45MDgyLS42MjcsMTMuMDQzOTQsMTMuMDQzOTQsMCwwLDAtMi0uMTc2NzZjLS4zMDQ3LS4wMDQ4OC0uNjE3Mi0uMDEwNzQtLjkyMTktLjAxMjY5LS4zNTk0LS4wMDItLjcyNDYtLjAwMi0xLjA4NC0uMDAyWiIgc3R5bGU9ImZpbGw6ICNhNmE2YTYiLz4KICAgICAgICA8cGF0aCBkPSJNOC40NDQ4MywzOS4xMjVjLS4zMDQ2OCwwLS42MDItLjAwMzktLjkwNDI5LS4wMTA3YTEyLjY4NzE0LDEyLjY4NzE0LDAsMCwxLTEuODY5MTQtLjE2MzEsNS44ODM4MSw1Ljg4MzgxLDAsMCwxLTEuNjU2NzQtLjU0NzksNS40MDU3Myw1LjQwNTczLDAsMCwxLTEuMzk3LTEuMDE2Niw1LjMyMDgyLDUuMzIwODIsMCwwLDEtMS4wMjA1MS0xLjM5NjUsNS43MjE4Niw1LjcyMTg2LDAsMCwxLS41NDMtMS42NTcyLDEyLjQxMzUxLDEyLjQxMzUxLDAsMCwxLS4xNjY1LTEuODc1Yy0uMDA2MzQtLjIxMDktLjAxNDY0LS45MTMxLS4wMTQ2NC0uOTEzMVY4LjQ0NDM0Uy44ODE4NSw3Ljc1MjkzLjg4NzcsNy41NDk4YTEyLjM3MDM5LDEyLjM3MDM5LDAsMCwxLC4xNjU1My0xLjg3MjA3LDUuNzU1NSw1Ljc1NTUsMCwwLDEsLjU0MzQ2LTEuNjYyMUE1LjM3MzQ5LDUuMzczNDksMCwwLDEsMi42MTE4MywyLjYxNzY4LDUuNTY1NDMsNS41NjU0MywwLDAsMSw0LjAxNDE3LDEuNTk1MjFhNS44MjMwOSw1LjgyMzA5LDAsMCwxLDEuNjUzMzItLjU0Mzk0QTEyLjU4NTg5LDEyLjU4NTg5LDAsMCwxLDcuNTQzLjg4NzIxTDguNDQ1MzIuODc1SDExMS4yMTM4N2wuOTEzMS4wMTI3YTEyLjM4NDkzLDEyLjM4NDkzLDAsMCwxLDEuODU4NC4xNjI1OSw1LjkzODMzLDUuOTM4MzMsMCwwLDEsMS42NzA5LjU0Nzg1LDUuNTkzNzQsNS41OTM3NCwwLDAsMSwyLjQxNSwyLjQxOTkzLDUuNzYyNjcsNS43NjI2NywwLDAsMSwuNTM1MiwxLjY0ODkyLDEyLjk5NSwxMi45OTUsMCwwLDEsLjE3MzgsMS44ODcyMWMuMDAyOS4yODMyLjAwMjkuNTg3NC4wMDI5Ljg5MDE0LjAwNzkuMzc1LjAwNzkuNzMxOTMuMDA3OSwxLjA5MTc5VjMwLjQ2NDhjMCwuMzYzMywwLC43MTc4LS4wMDc5LDEuMDc1MiwwLC4zMjUyLDAsLjYyMzEtLjAwMzkuOTI5N2ExMi43MzEyNiwxMi43MzEyNiwwLDAsMS0uMTcwOSwxLjg1MzUsNS43MzksNS43MzksMCwwLDEtLjU0LDEuNjcsNS40ODAyOSw1LjQ4MDI5LDAsMCwxLTEuMDE1NiwxLjM4NTcsNS40MTI5LDUuNDEyOSwwLDAsMS0xLjM5OTQsMS4wMjI1LDUuODYxNjgsNS44NjE2OCwwLDAsMS0xLjY2OC41NDk4LDEyLjU0MjE4LDEyLjU0MjE4LDAsMCwxLTEuODY5Mi4xNjMxYy0uMjkyOS4wMDY4LS41OTk2LjAxMDctLjg5NzQuMDEwN2wtMS4wODQuMDAyWiIvPgogICAgICA8L2c+CiAgICAgIDxnIGlkPSJfR3JvdXBfIiBkYXRhLW5hbWU9IiZsdDtHcm91cCZndDsiPgogICAgICAgIDxnIGlkPSJfR3JvdXBfMiIgZGF0YS1uYW1lPSImbHQ7R3JvdXAmZ3Q7Ij4KICAgICAgICAgIDxnIGlkPSJfR3JvdXBfMyIgZGF0YS1uYW1lPSImbHQ7R3JvdXAmZ3Q7Ij4KICAgICAgICAgICAgPHBhdGggaWQ9Il9QYXRoXyIgZGF0YS1uYW1lPSImbHQ7UGF0aCZndDsiIGQ9Ik0yNC43Njg4OCwyMC4zMDA2OGE0Ljk0ODgxLDQuOTQ4ODEsMCwwLDEsMi4zNTY1Ni00LjE1MjA2LDUuMDY1NjYsNS4wNjU2NiwwLDAsMC0zLjk5MTE2LTIuMTU3NjhjLTEuNjc5MjQtLjE3NjI2LTMuMzA3MTksMS4wMDQ4My00LjE2MjksMS4wMDQ4My0uODcyMjcsMC0yLjE4OTc3LS45ODczMy0zLjYwODUtLjk1ODE0YTUuMzE1MjksNS4zMTUyOSwwLDAsMC00LjQ3MjkyLDIuNzI3ODdjLTEuOTM0LDMuMzQ4NDItLjQ5MTQxLDguMjY5NDcsMS4zNjEyLDEwLjk3NjA4LjkyNjksMS4zMjUzNSwyLjAxMDE4LDIuODA1OCwzLjQyNzYzLDIuNzUzMywxLjM4NzA2LS4wNTc1MywxLjkwNTEtLjg4NDQ4LDMuNTc5NC0uODg0NDgsMS42NTg3NiwwLDIuMTQ0NzkuODg0NDgsMy41OTEuODUxMSwxLjQ4ODM4LS4wMjQxNiwyLjQyNjEzLTEuMzMxMjQsMy4zMjA1MS0yLjY2OTE0YTEwLjk2MiwxMC45NjIsMCwwLDAsMS41MTg0Mi0zLjA5MjUxQTQuNzgyMDUsNC43ODIwNSwwLDAsMSwyNC43Njg4OCwyMC4zMDA2OFoiIHN0eWxlPSJmaWxsOiAjZmZmIi8+CiAgICAgICAgICAgIDxwYXRoIGlkPSJfUGF0aF8yIiBkYXRhLW5hbWU9IiZsdDtQYXRoJmd0OyIgZD0iTTIyLjAzNzI1LDEyLjIxMDg5YTQuODcyNDgsNC44NzI0OCwwLDAsMCwxLjExNDUyLTMuNDkwNjIsNC45NTc0Niw0Ljk1NzQ2LDAsMCwwLTMuMjA3NTgsMS42NTk2MSw0LjYzNjM0LDQuNjM2MzQsMCwwLDAtMS4xNDM3MSwzLjM2MTM5QTQuMDk5MDUsNC4wOTkwNSwwLDAsMCwyMi4wMzcyNSwxMi4yMTA4OVoiIHN0eWxlPSJmaWxsOiAjZmZmIi8+CiAgICAgICAgICA8L2c+CiAgICAgICAgPC9nPgogICAgICAgIDxnPgogICAgICAgICAgPHBhdGggZD0iTTQyLjMwMjI3LDI3LjEzOTY1aC00LjczMzRsLTEuMTM2NzIsMy4zNTY0NUgzNC40MjcyN2w0LjQ4MzQtMTIuNDE4aDIuMDgzbDQuNDgzNCwxMi40MThINDMuNDM4Wk0zOC4wNTkxLDI1LjU5MDgyaDMuNzUybC0xLjg0OTYxLTUuNDQ3MjdoLS4wNTE3NloiIHN0eWxlPSJmaWxsOiAjZmZmIi8+CiAgICAgICAgICA8cGF0aCBkPSJNNTUuMTU5NjksMjUuOTY5NzNjMCwyLjgxMzQ4LTEuNTA1ODYsNC42MjEwOS0zLjc3ODMyLDQuNjIxMDlhMy4wNjkzLDMuMDY5MywwLDAsMS0yLjg0ODYzLTEuNTg0aC0uMDQzdjQuNDg0MzhoLTEuODU4NFYyMS40NDIzOEg0OC40MzAydjEuNTA1ODZoLjAzNDE4YTMuMjExNjIsMy4yMTE2MiwwLDAsMSwyLjg4MjgxLTEuNjAwNTlDNTMuNjQ1LDIxLjM0NzY2LDU1LjE1OTY5LDIzLjE2NDA2LDU1LjE1OTY5LDI1Ljk2OTczWm0tMS45MTAxNiwwYzAtMS44MzMtLjk0NzI3LTMuMDM4MDktMi4zOTI1OC0zLjAzODA5LTEuNDE5OTIsMC0yLjM3NSwxLjIzMDQ3LTIuMzc1LDMuMDM4MDksMCwxLjgyNDIyLjk1NTA4LDMuMDQ1OSwyLjM3NSwzLjA0NTlDNTIuMzAyMjcsMjkuMDE1NjMsNTMuMjQ5NTMsMjcuODE5MzQsNTMuMjQ5NTMsMjUuOTY5NzNaIiBzdHlsZT0iZmlsbDogI2ZmZiIvPgogICAgICAgICAgPHBhdGggZD0iTTY1LjEyNDUzLDI1Ljk2OTczYzAsMi44MTM0OC0xLjUwNTg2LDQuNjIxMDktMy43NzgzMiw0LjYyMTA5YTMuMDY5MywzLjA2OTMsMCwwLDEtMi44NDg2My0xLjU4NGgtLjA0M3Y0LjQ4NDM4aC0xLjg1ODRWMjEuNDQyMzhINTguMzk1djEuNTA1ODZoLjAzNDE4QTMuMjExNjIsMy4yMTE2MiwwLDAsMSw2MS4zMTIsMjEuMzQ3NjZDNjMuNjA5ODgsMjEuMzQ3NjYsNjUuMTI0NTMsMjMuMTY0MDYsNjUuMTI0NTMsMjUuOTY5NzNabS0xLjkxMDE2LDBjMC0xLjgzMy0uOTQ3MjctMy4wMzgwOS0yLjM5MjU4LTMuMDM4MDktMS40MTk5MiwwLTIuMzc1LDEuMjMwNDctMi4zNzUsMy4wMzgwOSwwLDEuODI0MjIuOTU1MDgsMy4wNDU5LDIuMzc1LDMuMDQ1OUM2Mi4yNjcxMSwyOS4wMTU2Myw2My4yMTQzOCwyNy44MTkzNCw2My4yMTQzOCwyNS45Njk3M1oiIHN0eWxlPSJmaWxsOiAjZmZmIi8+CiAgICAgICAgICA8cGF0aCBkPSJNNzEuNzEwNDcsMjcuMDM2MTNjLjEzNzcsMS4yMzE0NSwxLjMzNCwyLjA0LDIuOTY4NzUsMi4wNCwxLjU2NjQxLDAsMi42OTMzNi0uODA4NTksMi42OTMzNi0xLjkxODk1LDAtLjk2Mzg3LS42Nzk2OS0xLjU0MS0yLjI4OTA2LTEuOTM2NTJsLTEuNjA5MzctLjM4NzdjLTIuMjgwMjctLjU1MDc4LTMuMzM4ODctMS42MTcxOS0zLjMzODg3LTMuMzQ3NjYsMC0yLjE0MjU4LDEuODY3MTktMy42MTQyNiw0LjUxODU1LTMuNjE0MjYsMi42MjQsMCw0LjQyMjg1LDEuNDcxNjgsNC40ODM0LDMuNjE0MjZoLTEuODc2Yy0uMTEyMy0xLjIzOTI2LTEuMTM2NzItMS45ODczLTIuNjMzNzktMS45ODczcy0yLjUyMTQ4Ljc1Njg0LTIuNTIxNDgsMS44NTg0YzAsLjg3NzkzLjY1NDMsMS4zOTQ1MywyLjI1NDg4LDEuNzlsMS4zNjgxNi4zMzU5NGMyLjU0Nzg1LjYwMjU0LDMuNjA2NDUsMS42MjYsMy42MDY0NSwzLjQ0MjM4LDAsMi4zMjMyNC0xLjg1MDU5LDMuNzc4MzItNC43OTM5NSwzLjc3ODMyLTIuNzUzOTEsMC00LjYxMzI4LTEuNDIwOS00LjczMzQtMy42NjdaIiBzdHlsZT0iZmlsbDogI2ZmZiIvPgogICAgICAgICAgPHBhdGggZD0iTTgzLjM0NjIxLDE5LjI5OTh2Mi4xNDI1OGgxLjcyMTY4djEuNDcxNjhIODMuMzQ2MjF2NC45OTEyMWMwLC43NzUzOS4zNDQ3MywxLjEzNjcyLDEuMTAxNTYsMS4xMzY3MmE1LjgwNzUyLDUuODA3NTIsMCwwLDAsLjYxMTMzLS4wNDN2MS40NjI4OWE1LjEwMzUxLDUuMTAzNTEsMCwwLDEtMS4wMzIyMy4wODU5NGMtMS44MzMsMC0yLjU0Nzg1LS42ODg0OC0yLjU0Nzg1LTIuNDQ0MzRWMjIuOTE0MDZIODAuMTYyNjJWMjEuNDQyMzhIODEuNDc5VjE5LjI5OThaIiBzdHlsZT0iZmlsbDogI2ZmZiIvPgogICAgICAgICAgPHBhdGggZD0iTTg2LjA2NSwyNS45Njk3M2MwLTIuODQ4NjMsMS42Nzc3My00LjYzODY3LDQuMjkzOTUtNC42Mzg2NywyLjYyNSwwLDQuMjk0OTIsMS43OSw0LjI5NDkyLDQuNjM4NjcsMCwyLjg1NjQ1LTEuNjYxMTMsNC42Mzg2Ny00LjI5NDkyLDQuNjM4NjdDODcuNzI2MDksMzAuNjA4NCw4Ni4wNjUsMjguODI2MTcsODYuMDY1LDI1Ljk2OTczWm02LjY5NTMxLDBjMC0xLjk1NDEtLjg5NTUxLTMuMTA3NDItMi40MDEzNy0zLjEwNzQycy0yLjQwMDM5LDEuMTYyMTEtMi40MDAzOSwzLjEwNzQyYzAsMS45NjE5MS44OTQ1MywzLjEwNjQ1LDIuNDAwMzksMy4xMDY0NVM5Mi43NjAyNywyNy45MzE2NCw5Mi43NjAyNywyNS45Njk3M1oiIHN0eWxlPSJmaWxsOiAjZmZmIi8+CiAgICAgICAgICA8cGF0aCBkPSJNOTYuMTg2MDYsMjEuNDQyMzhoMS43NzI0NnYxLjU0MWguMDQzYTIuMTU5NCwyLjE1OTQsMCwwLDEsMi4xNzc3My0xLjYzNTc0LDIuODY2MTYsMi44NjYxNiwwLDAsMSwuNjM2NzIuMDY5MzR2MS43MzgyOGEyLjU5Nzk0LDIuNTk3OTQsMCwwLDAtLjgzNS0uMTEyMywxLjg3MjY0LDEuODcyNjQsMCwwLDAtMS45MzY1MiwyLjA4M3Y1LjM3MDEyaC0xLjg1ODRaIiBzdHlsZT0iZmlsbDogI2ZmZiIvPgogICAgICAgICAgPHBhdGggZD0iTTEwOS4zODQzLDI3LjgzNjkxYy0uMjUsMS42NDM1NS0xLjg1MDU5LDIuNzcxNDgtMy44OTg0NCwyLjc3MTQ4LTIuNjMzNzksMC00LjI2ODU1LTEuNzY0NjUtNC4yNjg1NS00LjU5NTcsMC0yLjgzOTg0LDEuNjQzNTUtNC42ODE2NCw0LjE5MDQzLTQuNjgxNjQsMi41MDQ4OCwwLDQuMDgwMDgsMS43MjA3LDQuMDgwMDgsNC40NjU4MnYuNjM2NzJoLTYuMzk0NTN2LjExMjNhMi4zNTgsMi4zNTgsMCwwLDAsMi40MzU1NSwyLjU2NDQ1LDIuMDQ4MzQsMi4wNDgzNCwwLDAsMCwyLjA5MDgyLTEuMjczNDRabS02LjI4MjIzLTIuNzAyMTVoNC41MjYzN2EyLjE3NzMsMi4xNzczLDAsMCwwLTIuMjIwNy0yLjI5Nzg1QTIuMjkyLDIuMjkyLDAsMCwwLDEwMy4xMDIwNywyNS4xMzQ3N1oiIHN0eWxlPSJmaWxsOiAjZmZmIi8+CiAgICAgICAgPC9nPgogICAgICA8L2c+CiAgICA8L2c+CiAgICA8ZyBpZD0iX0dyb3VwXzQiIGRhdGEtbmFtZT0iJmx0O0dyb3VwJmd0OyI+CiAgICAgIDxnPgogICAgICAgIDxwYXRoIGQ9Ik0zNi43MzgzLDExLjI1MzQyaC43OTc4NWExLjAwMjEsMS4wMDIxLDAsMCwwLDEuMTI1LS45NTExN2MwLS41NTAyOS0uNDE0MDYtLjkwNTc2LTEuMTE2MjEtLjkwNTc2YTEuMDYzNTcsMS4wNjM1NywwLDAsMC0xLjIwNDEuOTM0NTdoLS44NzZhMS44NzA1NywxLjg3MDU3LDAsMCwxLDIuMTA4NC0xLjc0NTEyYzEuMTc0OCwwLDIuMDAyLjY1NzcxLDIuMDAyLDEuNjA0NDlhMS4zODYsMS4zODYsMCwwLDEtMS4wODQsMS4zNjQ3NXYuMDcwMzFhMS4zODk4LDEuMzg5OCwwLDAsMSwxLjMyNzE1LDEuNDQyODcsMS45OTMyLDEuOTkzMiwwLDAsMS0yLjIyODUyLDEuNzczOTMsMS45ODMzNSwxLjk4MzM1LDAsMCwxLTIuMjQxMjEtMS43NjU2MmguODg5NjVjLjA1MzcxLjU3MDguNTc4MTMuOTM5LDEuMzUxNTYuOTM5czEuMjc4MzItLjQxMzU3LDEuMjc4MzItLjk5NjU4YzAtLjU5MTMxLS40NzU1OS0uOTU1NTctMS4zMDY2NC0uOTU1NTdIMzYuNzM4M1oiIHN0eWxlPSJmaWxsOiAjZmZmIi8+CiAgICAgICAgPHBhdGggZD0iTTQwLjgyOTEyLDEzLjQyNDMyYzAtLjgxMDU1LjYwNDQ5LTEuMjc3ODMsMS42NzQ4LTEuMzQ0MjRsMS4yMTk3My0uMDcwMzF2LS4zODg2N2MwLS40NzU1OS0uMzEzNDgtLjc0NDE0LS45MjE4Ny0uNzQ0MTQtLjQ5NjA5LDAtLjgzODg3LjE4MjEzLS45Mzg0OC41MDA0OWgtLjg2MDM1Yy4wOTA4Mi0uNzczNDQuODE5MzQtMS4yNjk1MywxLjg0MDgyLTEuMjY5NTMsMS4xMjg5MSwwLDEuNzY1NjMuNTYyLDEuNzY1NjMsMS41MTMxOHYzLjA3NjY2aC0uODU2NDV2LS42MzI4MWgtLjA3MDMxYTEuNTE1LDEuNTE1LDAsMCwxLTEuMzUyNTQuNzA3QTEuMzYwMjYsMS4zNjAyNiwwLDAsMSw0MC44MjkxMiwxMy40MjQzMlptMi44OTQ1My0uMzg0Nzd2LS4zNzY0Nkw0Mi42MjQsMTIuNzMzNGMtLjYyMDEyLjA0MTUtLjkwMTM3LjI1MjQ0LS45MDEzNy42NDk0MSwwLC40MDUyNy4zNTE1Ni42NDExMS44MzUuNjQxMTFBMS4wNjE1LDEuMDYxNSwwLDAsMCw0My43MjM2NSwxMy4wMzk1NVoiIHN0eWxlPSJmaWxsOiAjZmZmIi8+CiAgICAgICAgPHBhdGggZD0iTTQ2Ljk2Nzc5LDEwLjk0Mjg3djMuNzU0ODhoLS44ODg2N1YxMC4xOTQ4Mkg0OS4wNDR2Ljc0OFoiIHN0eWxlPSJmaWxsOiAjZmZmIi8+CiAgICAgICAgPHBhdGggZD0iTTU0LjQyOTcxLDEyLjQ0NDM0YzAsMS40MzA2Ni0uNzIzNjMsMi4zMjc2NC0xLjg2MDM1LDIuMzI3NjRhMS40Njc3OCwxLjQ2Nzc4LDAsMCwxLTEuMzg1NzQtLjc1NjM1SDUxLjExMzN2Mi4xNzkyaC0uODg4Njd2LTZoLjg1NTQ3VjEwLjkzOWguMDY2NDFhMS41NjQzNywxLjU2NDM3LDAsMCwxLDEuNDE0MDYtLjgxODg1QzUzLjcwNjA3LDEwLjEyMDEyLDU0LjQyOTcxLDExLjAxMzE4LDU0LjQyOTcxLDEyLjQ0NDM0Wm0tLjkxNDA2LDBjMC0uOTUxMTctLjQ1MDItMS41MjU4OC0xLjIwMzEyLTEuNTI1ODgtLjc0OCwwLTEuMjE1ODIuNTg2OTEtMS4yMTU4MiwxLjUyOTc5LDAsLjkzODQ4LjQ2Nzc3LDEuNTI1ODgsMS4yMTE5MSwxLjUyNTg4QzUzLjA2NTQ1LDEzLjk3NDEyLDUzLjUxNTY1LDEzLjM5OTQxLDUzLjUxNTY1LDEyLjQ0NDM0WiIgc3R5bGU9ImZpbGw6ICNmZmYiLz4KICAgICAgICA8cGF0aCBkPSJNNTUuNjEzMywxNi4zMTA1NXYtLjc2NTE0YTIuMSwyLjEsMCwwLDAsLjI5LjAxNjYuNzcwMzQuNzcwMzQsMCwwLDAsLjgxNDQ1LS42Mjg0MmwuMDY2NDEtLjIxOTI0LTEuNjI5ODgtNC41MTk1M2guOTY3NzdMNTcuMjUxLDEzLjc3MTQ4aC4wNzAzMWwxLjEyNS0zLjU3NjY2aC45NDIzOEw1Ny43MSwxNC44ODM3OWMtLjM4NDc3LDEuMDk1Ny0uODEwNTUsMS40NDcyNy0xLjcyODUyLDEuNDQ3MjdDNTUuOTA3MjUsMTYuMzMxMDUsNTUuNjk2MzEsMTYuMzIyNzUsNTUuNjEzMywxNi4zMTA1NVoiIHN0eWxlPSJmaWxsOiAjZmZmIi8+CiAgICAgICAgPHBhdGggZD0iTTYwLjA4MTA3LDEzLjQxOTkyaC44ODQ3N2MuMDg2OTEuMzk3LjQ1OS42MDQuOTc5NDkuNjA0LjU5MTgsMCwuOTU1MDgtLjI2MDc0Ljk1NTA4LS42NjYsMC0uNDM0MDgtLjMyNjE3LS42NDExMS0uOTU1MDgtLjY0MTExSDYxLjI3MTV2LS42OTA0M2guNjYyMTFjLjUzNzExLDAsLjgxMDU1LS4yMDY1NC44MTA1NS0uNTgzLDAtLjMzMDU3LS4yNjQ2NS0uNTgzLS44MTA1NS0uNTgzLS40OTcwNywwLS44NjAzNS4yMTA5NC0uOTE4LjU2NjQxSDYwLjE1OTJhMS41NzgsMS41NzgsMCwwLDEsMS43NzQ0MS0xLjMxODg1YzEuMDcwMzEsMCwxLjY4MjYyLjQ4Mzg5LDEuNjgyNjIsMS4yNDQ2M2EuOTI1MTQuOTI1MTQsMCwwLDEtLjcxMDk0LjkyMTg4di4wNzAzMWExLjAxMDE1LDEuMDEwMTUsMCwwLDEsLjg4MDg2LDEuMDEzMThjMCwuODU2LS43Mjg1MiwxLjQyMjM2LTEuODQwODIsMS40MjIzNkM2MC45NjE5MywxNC43ODAyNyw2MC4xNjMxMSwxNC4zMjk1OSw2MC4wODEwNywxMy40MTk5MloiIHN0eWxlPSJmaWxsOiAjZmZmIi8+CiAgICAgICAgPHBhdGggZD0iTTY1LjA2NTk0LDE0LjY5Nzc1VjEwLjE5NDgyaC44ODA4NlYxMy4yOTJoLjA3MDMxbDIuMDc1Mi0zLjA5NzE3aC44ODA4NnY0LjUwMjkzaC0uODgwODZWMTEuNTg0SDY4LjAyNTlsLTIuMDc5MSwzLjExMzc3WiIgc3R5bGU9ImZpbGw6ICNmZmYiLz4KICAgICAgICA8cGF0aCBkPSJNNzMuODI1NywxMC45NDI4N2gtMS40MTh2My43NTQ4OGgtLjg4OTY1VjEwLjk0Mjg3aC0xLjQxOHYtLjc0OEg3My44MjU3WiIgc3R5bGU9ImZpbGw6ICNmZmYiLz4KICAgICAgICA8cGF0aCBkPSJNNzguNjEyODEsMTMuNDgxOTNhMS44Mjk5LDEuODI5OSwwLDAsMS0xLjk1MjE1LDEuMzAyNzMsMi4wNDUzMSwyLjA0NTMxLDAsMCwxLTIuMDgwMDgtMi4zMjQyMiwyLjA3Njg1LDIuMDc2ODUsMCwwLDEsMi4wNzYxNy0yLjM1MjU0YzEuMjUyOTMsMCwyLjAwOTc3Ljg1NiwyLjAwOTc3LDIuMjdWMTIuNjg4SDc1LjQ4Njg0di4wNDk4YTEuMTg5MTQsMS4xODkxNCwwLDAsMCwxLjE5OTIyLDEuMjksMS4wNzg3MiwxLjA3ODcyLDAsMCwwLDEuMDcwMzEtLjU0NTlabS0zLjEyNi0xLjQ1MTE3aDIuMjczNDRhMS4wODYyNSwxLjA4NjI1LDAsMCwwLTEuMTA3NDItMS4xNjY1QTEuMTUwNDUsMS4xNTA0NSwwLDAsMCw3NS40ODY4NCwxMi4wMzA3NloiIHN0eWxlPSJmaWxsOiAjZmZmIi8+CiAgICAgICAgPHBhdGggZD0iTTgyLjM4MDM5LDEwLjE5NDgyaDIuMDMwMjdjLjg4MDg2LDAsMS4zOTc0Ni40NDYyOSwxLjM5NzQ2LDEuMTQ1YS45Njc1NS45Njc1NSwwLDAsMS0uNzYwNzQuOTUxMTd2LjA3MDMxYTEuMDI3NzcsMS4wMjc3NywwLDAsMSwuOTYyODksMS4wMzgwOWMwLC43ODU2NC0uNTkwODIsMS4yOTgzNC0xLjU3OTEsMS4yOTgzNEg4Mi4zODAzOVptLjg4MDg2LjY4MjEzdjEuMTY2aC44ODA4NmMuNTM3MTEsMCwuNzkzOTUtLjIwNjU0Ljc5Mzk1LS41ODc0LDAtLjM1MTA3LS4yMjM2My0uNTc4NjEtLjY5NTMxLS41Nzg2MVptMCwxLjgxOTM0djEuMzE5MzRIODQuMzE1Yy41MjUzOSwwLC44MDY2NC0uMjMxOTMuODA2NjQtLjY1NzcxLDAtLjQ1MDY4LS4zMTgzNi0uNjYxNjItLjkxOC0uNjYxNjJaIiBzdHlsZT0iZmlsbDogI2ZmZiIvPgogICAgICA8L2c+CiAgICA8L2c+CiAgPC9nPgo8L3N2Zz4K" alt="Скачать в App Store" width="200" height="67">
+      </a>
+      <button type="button" class="btn-ghost" id="androidBtn" data-goal="android_wait">Хочу Android-версию</button>
+    </div>
+   </div>
+  </div>
+</header>
+
+<main>
+<section class="block2 snowzone" id="snowzone0">
+  <div class="hero-phone-block wrap">
+    <img class="mockup mockup--hero" src="img/paycheck-15-lg.webp" width="1300" height="1629" alt="Экран «Получка» Кубыша: план до следующей получки, пульс периода и кнопка «Могу ли я себе это позволить»" decoding="async">
+          
+    <p class="hero-side-text" id="fillText">После каждой получки Кубыш автоматически строит финансовый план и каждый день показывает сколько можно потратить, чтобы все цели были достигнуты вовремя</p>
+  </div>
+</section>
+
+<div class="seam-wrap"><div class="seam-blur"></div></div>
+<div class="grad-blue snowzone" id="snowzone1" style="background-image:url(data:image/webp;base64,UklGRpguAABXRUJQVlA4IIwuAAAwVAKdASoABf8FPjEYi0SiIaEQBAAgAwS0t3Cwp6fyrdH/m5g10of9cf//lnf/6P/L//Zv//7cXn/uf9x9//+0D//xVfBP/+IjAP//4B6gXAP/+X0X/1ixvgAkYfx+8heNmfEHwKTneIdZNtgZVdlv4mpeS/BtlrFAI1OqoQ6ya8gquwuMaAUWTcMxCOUo4skMlBAI+n4NhINEECAxu6VeC7J5zFSrNhFZQB9DdTaS5+89PoW6WposwwvXKe4QvpnsBGch2dHvuD6THn577VyLGkfS+INlAciWcimRdJn9T/9H4Vni6I66iieDuYLF4JyRokU9JLMZd3ZHIJFjgbjigzemNv5hjntJk7PrkP6UoxgqCLgk5yCKMxsH4EQco0863Ojb0rKL1W8JAGcJKrsqTBGcaokCOQwreMTAy+CgOLLqruf6cBqxCn/NH/wsgaj2CIOUaekhm0gDLD4xRckco08mRTbpZtBs7zYyliKLttW/9M0r0jYjuut0VFWNot//10//l+bWdUQLalz+d9VXb3awy6X+eEgCCMh0z03d5FuPeVGnXecB++bRjsr1ImpbYXSlxdHGYB02kgo9X4XwGUGpb/E/yL/laL////AciuxT65FqO7jEJc8v8EvCUu+l8pf3367qxOFie8KTLN/SwLgvXlfC2a2ioS5ylmGuuT6625VR4/07jZ/kRH3dYLjedGVNEewPzrv9mtmDjXIH87O6c2pt2ErKhZ4dbxVwE6IW80UELmKAq+BB6a5DRqJGGBCFsrKAqybbAVYrPDzXp0LoPw9aLi4o21IOHi9W5ekOXPaAutN6Smm3weUYpHeIdZNpL4oFCDDrpsuNRSVXWeLm7yJymvntMkUAjJIRIXDxvu5qckY6ZiPoVxA8DSl5x08g6D1EfT72TiFJLONeoqfvPUVP4vkhWeLdV+yKqS7iLCOyeqzEpPvY+qPjjQEjlEjDbVJc+XYrHYL2IYJUcFJPvaL/vRDJHF0RzRPSzqq/AsXgDBHoZGWHLlGSEcyb2cSyiR0JTyojqMS5Jil6BJRwftBBcDghMvE4n29z0qiQIEBAgQNUTCtEIGXkRIM8u9m0XQqyzd4InmN5Gj02AYIS+lTk6g4oHnwS2VYwcLhlm1ENkF4pwEbGTOnKNg9FKAnNzCe4gimvZDUbheLuQSYca3QuKeGCfOq4S13YNGNL/rEsgCTCQIqglAtHvXZZEKyn8Sax+gRAv2LIrFxIwxzJ1j/Xjx0u6JNuSQGvXs08gglDfJeR8SjWBiF5yQn5tfiHWTbYCrJtr+6HK5inxI8G4PMazrjotJkbhb6vqa4EBZTtqG+UeeGXoJ9xIpAH3/gRSHEIE8MnwRcVP3nqKnuIKaRCn5ouKF/65aD0BuJqi5e6ZQCjjZcJAH7YIJ0TermIPXTsQ5qkjYzaJ8TXoJQBAzQCFgH6gQIEBAgQLwJGC2JveH6rb9a4PRqJgLsfTpX/bU3ytB2FzCYaHfh0CC9Nni5fu98p+YsgRAuaPzRDdJoueI9Wwe0ktaGmBCwEd8KNEIOsvu4IOZ6KgkNqIVHLDkhrPOs6o8jXqJCMFMJ7TOV9/IEsNBEQyIiIiaeiIelX4RTkUnQwU+G63IZNt9cxj7uKkj0Iw8HXNV9hje0nvkb6H3eMFmO3S4gJzaKoiL2jJhwnuSD/p20ll+1iUH7uXHTjQZjIyFpERQtNA3Z4gldGUqxAyvFzZtBzUDYNImvQ3ZcCIiIiH4rHuAIYIXAi3zRoFy7T6Ew1OATcA0o53LrSSEEwONYwT7wqI2BGIa4giAglyBA78DlPLs9QnOssvdqHAjwBLZEQdrF0UqoNmyLkfUnEAmjmEqEddx4gUIRB0ILuIl0deqBKxXlUoN2BTTiMEQiIiIhghcEqcea8Fk1Up745Y0pJkxuj8/ERw7Q14jT4vF+sm2snNDEBEQLL1j2D1REIZAhAiEZCc6yiIqOnNpUy2hb80GphH7Iw4nxoJEtIMDt10DnOkeRFJD6X1pLAp1JTuEgiG64ET/QoiGREREQyIonkCaSt9h1NmyA07jZ/k+CPD407A9KseWLtlTsNfRZgWoh9BIM3U4llIbhieecswIcZLsJzrLL3M9RFjevIRZTAqzBg0WXkAtEMV+fOT0ZpUwTcXImgCQr2KLxQtXUiRRlZ8/Ne5bCfV3MER7hcZzAEWcue1iRrM2QUBY3xmVgmuHTT3xpiED79H569InVzPqQqpWAqTP6EmHG+f3N5o/RG5QREMi0qfsvwaO8vKNLWKD065rZnYmn3DIImfrIiuvexJVN1wkcBJnRGqUw7/6Ik8l9BToqtnYfRTQ3eeoqfvPUSMMCD6q5E0LAEBsDZ0aMLaydASadQd92foINxukoYvdQrKDnAHtgUQEHMicymc0pXmt/4y7z1FT956ipOhBLwymt5zROxFd6Cq5a2+TsoKsdioLnsQUVtyQeEed1ruvXF6BGgT0LLhERSnwEEC8Cp+89RU/een0IiIolYrXCQOdExAxhJEvW4lNxgnIGxRRJ/Kw7CMSDcikgiIftEQgaIRWvH55wq5u8ERU9xBFNefjEJXd99kEGQuR+LTRiWtThslCVQLobE7tugxvaBDPuqd4h063AiI0cBAgQIDBBvuKakDuIIYLTVK6xpBmN/OYEmhorvtwgIgZ9NNde/M68ff3Gx4jZZ0QE85yPnfIIZyOIZERECAgZ+GJpVdlU7KnhzPHr7zqlTOMQ4zKyrBfovc8CA2olkVZon9d7+buBFvsPPwPuCIREX2jRSDFP0HfqbUVWnfayba696ClxU+Ukx4AsgIVrUuvEZosY4kLGIM3pwYIEKXiIk/PQi0yTGM0UkISCIRuIUK1QKnZNoxnsOfWPEBjJ3FzqC/Ilss2ob4E8y2ONAY+/3mC4qTTci4g75J6SfCNqE51ll7s/KnixYmPp/pnsLp0NYQaZRGkSq3oE3twentPc8P8ckQPyh0YbdesVvvPUU+XnqKn7wRFT956TKZw5h8i0uTMJ8YcfQY49LW/zJ7KcSEp5rEWlRrOjOy36kDBSqNH6I6ybbAVZMSgKumkQQyjdkVHiFgVdDrBOdbFFat1ePT8+3XHuMrB+BqoIXsYTlEREBcEBAgVUgQIEBAgQICBWSFjVypwgKss59z3evqbUPVfWDPps26LLj2BWMFkkHRKNRWBnN8JBFsdQCLG9fjyjXu9O5fHlGwcHWTFDC3CDMNAC2El56io1nWdcJA/kVuD6plmRIt+Tn1mkWhK/X0RymiBDIiIiOUKCd5mlxk97NE+Jr0NYQIpCHTMlC49wsoLTAuXhUS5gLqocAWi/4nF0NBgNEblBEQyIiIiGREL0MGpABNX74h1k2hY2UPsKHTlyqKadSahrkOch6iQe8xMNRP9TXobvPUVP3nqKjXHocu74CIv3EOnk54PfH0cZlDqGK92CgVXBLXi3r1FNSB84hucU2yn1VG+7ip+89RU8Qq/GKEiRRK2I6xfhyYEpBdMyfCecoaCyyFeHV4DPy2Pm9Nlb3W8Q6ybbAVZNZ8DNVWoiBZzHQRb/5RN9fL/GTFHj2YOIJ8BaX4hKtRZw5xaIpVfvECD6+Tn7rvPUVP3nqKn7z0kRlmHPDwxHTy8OpPWNCSQ5pAq5ljMyAtKLs7vfNlT9xpFuIdZNvKs5sTpC+4HvPUVP3nqHruRu3Gkwxzn9Eq3ciA1/UeQFOAoT7FNez4U9JRZBh+bsccQWVXZb3fhjTOQSVXZb+fhQyOQSVXZZMUF8Ln7L8Gjt7t4mbGj+fXinIXZaUkl/N4RLI5IQL06Ju1QgbyJJF4tHJ+dT956iRuNk+RQqBVk2k4V1FJVPAqn7Yf4Si6o67sKuNUFy2hUVNQjuGatuqzRPglu31Y8Q6ybbAVZNtlGKJFT951S8okU+XGwYXRQOcq23qxHas+CvltQNbpCMiNCgAAcPgGb+T3MIrXj884YkoaekoslEDz48Q6d7bAU0T0sEH1/dyF+5qyjJaQD/Hg4QyMGgrEML+nxQh6IkOt5SlSlvFych77Y43yYo07PQN8JBFpmUaecNxUzs81ZUrRPrpJdLD5zVZeKasQiY8u1dlt13fMD46ybbATmSSAtLyi3RrqbUVP00AVM4uSkhkSkQDIKmkd8HmH8B8G9EbTn1cP7xDcu7ip+7xPooQLvPUVP1MJhqKn7z1Rvd+GE/U2ovxZ8KXd5eTcIqd+fe7eRvc1otrof+h7lwQIMM41RkxSuPPwxyiUb+c6seFKS89RVOOs/zLF+rAU0T9AxzJ8iF6SWl6UVMqfunOEGMn9ERiGhz1Rvu6N/PvabJt5EQqxp96EXFTOz1AGPGQ+o7RQpCv42r+TRZGnyLZH8/DCe43SIrURUzs9RU/eeaOoCcyF0ZDxDPptqdOXBGRc/lxenYUE5dxp1OVshLr727VNMCvxkK56mAI6ybbATmQuKnuI7EyfBDJVa7KA8FvSKBU0Yi6yYSIxx0722AqycgGNEewJSwhRLAVZNtgKp8r8D8EJ9lzvEOsm1pEnx9FVK1/q5pKyktc9Mbid5Z3AJENNgJzITfye3F4h1k22AqybWkDXbYCrJtKBV1E49hKO691QXnlDlMKOdZkNQsx+xkoVZ9Y0hcVPu7TIAzDxJsdCDQPV5C6BORLONp8C8kBpKFuE3Qi0qeYoRNfFQAA7ZFpUD2NWJKrq+5eFKQIOLogg+u07R+iOsm2syKhxiBQMQcn6XkJLtskzzFPEdSGDSR9PKXT5Lp+Lc1PlHBRKr90NgSNSfLz1FT956ip+ptRUnU/YI5g1LfzXuTYiJw9qHr2NQaqOYyPlKI36da1jw+2U7aYEDEUuy3852G7oyIVlP3ndWseIddHiR7z0fGlUC3oVv7FJ4iJyVOICVwd8CDnViX8JBWI8ps9RVAvz13z1FT9y2jp4Vk2zOql5inf9OoE3op3ERE4lI2ISh/R0lXs9QlwvxbdfATq/TpKLMNuvghSQFAHBiGlQHxWPEUGeTGT0UleSIifyn/KppjFGi998GAe+2TkPfbJjFaIrJS6WZRMPJwvheJRPIiJbJ4jiURrfYEkbJS0qBZLteLk4XjFb0uWbSEikpaQ0hmU32hkUUleaNOM0psz4jyiBZLteLk5D1pzrNpSgM6yJ5RAfE+BKkJEROxSeikpATgymt9gu0qBZLteLkxitEVkpdLMomHk4XwvEonkREtk8RxKI1vsCSNkpaVAsl2vFycLxit6XLNpCRSUtIaQzKb7QyKKSvNGnGaU2Z8R5RAsl2vFych6051m0pQGdZE8ogPifAlSEiInYpPRSUgJwZTW+wXaVAsl2vFyYxWiKyUulmUTDycL4XiUTyIiWyeI4lEa32BJGyUtKgWS7Xi5OF4xW9Llm0hIpKWkNIZlN9oZFFJXmjTjNKbM+I8ogWS7Xi5OQ9ac6zaUoDOsieUQHxPgSpCRETsUnopKQE4MprfYLtKgWS7Xi5MYrRFZKXSzKJh5OF8LxKJ5ERLZPEcSiNb7AkjZKWlQLJdrxcnC8YrelyzaQkUlLSGkMym+0MiikrzRpxmlNmfEeUQLJdrxcnIetOdZtKUBnWRPKID4nwJUhIiJ2KT0UlICcGU1vsF2lQLJdrxcmMVoislLpZlEw8nC+F4lE8iIlsniOJRGt9gSRslLSoFku14uTheMVvS5ZtISKSlpDSGZTfaGRRSV5o04zSmzPiPKIFku14uTkPWnOs2lKAzrInlEB8T4EqQkRE7FJ6KSkBODKa32C7SoFku14uTGK0RWSl0syiYeThfC8SieRES2TxHEojW+wJI2SlpUCyXa8XJwvGK3pcs2kJFJS0hpDMpvtDIopK80acZpTZnxHlECyXa8XJyHrTnWbSlAZ1kTyiA+J8CVISIidik9FJSAnBlNb7BdpUCyXa8XJjFaIrJS6WZRMPJwvheJRPIiJbJ4jiURrfYEkbJS0qBZLteLk4XjFb0uWbSEikpaQ0hmU32hkUUleaNOM0psz4jyiBZLteLk5D1pzrNpSgM6yJ5RAfE+BKkJEROxSeikpATgymt9gu0qBZLteLkxitEVkpdLMomHk4XwvEonkREtk8RxKI1vsCSNkpaVAsl2vFycLxit6XLNpCRSUtIaQzKb7QyKKSvNGnGaU2Z8R5RAsl2vFych6051m0pQGdZE8ogPifAlSEiInYpPRSUgJwZTW+wXaVAsl2vFyYxWiKyUulmUTDycL4XiUTyIiWyeI4lEa32BJGyUtKgWS7Xi5OF4xW9Llm0hIpKWkNIZlN9oZFFJXmjTjNKbM+I8ogWS7Xi5OQ9ac6zaUoDOsieUQHxPgSpCRETsUnopKQE4MprfYLtKgWS7Xi5MYrRFZKXSzKJh5OF4gADwy///c4H//ZwP/+zgf/rRf+HfZXYXzRwtah8m+guqYV36UUTlgNpqOks2MCCzFQlbAYZ12MBg5xLoV9CnagYxdUPs35L583FfCvGbx339IxrYqu6GujfRatRxHl+fcpbwzr6xw/sKkZYxna0oCoDhtSqw+p/P7LSYXDnW/hUzq3ulMShb0l4xrMyuNBvj/ahIleW1DriVKB9ppc/HT4W3A3Uz0X6rKSq9+fd99imYJkKV5vh3hXgAzKupqrjaLydMjXRUMJ78VlvjAqiuosZ23/ePkvD6g5mZezDpOyiu75OICaIMdwcbs5JA234wgeEMuvfc6RUOy2Jb7SOVx3UtSVrmflwY19MotQOLSM2e0BvJVch8X8vYFriyQb9KHDavmuPgHScSoTt5pDwjGxoWfdYCjFCrBCEpUX8pYfBO3MAOhdKhvfkb9HUOF6C0YtQC5y84hFxezbo5tXTUikVRy/zyr+nuSrrHQgqZ6T0o0b22orxS+NCcULp0+y/cPWTWWcVWjBuMetfREor5/5ZQt6f+V81Sq8UZT1cfVMMjtHfktg5gBe6vvvjavAVZUoeSjGyjNXuazM4YH9cOYBnuuUUiu9EOhhw4lH5OytFUe/gzmBNCd8xrNPyyg5HRTbX31hjp7eXrwDyRTjRJYO+UHlb/L25VZ7O24J9SLGPEwzyATz0N6F8pQ5XdUrpynR8bYqTQhtOYmwPDQxig2w3Ia6DoCkPtjQdAkLtNH5UIyON9FCj0DXG9em0i5mi/hmPg+xNwgpisudtPpvDJiZ+iRFpUsxn1arngdXLUSUh/Bc3a8Jq1HysO5GFPiL+ZqPu9Cpwa2kjQGOIlzraPokbkZ6RD5B1MrXA4yczGiw1XDU3b6UwqdOQh1r87v66YExAbSye4pGFGPsX1vq846R04HxKKBv3K88x++OoqhThb/Pvk55/dLcI9LK7CvkXe9ayiCuFwA1l+DwJzt3aHphpJ+AiK05Ooq1zvVtd/6QE9e7QfoPcK+bHraWqOwehngLA8cBKEje3NtOKovyPn0O2IqSNpSTx9mJYLOi/YbA/4+VkwmrsKHa3zv/z6FUPVX2JEz489qcKCCiLtJizG3At8IDY1rL3XA5g8LyVxHirvHf+b8fYMRjoPzI9MuUuE/GSTlxfFgUN7sKI9w9Ex6dgX9TujrrG7d3lotDLV6sxSbHeQF3LLwc3LdM6DPdzCydwj4eagWqRtnb6/S0RUmKm5/aPLOZGa7qkJi95oYFt5ShJuuBxwFmGntgateJUBbO5jf15E4Vt2amgS27tZx1qkO/FpGUu2oFFJwd1Xg9Xg1zhJuZtoDqIW9AHEg5TRIRsJfPsWmLjOw6pjnQTpihihJ+FJJ7xaU+2wN80d2jv7zbh654/dXU68Uf/ditzvsc6+Cy9zr4mvP467QKV+6OUGd7MoXuweQZdw/+sFh839WWDhCKr+aoLhNX2j+yqTPoYtZP0BSEyDWTSnujyeygtvTIXdavy5O4Sx2oByM/v2PkqZ5Q/6wHLi4AzZO/n9hxszCpIYQfY8zg/kCDVlbIz2brdFP6pzmoBUZZrbLdckbXIQ2DWDfPPtn/RjRemDHWsVY4EZrMyGl+UFSUN/VZGgiQBQEUbOztKgapFSP/eaL13KYHZ40g6rwBez1fqdndiKtgldOma6uPZjFKkDC84IlIxJJk3m5+zmdHan7uuVd0X5JlUzt6BA9DF5rO+SAWfc4jw/+RWN5leAjntzkQlyIy5RfFm8gTFO9yTPqXzClzEsN2WtBo673jv0/jdYF2CgKAPdu4oNT6BjghTBl2xoFnYxBz3qFwhvpFvapw1qyPklhXIBat1gFe8AgdqdjszulLk6kX82+Z/gnQuBx9/z8FriQsLSNgbuyyMvdtE+imDVmN9PjMZSzOjQWfmMRIQuzPM6nvP/H9CarCPGw3HxtiR/32BOZ5tXb7u1k/SiyCHGNVUTdNY0udq7JoBTsP5iY6DFSrrXbGo44N2ngsbGwk/kMINhbZ8cvu5b7qUnZR3GZ35yu/TGWGNv9KYQ0AtSvwMjxsCTt4F35bSBygQPWEYQX+dnMto+e13zsun9C5mObZXWHJ/qVFQyWV+pjxnffAqyN5gJD9mBb40rOp+cxneg6H2px5n6qLDhr0oB3XPxQYSJwt5E5Ekwmqap6Quf7XZxS4tSyYP/db5EKId0ZfHP2OZcjOjmltaPtben1EElgLyAbpmb3CPSNQpzaXxo2dV4bN4zuw1i3g8E2qF8gbJVyi/K9oaaDpYBPtGlvIGpFCe7bmdcKZE2N5yK5aUr5PGfv8rhA8oY+8VLKsxSe4ipVEYWqPu6GF/i0/behsPWMlu10YaPN0KX+5QWdx4LWHte3zEmrNaINTqQwQaT2RBQ1Xdu4XsyptXVHkeSJZZb/42qfLG0i9mshaq3l/ApdlrBQVFA2vVzr0LGEjAeJiIeNkQ8tWs9UxWVwKOJMpt0vsMHvd8nJE+HHJpF6uefJGyiel9XBU8EXWVh36L4LL77LSyRO2V2bfDld6+OHp/rCveng+gVB7OSuqRQBjRSyp8yByMaJfX8QDpNEXTgKf4jxxBscs8GmOBSqA227RiA2F6WEYZOvnnBsaL0RKBP84cZjhT2E3p2pD1j1uiSDgXc+FbjTN2es65kqkKXpfUZUmq+wUzwBwOUw346XvjSb05Bj2PbIdSUZwMOwjegrfTUup+JJdkuRJOo4OyJW/2Tz08LDCikAAAABLVgJORHty4X7ovfB7aRRPXYgqWl99Wa7dzwBrGvFZmcgTNTs1xp/X102oq+XkFKpBdvPzQhOnZfVb5493ym6XAFr/kaPlVctahWnjM+isCtP9mcJwsFQwZu7nX0RhXBimXr7DQEhl6BcDT43DjhC19GRsy8bBX00g9jHpfxBWVz0fdDLeqjr3O7ElkJBIWATIkZokDIcyBeOpDh2wtM0y2Ci/O4kv1J3c1H+vvPjA0DBye2jQa3agxOxFu9QZ4nEHzglOwCmvlbfEX9uisPdMYqhH+e4Z5IpPop9tI38Cq522qyciJbuA7gM1GZHS5ddpV03u8Jbrs3NtOZ4+jgU7lPA3e634FyvmU+vupdss+/XJvNSZJKtbOF6XZCx92Ler3ezKXZm7IbdoAO5QQj9xMcCxO73jlaUb0vYZykRn/sNUwhmqKONKo59i9RFJwzP0wQH+J8DhuZj0T2jyngwksRcyUxWMwFw2tx1qn7jo9EzuTuK/HyVu7u275LkmYOEoKOYN+P3ZgfVuc0AfASC2kfYRIB52S3WFlHpum+WiZNPVytIbJoZZ9oZpro60IKSpFPNmdsYP24qXFPkq/6qLe9W/SaXazs/+zBDqx6XbjqS6aeQFuUUUmNKvAJhVl6oQmqsBubmrSEKpncPx/XDSjmcW3tVPJAzxLdxf6L70RQcyZ1S9XzzLcPLA+rt/0uvfbTyuy5F9C5zK5XDV1CeiwMRHtGdjW/u4xDLMWKocJG1UcNYlW4JT2pJx9VqMy9ItdUzry4UBSTSuacSkh9fs88sJBIqsj9YPzihTH0W+57HQLohFChrh0W7t1osFLd9n1RluFDoT3rgcNtcY/Hbkmwtl89f1IKaH5B7SpNBjZE8yGHoahAlz6zT1RAkKrajGEmbgCuW2sxy2pAWdc8u3hfEkMoEZ+zbISZAa+xpADJD6CvXDc/xhKhKvqGvPAAAEtrNMx/Qs1WfYedw77XNnMx3XiQrdiEBrJ4F6ZeS4sUote3WHbw6VPvK4C6VtZe4bmmnIpgtMEcGhaIOKFgkOGQRLpKlvIEMeQAHk1JuGe0rNJ595EqcHb/XhoZLSDih8/NrGI2gfa3kG0oHu1dApHIiBrWC1zd/aKskItT1c6/KXO3/HCbB0cs5AnmXw7BjznlplNXYJ8D3hk/U9VSpCqzyDSOqplE059ZJgzX5LGCF4tW0207qCeFDYEILmCOQyXIrI1jYA539jI/k/Z9W/nrir8p54Apxtarz90ajWUU/ShP5YTfsdbWbOFYwxoZD4iVY/810Y3kLrDRWmw/DXpL8Cmi75+s3gtSeVcJkFLs9Ko7asVz5zdaCQosP5v9zQgCuJRJj4OTKVKo4Bqyua01qNzsR+oHE0goOys0kUvH0ISVWbvfqwN1/9xV4NXiNUfh82yt5XrZ+cvn/wJkUCMwWc6mFV3/ca4u4xjg/np/C7d/qz/4P/mRZUfJ3My5dFbB1kFLjvW73AUIgbOyVYwMC7jqwnHHVxqPswqRwEwj8AZMjWYZBh4AJcNrnBFUMpJ2hR0KPp1r4SffmTOdLJCLniNcKeqHq9ExX9rsLNYAU3e3ijxpZY4sqIsbFJFZvJVgZ8txmsb9610JX/V8XZPzPgAv+EQbA1s4HUT6OeBvQvzeFBt5+SxGH/PTmnzEyK5PV32xJTQ/Yk5iaEuC8MLJRg0iW7ozU7NhiPV7LPUBC7uGrsMHg0UwHVivb9eAvCHDMcS5pBm0Kfh/L1QCxrHkM2yhmniR+t4ugmHuR1UeZ0aiTYdJov4V+iExuAx90uQarDWdzOzVN6Z8ZVGRhzpr2VjJ58AZCVE8zWL+zBmMQ88W8QVp0ZRe65axSQOrfLRNwJRjADDMumY3kaXdF1gx3sVWvTbCkfWpnVE/fJZ1ItKOLAJrSzV6uusWvv3MwfVk7lse5DjbNPdCHiajCeJOUjA7R4OdMMvJfzXBeUZrPxi4gBeoEIm7elXr+ZNlCovSynmiGKyvugoMn+5UEQVcJ4xB1k3VyMSG+Fdf4BRUD7cWyzQzIh8UJbGiCW3EopA6iArQ9WuRl0N4I27V9l81fRpYUMqZo0pKlPce8f8Qs4gh53DO9qXcEjlA8MHOYIcePWWYf8Z8AlWw67IwLuqnLh288+DddUBs8AnigH2EWX6QKzFU/xRqW0cAyhe9agxN2in65AWB86kK49UfwuTT7YlEINU3jbWtGdwCwPq516nOF11QAOM0306L+2p+P7NhetplixoJhHU+OCob1dnwTpkirqs7MxomPE/pZOngUrHRExtUZPhSDlLnN2hLbXaLeXerJ/uwzgypUnIaW5Gj162Y0NBlooybrQna4sEGTepeBKhkO1bvjaYX+m1CsDJ0hiLWistv287q1TGSjWo1mys5ppcG3UoCcQ5CpQhw+NkQVXnePNekXWr7OLxj7uwctmuQPbjDcRNsm/dv40V6+bFmCRLPx3anHAwF6XCBWPOt13vYuEHHI4I36q2gtOQ5fgp4A976CUB1luJ4NNBS1vnr8yJ2JBv1qlk+ksKcrtMcFkJwBRmaM7GbfbXAUe9Iv6rb1RT6kebhPrFCN8gZKcwU0GDA9gw0Vh0Yk3E3stN9clHxK9VBHCcHlHhnookAHQtSwPhCoAs0HK5I8AiIHp40IdQQI/okMAf/hjYdiln2bBn+5/nF2Arg31XeqLQzxHg/rMFNxQsMzKjvg5PGIN0PWkwIcJEIeX6z/byezfaVMsd059sd04YFFgrDyhy/r9HnF5sfv/Po9qTNuQcLOME1OG2Mfn2bL09hp1EKgiWnLVySzW0j10q06qIfPs5e8xiQIN6k+Z+jsC+nYvuoIDeoO6RBIwFkKf8mdsQAI6wpbuBhus0DKje4GdHEwbjmDYCK7gU9RxLCHR5EJqdnAYX1dSVg5CtY5JTOd8lRnskE91p1puzgKu+ijZYiQyLBEfmNugw1kbs9TW5T63jCf3NmyV2ulWBhEiuPEeM2BNsXfEhgzAyZvSgJJRiS/nFcuAAB1jJG+ma/ugrP3s3WIyzUb9TNuU2PQO7f93mxF8d3W/RUFGLq4ZMSHFz95qR+ai26LwNbu844I5wkqAKebAhsVvopMJYyUNslgAc4sOtmk33S9k7sFtN3h3HZrUk6FQ/7NknJ3WyMssnheMO/7dB+tShiumVOvy/21E80kbWegULGAjGtmWB326iViFyrbXFwnXZo3W/Znb0oQfTL/Auy97Sv639yKt/aazmWD3pvYBQplwesGEmNHkpA0pshjjxSZL9CGZAPn7cya5nzJUsV7Yz2xHowB3zttPVfwE0TceyPzbpxCzHa/KyxQwYeYSOV0dopzkQjORIqOVvytOpUtBs4bcnsZM8GwXcJqTg1mOBDte+Wa180UU3kgW5K535mLsWW7xizgYKlgzkcSvEnNE5gflFttFS0vq6KEfB89oEX+hUtHOyaiSYL/KIYIGyuIvcfcIq4LykgY8QKpTOG1lfiTT6MpI0QVf5PqRwvVmVqIHYugAAAAAIfgIAShwUOw9uu1VoPcdUip70tBb7PUj676pTqERAPZWquC8Z9gQlKrkEYYe72FAUj8v3G58ZJj6qdQiIC08nd876v4OD5wPqtYgrpbRCQMNtIC2fmZgX55KHDam5FvPNzI7zPOCg8J/H0lX+gaJigptmTJBjYgKUSaJX15Wp0vucQiZDsZuJBaSvxD9z6Cp8Hssvq0yIoFU6ih4Q+oagpoLdYphZhnOPCx68z/9dbgP6qODHRm+NvOREPOWrejncTZcJNe6AizbvTNvKZvkyrK6laQ2invMmJKg5LVUVYl6ae6TQyuatEyQbbEJwxHBxb6uER9f2q21bF9UI2/yRtfYYYDcyIXOIi6ywkPtNZieCN4UlP853zO5vnTn2OP9Lfje91M9D8It6WGwPO2g/lKnpijLhVM8gZvvypWjPikjcSbfbKZ8jTy286uresNtmcKu0RI/tbq3Rs+sKU1IqulhzDsMyfQnqdVbjA2U0NsgJjm0xnqO2mVifgH2I+aMy81ZYM8oMpfiUvhr5HNjpeQ4S3M13scO0plgG1mVEC8803GS/HE4OezVFwB+OsjXOe/K/RUGGLAva6Gb7j4t1KoeTaOqT9PCNFoLQJvG6A2r4NxazWpSM6uawWM6/f/epuVPr0jG3j+AziUjd8PSYL/K2zr2s/hiqsxyYkmvf2b+orzKEep9klI630wYpkuJ2/kr2FessbAbadwYudyDALRnZOvm++TcgJfLFMbfQftw9vn2U2PgsD6eagBLS8yxTRgXjLMIwT9aWi9z+g3SOuR/Inlzacqwm8dQMNmV9ajFF0WkSBkOrR/Vf/IjiftkKceV9hIcMAI9rSJDIrbTlQQz0iUvb50bABgyo6b0DVRVK9zY6VJTTubD+Lr7euoJSG1IblRZbsva08Kt9xXatG+10CseG9j3U35564kiqhKkebafuot4w74AzH9YNoqSfgJX1zzRkhYECEBpRAxoxHimsYnaF2MvG7YyhTrPq0d5I84fk4RcbejiLey+DGU31tk4ueFF0ZLei01yfFvRACQR7JWOEi3XCM2xZD68u6nB5KHDalkGIQRCd7Ol+pPdh9EcbzumnmD1GoWDaR/Y84g+OZ4DwW1mf6TCav8ejlSyS9nwVL3uhUjtm7M04vcMWlznyTEmwGacGUP6lJ98lQMcJG0zhVfp1G2Zp47GN2b1GFLszAH88FcNW2VrOa2nkA35PWtqEQyrbFDCvZ9jh27idVb7ZzyVT9gh5EvrQaBgmgsKvVk4PCnBfkQO2OWU7VxP2lSxABHN8h3yEPAoQXrhRF1Xhn0LBxVVjkPiAIBwZywHk7F6E22I1coTyniQJ6ruNQt5Wgbeiw+HnuiYouA5HP/NDBkU/u/FEMj/ALNRcfO8Ir9jUJ0qXESIlGzEKsVQ90yVS+Mg3XxvjG64JRRgRoAmMlGYYOEiHgVXtgCpxuIKaIPaB8J9si40NRz8/ah6GC8PeftX8cmiqHnH+yWSvEHM/7wfH6qUeLAycgRQlPh+D08KHKsYgSMOVpN9CWI6H022+mnr1Q3C16h39jM4FC0c6oqlaydx4ycHpklJWOFv3/gm8SHUF+nGJ4wOcJA8523ixArCJtUQmBv1BECIo3FpLWhIo9hfrPYw9qgVIyVBj2mDNup2bW1laKnmT7vl5vFrnv72jm320dpNu1rjxT3V9WvX0obaFgqWlgvwfHryjXp+4PgielPNqSmMK0PTjYMvBdircqWLByZiq3A2d6/RWmHO9XrJXfKNwRdnyZk+vam+8+xrJwCKewGuE0Zb4z2GWnlT2W/N4h5otZqm5xYJSz6lDOEHTUXj6HSsJKUoaBfbK12xdjy++HacRzcUvCNrQDGILRRNDMyQC6cinqLvZgELneJh+wB0yEWBh7WKF2Ww2dOKUQVUmlEZy03BMysPANlwqSZBPoK2OklWH8VwWtbkOz1OPuSgUAJ4I6DqXzmkAB8RJuobAH7lDhtXt5+n1+Fs2bg6pgyNztLoChewwqh4ZoEQp31jWKUWi+rLdmo43tyiG1EMFoEVSDOKqomDz+83XEWPRgW8KaalMz3+xVpQK5PZyMC50P5MAAAA4TjB9i8JdVmO+0qZuUOJSj82i+5FgH0RNE4WEiTO6EFsdbkKFmQD1nX7YkvGKY5i5+CPSzOcfMP+SZ6BsPhSp3iY+F9SgMd5aJh0lNuyicAD/J23EK3hmQtaH2Lp2JOxJ2JOxJ2JOxJ3OubArbJzmWcikquT/XSlNK4eq4KnXOBFHDqR1Uyfb1K03Qux4OtiXyzP+EWpxj2PXwgIUCbAxp5kWKhshn8YnhYDaCiQTAEtSWIHaYWCU0gBWhOqllbwqyhw9Q45CtMaCneXCMLu5233bl5t8rlU5XKpyuVVR6oP8j/qznFs0F6Ma+KmOyx0WuGLJruGamcEd008Eea93cPqkxkxp+PM/qEfbAXOxGvlU4tEOySNegLOglVF45w5h9cJOFvvt3K+sgvwybyB8e171wtoKLCEmJOBgEY8/GvO34TDTMtMy0zLTMtJFRb+xFUVjeuZ+j/CAnO6xfvKgFgxJ/tEbjRi92MJH49nJ+0z8KzibySvRrhft5DfLV1ZjYM8AbJxZOI/V/jpdvUFaRxR7OX1UG94T9v4SCK+0R88OxLBsnc1zio6L3caLCpnxu+9wuSLwOdhfMHYgOAiO2nFnLYfcrhaq/jUoNW/1Gbo8SgAAAb9fAUPf468/8mzd3NzVtKXYqI5IAAACtY64X4Kaqbp+8emHE6ZQhIxrJhUG6EdEu9UAAAAAAAAB31GABWE6lAA6OjDQgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=)"><div class="snow-layer">
+<div class="snow" style="left:44.2%; top:3.65%; width:6.35%; aspect-ratio:1; opacity:0.1"></div>
+<div class="snow" style="left:63.01%; top:6.58%; width:6.35%; aspect-ratio:1; opacity:0.1"></div>
+<div class="snow" style="left:57.05%; top:15.71%; width:6.35%; aspect-ratio:1; opacity:0.1"></div>
+<div class="snow" style="left:17.55%; top:28.49%; width:6.35%; aspect-ratio:1; opacity:0.1"></div>
+<div class="snow" style="left:81.19%; top:38.72%; width:6.35%; aspect-ratio:1; opacity:0.6"></div>
+<div class="snow" style="left:8.15%; top:43.84%; width:6.35%; aspect-ratio:1; opacity:0.3"></div>
+<div class="snow" style="left:91.85%; top:49.32%; width:6.35%; aspect-ratio:1; opacity:0.6"></div>
+<div class="snow" style="left:12.85%; top:56.26%; width:6.35%; aspect-ratio:1; opacity:0.3"></div>
+<div class="snow" style="left:23.82%; top:59.54%; width:6.35%; aspect-ratio:1; opacity:0.3"></div>
+<div class="snow" style="left:5.64%; top:63.2%; width:6.35%; aspect-ratio:1; opacity:0.6"></div>
+<div class="snow" style="left:46.39%; top:63.2%; width:6.35%; aspect-ratio:1; opacity:0.6"></div>
+<div class="snow" style="left:88.4%; top:63.2%; width:6.35%; aspect-ratio:1; opacity:0.3"></div>
+<div class="snow" style="left:19.75%; top:66.85%; width:6.35%; aspect-ratio:1; opacity:1.0"></div>
+<div class="snow" style="left:70.22%; top:66.85%; width:6.35%; aspect-ratio:1; opacity:0.6"></div>
+<div class="snow" style="left:23.82%; top:72.33%; width:6.35%; aspect-ratio:1; opacity:1.0"></div>
+<div class="snow" style="left:85.58%; top:72.33%; width:6.35%; aspect-ratio:1; opacity:1.0"></div>
+<div class="snow" style="left:91.54%; top:74.16%; width:6.35%; aspect-ratio:1; opacity:0.6"></div>
+<div class="snow" style="left:9.4%; top:74.52%; width:6.35%; aspect-ratio:1; opacity:0.8"></div>
+<div class="snow" style="left:78.06%; top:74.89%; width:6.35%; aspect-ratio:1; opacity:0.6"></div>
+<div class="snow" style="left:15.67%; top:77.81%; width:6.35%; aspect-ratio:1; opacity:1.0"></div>
+<div class="snow" style="left:64.89%; top:78.17%; width:6.35%; aspect-ratio:1; opacity:1.0"></div>
+<div class="snow" style="left:38.56%; top:81.1%; width:6.35%; aspect-ratio:1; opacity:0.8"></div>
+<div class="snow" style="left:52.98%; top:81.1%; width:6.35%; aspect-ratio:1; opacity:0.8"></div>
+<div class="snow" style="left:82.13%; top:81.83%; width:6.35%; aspect-ratio:1; opacity:0.8"></div>
+<div class="snow" style="left:26.96%; top:81.83%; width:6.35%; aspect-ratio:1; opacity:0.8"></div>
+<div class="snow" style="left:6.0%; top:56.0%; width:6.35%; aspect-ratio:1; opacity:0.8"></div>
+<div class="snow" style="left:19.0%; top:58.3%; width:6.35%; aspect-ratio:1; opacity:0.8"></div>
+<div class="snow" style="left:31.5%; top:60.6%; width:6.35%; aspect-ratio:1; opacity:0.8"></div>
+<div class="snow" style="left:44.0%; top:62.9%; width:6.35%; aspect-ratio:1; opacity:1.0"></div>
+<div class="snow" style="left:57.0%; top:65.2%; width:6.35%; aspect-ratio:1; opacity:1.0"></div>
+<div class="snow" style="left:69.5%; top:67.5%; width:6.35%; aspect-ratio:1; opacity:0.8"></div>
+<div class="snow" style="left:83.0%; top:69.8%; width:6.35%; aspect-ratio:1; opacity:0.8"></div>
+<div class="snow" style="left:94.0%; top:72.1%; width:6.35%; aspect-ratio:1; opacity:0.8"></div>
+<div class="snow" style="left:11.0%; top:74.4%; width:6.35%; aspect-ratio:1; opacity:1.0"></div>
+<div class="snow" style="left:50.0%; top:76.7%; width:6.35%; aspect-ratio:1; opacity:1.0"></div>
+<div class="snow" style="left:88.5%; top:79.0%; width:6.35%; aspect-ratio:1; opacity:0.8"></div>
+</div></div>
+
+<section class="benefits">
+  <div class="wrap">
+    <h2>Как мне это поможет?</h2>
+    <div class="benefit-row" id="benefitRow">
+      <div class="benefit-card active" data-idx="0">
+      <div class="benefit-top"><span class="benefit-num">01</span></div>
+      <img class="benefit-icon" src="data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjM3MiIgaGVpZ2h0PSIyNDIiIHZpZXdCb3g9IjAgMCAzNzIgMjQyIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBpZD0iRXllIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTM3MiAxMjFDMzcyIDEyMSAyODguNzI1IDI0MiAxODYgMjQyQzgzLjI3NTQgMjQyIDAgMTIxIDAgMTIxQzAgMTIxIDgzLjI3NTQgMCAxODYgMEMyODguNzI1IDAgMzcyIDEyMSAzNzIgMTIxWk0yNzAuODkyIDEyMUMyNzAuODkyIDE2OS42MiAyMzIuODg1IDIwOS4wMzYgMTg2IDIwOS4wMzZDMTM5LjExNSAyMDkuMDM2IDEwMS4xMDggMTY5LjYyIDEwMS4xMDggMTIxQzEwMS4xMDggNzIuMzc5NiAxMzkuMTE1IDMyLjk2NDMgMTg2IDMyLjk2NDNDMjMyLjg4NSAzMi45NjQzIDI3MC44OTIgNzIuMzc5NiAyNzAuODkyIDEyMVpNMTg2IDE3MS40NDdDMjEyLjg2NyAxNzEuNDQ3IDIzNC42NDYgMTQ4Ljg2MSAyMzQuNjQ2IDEyMUMyMzQuNjQ2IDkzLjEzOTIgMjEyLjg2NyA3MC41NTMgMTg2IDcwLjU1M0MxNTkuMTMzIDcwLjU1MyAxMzcuMzU0IDkzLjEzOTIgMTM3LjM1NCAxMjFDMTM3LjM1NCAxNDguODYxIDE1OS4xMzMgMTcxLjQ0NyAxODYgMTcxLjQ0N1oiIGZpbGw9IiNEQjQwOEUiLz4KPC9zdmc+Cg==" alt="">
+      <div class="benefit-text">
+        <h3>Сразу видно — сколько можно спокойно потратить.</h3>
+        
+        <p>После каждой получки Кубыш составляет план с учётом обязательных платежей, запланированных расходов и ваших целей. По фактическим тратам он показывает бюджет на день, текущий темп и хватит ли денег до следующей получки.</p>
+      </div>
+<img class="benefit-icon-closed" src="data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjE0MS44MTMiIGhlaWdodD0iMTkzLjU2OCIgdmlld0JveD0iMCAwIDE0MS44MTMgMTkzLjU2OCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggaWQ9IlN1YnRyYWN0IiBkPSJNMCAwQzc4Ljk4NDkgNS42MTExMyAxNDEuODEzIDk2Ljc4NDIgMTQxLjgxMyA5Ni43ODQyQzE0MS44MTMgOTYuNzg0MiA3OC45ODQ5IDE4Ny45NTcgMCAxOTMuNTY4VjE2Ni45NjZDMzQuMDkyNCAxNjMuMDY1IDYwLjYwOTQgMTMzLjEzMyA2MC42MDk0IDk2Ljc4NDJDNjAuNjA5NCA2MC40MzU3IDM0LjA5MjUgMzAuNTAyMSAwIDI2LjYwMTZWMFpNMCA1Ny4wODJDMTcuOTU0NCA2MC43MzMzIDMxLjQ5OSA3Ny4xMTk1IDMxLjQ5OSA5Ni43ODQyQzMxLjQ5OSAxMTYuNDQ5IDE3Ljk1NDMgMTMyLjgzNCAwIDEzNi40ODVWNTcuMDgyWiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+Cg==" alt="">
+    </div>
+<div class="benefit-card" data-idx="1">
+      <div class="benefit-top"><span class="benefit-num">02</span></div>
+      <img class="benefit-icon" src="data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjMxOSIgaGVpZ2h0PSIyOTciIHZpZXdCb3g9IjAgMCAzMTkgMjk3IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBpZD0iVmVjdG9yIiBkPSJNMjgxLjkwNyAxNzQuNDg4QzI4MS45MDcgMTcxLjUzNCAyODAuNzM1IDE2OC43MDEgMjc4LjY0OCAxNjYuNjEyQzI3Ni41NjEgMTY0LjUyMyAyNzMuNzMgMTYzLjM1IDI3MC43NzkgMTYzLjM1SDIyNi4yNjdDMjIzLjMxNiAxNjMuMzUgMjIwLjQ4NiAxNjQuNTIzIDIxOC4zOTkgMTY2LjYxMkMyMTYuMzEyIDE2OC43MDEgMjE1LjE0IDE3MS41MzQgMjE1LjE0IDE3NC40ODhWMjc0LjcyNUgxOTIuODg0VjMzLjQxMjVDMTkyLjg4NCAyMi42MDE3IDE5Mi44NTQgMTUuNTkyNSAxOTIuMTcyIDEwLjQ1NDRDMTkxLjUxOSA1LjYyODE1IDE5MC40NjUgNC4xMTM0NSAxODkuNjIgMy4yNjdDMTg4Ljc3NCAyLjQyMDU1IDE4Ny4yNiAxLjM2NjIgMTgyLjQzOCAwLjcxMjgwMUMxNzcuMjkgMC4wMjk3MDE0IDE3MC4zMDEgMCAxNTkuNSAwQzE0OC42OTkgMCAxNDEuNjk1IDAuMDI5NzAxNCAxMzYuNTYyIDAuNzEyODAxQzEzMS43NCAxLjM2NjIgMTMwLjIyNiAyLjQyMDU1IDEyOS4zOCAzLjI2N0MxMjguNTM1IDQuMTEzNDUgMTI3LjQ4MSA1LjYyODE1IDEyNi44MjggMTAuNDU0NEMxMjYuMTQ2IDE1LjYwNzQgMTI2LjExNiAyMi42MDE3IDEyNi4xMTYgMzMuNDEyNVYyNzQuNzI1SDEwMy44NlYxMDAuMjM4QzEwMy44NiA5Ny4yODM3IDEwMi42ODggOTQuNDUwOCAxMDAuNjAxIDkyLjM2MjFDOTguNTE0MyA5MC4yNzM0IDk1LjY4MzkgODkuMSA5Mi43MzI2IDg5LjFINDguMjIwOUM0NS4yNjk2IDg5LjEgNDIuNDM5MiA5MC4yNzM0IDQwLjM1MjMgOTIuMzYyMUMzOC4yNjU0IDk0LjQ1MDggMzcuMDkzIDk3LjI4MzcgMzcuMDkzIDEwMC4yMzhWMjc0LjcyNUgxMS4xMjc5QzguMTc2NiAyNzQuNzI1IDUuMzQ2MTggMjc1Ljg5OCAzLjI1OTI5IDI3Ny45ODdDMS4xNzI0IDI4MC4wNzYgMCAyODIuOTA5IDAgMjg1Ljg2M0MwIDI4OC44MTYgMS4xNzI0IDI5MS42NDkgMy4yNTkyOSAyOTMuNzM4QzUuMzQ2MTggMjk1LjgyNyA4LjE3NjYgMjk3IDExLjEyNzkgMjk3SDMwNy44NzJDMzEwLjgyMyAyOTcgMzEzLjY1NCAyOTUuODI3IDMxNS43NDEgMjkzLjczOEMzMTcuODI4IDI5MS42NDkgMzE5IDI4OC44MTYgMzE5IDI4NS44NjNDMzE5IDI4Mi45MDkgMzE3LjgyOCAyODAuMDc2IDMxNS43NDEgMjc3Ljk4N0MzMTMuNjU0IDI3NS44OTggMzEwLjgyMyAyNzQuNzI1IDMwNy44NzIgMjc0LjcyNUgyODEuOTA3VjE3NC40ODhaIiBmaWxsPSIjRkQ4NDk2Ii8+Cjwvc3ZnPgo=" alt="">
+      <div class="benefit-text">
+        <h3>Видно, как движется каждая цель.</h3>
+        
+        <p>Кубыш показывает, сколько уже накоплено, сколько нужно откладывать на цель и когда она будет достигнута при текущем плане. Если прогноз начинает расходиться с желаемой датой, приложение заранее покажет риск.</p>
+      </div>
+<img class="benefit-icon-closed" src="data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjE0NyIgaGVpZ2h0PSIyMjguNTgyIiB2aWV3Qm94PSIwIDAgMTQ3IDIyOC41ODIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGlkPSJTdWJ0cmFjdCIgZD0iTTI0LjI0MzIgMEMzMi41NTYzIDAgMzcuOTM1IDAuMDIzMTA2MiA0MS44OTc1IDAuNTQ4ODI4QzQ1LjYwODcgMS4wNTE3MSA0Ni43NzM5IDEuODYzMTkgNDcuNDI0OCAyLjUxNDY1QzQ4LjA3NTcgMy4xNjYxMiA0OC44ODYyIDQuMzMyNTkgNDkuMzg4NyA4LjA0Njg4QzQ5LjkxMzkgMTIuMDAxMyA0OS45MzY1IDE3LjM5NTcgNDkuOTM2NSAyNS43MTU4VjIxMS40MzhINjcuMDY1NFYxMzQuMjkyQzY3LjA2NTQgMTMyLjAxOSA2Ny45NjgxIDEyOS44MzggNjkuNTc0MiAxMjguMjNDNzEuMTgwMyAxMjYuNjIzIDczLjM1ODYgMTI1LjcyIDc1LjYyOTkgMTI1LjcySDEwOS44ODhDMTEyLjE1OSAxMjUuNzIgMTE0LjMzNyAxMjYuNjIzIDExNS45NDMgMTI4LjIzQzExNy41NDkgMTI5LjgzOCAxMTguNDUyIDEzMi4wMTkgMTE4LjQ1MiAxMzQuMjkyVjIxMS40MzhIMTM4LjQzNkMxNDAuNzA3IDIxMS40MzggMTQyLjg4NSAyMTIuMzQxIDE0NC40OTEgMjEzLjk0OEMxNDYuMDk3IDIxNS41NTYgMTQ3IDIxNy43MzYgMTQ3IDIyMC4wMUMxNDcgMjIyLjI4MyAxNDYuMDk3IDIyNC40NjQgMTQ0LjQ5MSAyMjYuMDcxQzE0Mi44ODUgMjI3LjY3OSAxNDAuNzA3IDIyOC41ODIgMTM4LjQzNiAyMjguNTgySDBWNC4xOTQzNEMwLjM1NDM2NiAzLjMxNzQgMC43MjkxMDQgMi44NDgzMyAxLjA2MjUgMi41MTQ2NUMxLjcxMzM5IDEuODYzMjQgMi44NzgyIDEuMDUxNjggNi41ODg4NyAwLjU0ODgyOEMxMC41Mzk5IDAuMDIzMDk3NSAxNS45MzAxIDUuMjU4NDVlLTA3IDI0LjI0MzIgMFoiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo=" alt="">
+    </div>
+<div class="benefit-card" data-idx="2">
+      <div class="benefit-top"><span class="benefit-num">03</span></div>
+      <img class="benefit-icon" src="data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjMwMS4wNTYiIGhlaWdodD0iMzAyIiB2aWV3Qm94PSIwIDAgMzAxLjA1NiAzMDIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxnIGlkPSJHcm91cCA2MDgiPgo8Y2lyY2xlIGlkPSJFbGxpcHNlIDE0NiIgY3g9Ijc1LjUwMDIiIGN5PSI3NS41IiByPSI3NS41IiBmaWxsPSIjOEQ1Q0ZGIi8+CjxjaXJjbGUgaWQ9IkVsbGlwc2UgMTQ4IiBjeD0iNzUuNTAwMiIgY3k9IjIyNi41IiByPSI3NS41IiBmaWxsPSIjOEQ1Q0ZGIi8+CjxlbGxpcHNlIGlkPSJFbGxpcHNlIDE0NyIgY3g9IjIyNi4wMjgiIGN5PSI3NS41IiByeD0iNzUuMDI4MSIgcnk9Ijc1LjUiIGZpbGw9IiM4RDVDRkYiLz4KPGVsbGlwc2UgaWQ9IkVsbGlwc2UgMTQ5IiBjeD0iMjI2LjAyOCIgY3k9IjIyNi41IiByeD0iNzUuMDI4MSIgcnk9Ijc1LjUiIGZpbGw9IiM4RDVDRkYiLz4KPC9nPgo8L3N2Zz4K" alt="">
+      <div class="benefit-text">
+        <h3>Копите на несколько целей к нужным датам.</h3>
+        
+        <p>Добавьте важные и менее приоритетные цели — например, свадьбу, отпуск и новый телефон. Кубыш рассчитает, когда получится их достигнуть и сколько нужно откладывать на каждую цель в месяц, чтобы достичь их к нужным датам.</p>
+      </div>
+<img class="benefit-icon-closed" src="data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjYzLjU4MDEiIGhlaWdodD0iMjM0IiB2aWV3Qm94PSIwIDAgNjMuNTgwMSAyMzQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGlkPSJTdWJ0cmFjdCIgZD0iTTUuNDQ1MzEgMTE3QzM3LjU1MiAxMTcgNjMuNTgwMSAxNDMuMTkxIDYzLjU4MDEgMTc1LjVDNjMuNTgwMSAyMDcuODA5IDM3LjU1MiAyMzQgNS40NDUzMSAyMzRDMy42MDkwMyAyMzQgMS43OTI3OCAyMzMuOTEzIDAgMjMzLjc0NVYxMTcuMjU0QzEuNzkyNzUgMTE3LjA4NiAzLjYwOTA2IDExNyA1LjQ0NTMxIDExN1pNNS40NDUzMSAwQzM3LjU1MiAwIDYzLjU4MDEgMjYuMTkxMyA2My41ODAxIDU4LjVDNjMuNTgwMSA5MC44MDg3IDM3LjU1MiAxMTcgNS40NDUzMSAxMTdDMy42MDkwMyAxMTcgMS43OTI3OCAxMTYuOTEzIDAgMTE2Ljc0NVYwLjI1MzkwNkMxLjc5Mjc1IDAuMDg2MzIwNSAzLjYwOTA2IDIuOTEyMjZlLTA3IDUuNDQ1MzEgMFoiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo=" alt="">
+    </div>
+<div class="benefit-card" data-idx="3">
+      <div class="benefit-top"><span class="benefit-num">04</span></div>
+      <img class="benefit-icon" src="data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjMyNSIgaGVpZ2h0PSIyNTEiIHZpZXdCb3g9IjAgMCAzMjUgMjUxIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBpZD0iVmVjdG9yIiBkPSJNOTguNTc5NSA4MS4wNzQ5TDE2MS42NDggMTIuNUwyMjQuNzE2IDgxLjA3NDlNMTYxLjY0OCAxMi41VjE3NC41MzhNMjQ4LjU4IDExMi4yODFMMzEyLjUgMTc1LjM5MUwyNDguNTggMjM4LjVNMzEyLjUgMTc1LjM5MUgxNjMuMzUyTTc2LjQyMDUgMTEyLjI4MUwxMi41IDE3NS4zOTFMNzYuNDIwNSAyMzguNU0xMi41IDE3NS4zOTFIMTYxLjY0OCIgc3Ryb2tlPSIjOThEREZEIiBzdHJva2Utd2lkdGg9IjI1IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+Cg==" alt="">
+      <div class="benefit-text">
+        <h3>Каждая получка уже распределена.</h3>
+        
+        <p>Кубыш сначала закладывает обязательные платежи, запланированные категории трат и кошелёк на небольшие незапланированные покупки. Оставшиеся деньги направляет в накопления и распределяет между целями по вашему плану.</p>
+      </div>
+<img class="benefit-icon-closed" src="data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjE0Mi4xNTciIGhlaWdodD0iMjE2LjUyIiB2aWV3Qm94PSIwIDAgMTQyLjE1NyAyMTYuNTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGlkPSJTdWJ0cmFjdCIgZD0iTTEuODIwMzEgMEM1LjMxNjY0IDAuMDAwMTY5ODkzIDguNjUzNjQgMS40NjQ3MSAxMS4wMjA1IDQuMDM4MDlMNjQuNDY2OCA2Mi4xNTE0QzY5LjEzOTMgNjcuMjMyNiA2OC44MDg0IDc1LjE0MDQgNjMuNzI3NSA3OS44MTM1QzU4LjY0NjQgODQuNDg2MiA1MC43Mzg2IDg0LjE1NSA0Ni4wNjU0IDc5LjA3NDJMMTQuMzIwMyA0NC41NTY2VjEzOC4wMzlIOTkuMjA1MUw2Ni43MDcgMTA1Ljk1M0M2MS43OTQ0IDEwMS4xMDMgNjEuNzQzNiA5My4xODggNjYuNTkzOCA4OC4yNzU0QzcxLjQ0NDEgODMuMzYzIDc5LjM1ODkgODMuMzEyOSA4NC4yNzE1IDg4LjE2MzFMMTM4LjQzOSAxNDEuNjQ0QzE0MC44MTggMTQzLjk5MiAxNDIuMTU3IDE0Ny4xOTYgMTQyLjE1NyAxNTAuNTM5QzE0Mi4xNTcgMTUzLjg4MiAxNDAuODE4IDE1Ny4wODUgMTM4LjQzOSAxNTkuNDM0TDg0LjI3MTUgMjEyLjkxNUM3OS4zNTkgMjE3Ljc2NSA3MS40NDQxIDIxNy43MTQgNjYuNTkzOCAyMTIuODAyQzYxLjc0MzcgMjA3Ljg4OSA2MS43OTQ2IDE5OS45NzUgNjYuNzA3IDE5NS4xMjVMOTkuMjA1MSAxNjMuMDM5SDMuMjY0NjVDMy4wMjIyNyAxNjMuMDM5IDIuNzgwOTcgMTYzLjAzIDIuNTQxOTkgMTYzLjAxN0MyLjMwMzM0IDE2My4wMyAyLjA2MjM3IDE2My4wMzkgMS44MjAzMSAxNjMuMDM5SDBWMC4xMzI4MTJDMC41OTg4MjYgMC4wNDQ3MDQzIDEuMjA3MzEgMCAxLjgyMDMxIDBaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K" alt="">
+    </div>
+<div class="benefit-card" data-idx="4">
+      <div class="benefit-top"><span class="benefit-num">05</span></div>
+      <img class="benefit-icon" src="data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjM4OCIgaGVpZ2h0PSIzODgiIHZpZXdCb3g9IjAgMCAzODggMzg4IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8ZyBpZD0ibWRpOmJyYWluLWZyZWV6ZSI+CjxwYXRoIGlkPSJWZWN0b3IiIGQ9Ik0yMTAuMTY3IDQ4LjVDMTQ5LjIxOSA0OC41IDEwMC4wNzIgOTYuMTkxNyA5Ny4wMDAzIDE1Ni4xN0w2NS45NjAzIDE5Ny4wNzJDNjIuMDgwMyAyMDIuMDgzIDY1Ljk2MDMgMjEwLjE2NyA3Mi43NTAzIDIxMC4xNjdIOTcuMDAwM1YyNTguNjY3Qzk3LjAwMDMgMjc2LjYxMiAxMTEuMzg5IDI5MSAxMjkuMzM0IDI5MUgxNDUuNVYzMzkuNUgyNTguNjY3VjI2My42NzhDMjk2Ljk4MiAyNDUuNTcyIDMyMy4zMzQgMjA2LjkzMyAzMjMuMzM0IDE2MS42NjdDMzIzLjMzNCA5OS4yNjMzIDI3Mi44OTQgNDguNSAyMTAuMTY3IDQ4LjVaTTI3NS44MDQgMTU0LjcxNUwyNDQuMTE3IDE2My4xMjJMMjY3LjM5NyAxODYuNTYzQzI3MC4xMTIgMTg5LjI5IDI3MS42MzYgMTkyLjk4MSAyNzEuNjM2IDE5Ni44MjlDMjcxLjYzNiAyMDAuNjc3IDI3MC4xMTIgMjA0LjM2OCAyNjcuMzk3IDIwNy4wOTVDMjY0LjY3IDIwOS44MSAyNjAuOTc5IDIxMS4zMzQgMjU3LjEzMSAyMTEuMzM0QzI1My4yODMgMjExLjMzNCAyNDkuNTkyIDIwOS44MSAyNDYuODY1IDIwNy4wOTVMMjIzLjI2MiAxODMuODE1TDIxNS4wMTcgMjE1LjUwMkMyMTMuMDc3IDIyMy40MjMgMjA0Ljk5NCAyMjcuOTUgMTk3LjM5NSAyMjUuODQ4QzE5NS41MzcgMjI1LjM3OSAxOTMuNzkxIDIyNC41NDQgMTkyLjI2IDIyMy4zOUMxOTAuNzI5IDIyMi4yMzcgMTg5LjQ0NCAyMjAuNzkgMTg4LjQ4MSAyMTkuMTMzQzE4Ny41MTcgMjE3LjQ3NyAxODYuODk0IDIxNS42NDQgMTg2LjY0OCAyMTMuNzQ0QzE4Ni40MDIgMjExLjg0MyAxODYuNTM4IDIwOS45MTIgMTg3LjA0OSAyMDguMDY1TDE5NS42MTcgMTc2LjIxN0wxNjMuNzY5IDE4NC43ODVDMTYxLjkyMSAxODUuMzAyIDE1OS45ODkgMTg1LjQ0NCAxNTguMDg2IDE4NS4yMDFDMTU2LjE4MyAxODQuOTU4IDE1NC4zNDggMTg0LjMzNiAxNTIuNjkgMTgzLjM3MUMxNTEuMDMxIDE4Mi40MDYgMTQ5LjU4NCAxODEuMTE5IDE0OC40MzIgMTc5LjU4NEMxNDcuMjggMTc4LjA1IDE0Ni40NDggMTc2LjMgMTQ1Ljk4NSAxNzQuNDM4QzE0My44ODQgMTY2Ljg0IDE0OC40MSAxNTguNzU3IDE1Ni4zMzIgMTU2LjgxN0wxODguMDE5IDE0OC41NzJMMTY0LjczOSAxMjQuOTY4QzE2Mi4zMDYgMTIyLjE5IDE2MS4wMjEgMTE4LjU5MiAxNjEuMTQ0IDExNC45MDJDMTYxLjI2NiAxMTEuMjEyIDE2Mi43ODYgMTA3LjcwNiAxNjUuMzk3IDEwNS4wOTVDMTY4LjAwOCAxMDIuNDg0IDE3MS41MTQgMTAwLjk2NCAxNzUuMjA0IDEwMC44NDJDMTc4Ljg5NCAxMDAuNzE5IDE4Mi40OTIgMTAyLjAwNCAxODUuMjcgMTA0LjQzN0wyMDguNzEyIDEyNy43MTdMMjE3LjExOSA5Ni4wM0MyMTcuNTcyIDk0LjIxMyAyMTguMzggOTIuNTAzNCAyMTkuNDk1IDkwLjk5OTNDMjIwLjYxMSA4OS40OTUxIDIyMi4wMTIgODguMjI2IDIyMy42MTkgODcuMjY0N0MyMjUuMjI3IDg2LjMwMzUgMjI3LjAwOCA4NS42Njg5IDIyOC44NjEgODUuMzk3NkMyMzAuNzEzIDg1LjEyNjIgMjMyLjYwMiA4NS4yMjMzIDIzNC40MTcgODUuNjgzM0MyNDIuNSA4Ny43ODUgMjQ3LjAyNyA5NS43MDY3IDI0NS4wODcgMTAzLjYyOEwyMzYuNTE5IDEzNS4zMTVMMjY4LjIwNSAxMjYuNzQ3QzI3MC4wODQgMTI2LjI2MiAyNzIuMDQxIDEyNi4xNTQgMjczLjk2MiAxMjYuNDI4QzI3NS44ODMgMTI2LjcwMyAyNzcuNzMxIDEyNy4zNTUgMjc5LjM5OCAxMjguMzQ3QzI4MS4wNjYgMTI5LjMzOSAyODIuNTIyIDEzMC42NTEgMjgzLjY4MSAxMzIuMjA3QzI4NC44MzkgMTMzLjc2NCAyODUuNjc5IDEzNS41MzQgMjg2LjE1IDEzNy40MTdDMjg2LjYxIDEzOS4yMzIgMjg2LjcwNyAxNDEuMTIgMjg2LjQzNiAxNDIuOTczQzI4Ni4xNjUgMTQ0LjgyNiAyODUuNTMgMTQ2LjYwNyAyODQuNTY5IDE0OC4yMTRDMjgzLjYwOCAxNDkuODIxIDI4Mi4zMzkgMTUxLjIyMyAyODAuODM0IDE1Mi4zMzhDMjc5LjMzIDE1My40NTQgMjc3LjYyMSAxNTQuMjYyIDI3NS44MDQgMTU0LjcxNVoiIGZpbGw9IiNDRUYxNkMiLz4KPC9nPgo8L3N2Zz4K" alt="">
+      <div class="benefit-text">
+        <h3>Не держите все транзакции и счета в голове.</h3>
+        
+        <p>Даже если деньги лежат на одном счёте под высокий процент, Кубыш распределяет, какая часть уже относится к подушке, отпуску, машине или другим целям. Не нужно ничего запоминать или пересчитывать вручную.</p>
+      </div>
+      <img class="benefit-icon-closed" src="data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjExNC4yMjIiIGhlaWdodD0iMjI5Ljk5OSIgdmlld0JveD0iMCAwIDExNC4yMjIgMjI5Ljk5OSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggaWQ9IlN1YnRyYWN0IiBkPSJNOC41MDY4NCA0Ljc5MTk3ZS0wNUMyMS4wOTY0IDAuMDI1ODM0NCAzMS4yODE0IDEwLjI1MjQgMzEuMjU1OSAyMi44NDE4TDMxLjE0MzYgNzcuMTEyNEw4MS40MTExIDQ5LjYzNThDOTIuMTU1OSA0My43NjI3IDEwNS42MjggNDcuNzExNSAxMTEuNTAxIDU4LjQ1NjFDMTE3LjM3NCA2OS4yMDA4IDExMy40MjUgODIuNjcyNCAxMDIuNjgxIDg4LjU0NTlMNTQuNjY0MSAxMTQuNzkyTDk4LjY5MzQgMTQxLjM4NUMxMDkuOTUzIDE0OC4xODYgMTEzLjU2OCAxNjIuODI3IDEwNi43NjggMTc0LjA4N0M5OS45NjY3IDE4NS4zNDcgODUuMzI1MyAxODguOTYyIDc0LjA2NTQgMTgyLjE2MUwzMC45ODI0IDE1Ni4xNEwzMC44Nzg5IDIwNy4yNTFDMzAuODUyOCAyMTkuODQgMjAuNjI1NSAyMzAuMDI1IDguMDM2MTMgMjI5Ljk5OUM2LjU4MDM4IDIyOS45OTYgNS4xNTY2NyAyMjkuODU2IDMuNzc3MzQgMjI5LjU5MlYxLjYyMjEySDBDMi42Mjk4NyAwLjU3MDMyMiA1LjUwMDg4IC0wLjAwNjA1MTU5IDguNTA2ODQgNC43OTE5N2UtMDVaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K" alt="">
+    </div>
+    </div>
+  </div>
+</section>
+
+<div class="grad-pink1 snowzone" id="snowzone2" style="background-image:url(data:image/webp;base64,UklGRqRNAABXRUJQVlA4IJhNAABQ1gOdASoABeQHPjEYikQiIYgCTBABglpbv//7de9cdaAvEcTrGLo3//+T/4vVftb9/87rfnlHuMdDnHt+km4I///s8UwvLB/9+trRQXfmd3/9p3jv87///9/b51S//9Yv//vA///R/8/++qfwD//+kT4B//+M/4B//5fcAoCfE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8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)"><div class="snow-layer">
+<div class="snow" style="left:69.59%; top:27.03%; width:6.35%; aspect-ratio:1; opacity:0.6"></div>
+<div class="snow" style="left:95.92%; top:28.49%; width:6.35%; aspect-ratio:1; opacity:0.8"></div>
+<div class="snow" style="left:26.96%; top:28.86%; width:6.35%; aspect-ratio:1; opacity:0.8"></div>
+<div class="snow" style="left:5.33%; top:32.15%; width:6.35%; aspect-ratio:1; opacity:1.0"></div>
+<div class="snow" style="left:35.74%; top:32.15%; width:6.35%; aspect-ratio:1; opacity:1.0"></div>
+<div class="snow" style="left:78.68%; top:33.24%; width:6.35%; aspect-ratio:1; opacity:1.0"></div>
+<div class="snow" style="left:63.01%; top:33.24%; width:6.35%; aspect-ratio:1; opacity:1.0"></div>
+<div class="snow" style="left:89.66%; top:34.34%; width:6.35%; aspect-ratio:1; opacity:1.0"></div>
+<div class="snow" style="left:19.12%; top:34.7%; width:6.35%; aspect-ratio:1; opacity:0.8"></div>
+<div class="snow" style="left:96.55%; top:37.63%; width:6.35%; aspect-ratio:1; opacity:0.8"></div>
+<div class="snow" style="left:48.59%; top:37.99%; width:6.35%; aspect-ratio:1; opacity:0.6"></div>
+<div class="snow" style="left:25.08%; top:38.36%; width:6.35%; aspect-ratio:1; opacity:0.6"></div>
+<div class="snow" style="left:9.09%; top:40.18%; width:6.35%; aspect-ratio:1; opacity:0.6"></div>
+<div class="snow" style="left:82.13%; top:42.01%; width:6.35%; aspect-ratio:1; opacity:0.6"></div>
+<div class="snow" style="left:3.13%; top:43.84%; width:6.35%; aspect-ratio:1; opacity:0.1"></div>
+<div class="snow" style="left:34.17%; top:44.57%; width:6.35%; aspect-ratio:1; opacity:0.6"></div>
+<div class="snow" style="left:13.79%; top:49.68%; width:6.35%; aspect-ratio:1; opacity:0.6"></div>
+<div class="snow" style="left:75.24%; top:49.68%; width:6.35%; aspect-ratio:1; opacity:0.3"></div>
+<div class="snow" style="left:93.1%; top:50.78%; width:6.35%; aspect-ratio:1; opacity:0.3"></div>
+<div class="snow" style="left:69.91%; top:55.89%; width:6.35%; aspect-ratio:1; opacity:0.1"></div>
+<div class="snow" style="left:3.45%; top:59.54%; width:6.35%; aspect-ratio:1; opacity:0.3"></div>
+<div class="snow" style="left:90.91%; top:63.56%; width:6.35%; aspect-ratio:1; opacity:0.3"></div>
+<div class="snow" style="left:78.06%; top:66.12%; width:6.35%; aspect-ratio:1; opacity:0.1"></div>
+<div class="snow" style="left:13.48%; top:71.23%; width:6.35%; aspect-ratio:1; opacity:0.1"></div>
+<div class="snow" style="left:96.55%; top:95.71%; width:6.35%; aspect-ratio:1; opacity:0.3"></div>
+<div class="snow" style="left:3.13%; top:95.71%; width:6.35%; aspect-ratio:1; opacity:0.3"></div>
+<div class="snow" style="left:2%; top:21%; width:6.35%; aspect-ratio:1; opacity:1.0"></div>
+<div class="snow" style="left:9%; top:24%; width:6.35%; aspect-ratio:1; opacity:1.0"></div>
+<div class="snow" style="left:17%; top:20%; width:6.35%; aspect-ratio:1; opacity:1.0"></div>
+<div class="snow" style="left:25%; top:23%; width:6.35%; aspect-ratio:1; opacity:1.0"></div>
+<div class="snow" style="left:33%; top:19%; width:6.35%; aspect-ratio:1; opacity:1.0"></div>
+<div class="snow" style="left:41%; top:22%; width:6.35%; aspect-ratio:1; opacity:1.0"></div>
+<div class="snow" style="left:49%; top:20%; width:6.35%; aspect-ratio:1; opacity:1.0"></div>
+<div class="snow" style="left:57%; top:23%; width:6.35%; aspect-ratio:1; opacity:1.0"></div>
+<div class="snow" style="left:65%; top:19%; width:6.35%; aspect-ratio:1; opacity:1.0"></div>
+<div class="snow" style="left:73%; top:22%; width:6.35%; aspect-ratio:1; opacity:1.0"></div>
+<div class="snow" style="left:81%; top:20%; width:6.35%; aspect-ratio:1; opacity:1.0"></div>
+<div class="snow" style="left:89%; top:23%; width:6.35%; aspect-ratio:1; opacity:1.0"></div>
+<div class="snow" style="left:96%; top:20%; width:6.35%; aspect-ratio:1; opacity:1.0"></div>
+<div class="snow" style="left:13%; top:27%; width:6.35%; aspect-ratio:1; opacity:1.0"></div>
+<div class="snow" style="left:45%; top:27%; width:6.35%; aspect-ratio:1; opacity:1.0"></div>
+<div class="snow" style="left:78%; top:27%; width:6.35%; aspect-ratio:1; opacity:1.0"></div>
+</div></div>
+
+<section class="carousel-section" id="carouselSection">
+  <div class="carousel-viewport">
+    <div class="carousel-fade"></div>
+    <div class="carousel-bullets"><span class="bullet active" data-idx="0"></span>
+<span class="bullet" data-idx="1"></span>
+<span class="bullet" data-idx="2"></span></div>
+    <div class="carousel-arrows">
+      <button class="carousel-arrow prev disabled" id="prevArrow" aria-label="Назад">
+        <svg viewBox="0 0 88 88" fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter"><path d="M83 44H6"/><path d="M44 6L6 44L44 82"/></svg>
+      </button>
+      <button class="carousel-arrow next" id="nextArrow" aria-label="Далее">
+        <svg viewBox="0 0 88 88" fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter"><path d="M5 44H82"/><path d="M44 6L82 44L44 82"/></svg>
+      </button>
+    </div>
+    <div class="slide active" data-idx="0" style="background:radial-gradient(closest-side at 68% 40%, rgba(130,81,244,.5), rgba(130,81,244,0) 72%), linear-gradient(180deg,#000 0%,#000 38%,#141ec4 76%,#2a2ef0 100%)">
+      <div class="slide-inner">
+        <div class="slide-text">
+          <h2>Все финансы<br>— в одной картине</h2>
+          <p>Доходы, обязательные платежи, расходы, накопления и цели собраны в одном месте. Сразу видно, как устроен ваш личный бюджет и сколько денег действительно можно спокойно потратить.</p>
+        </div>
+        <div class="slide-fade"></div>
+        <div class="slide-phone">
+          <img class="mockup" src="img/overview-15.webp" width="1200" height="1523" alt="Экран «Обзор» Кубыша: структура расходов по плану и прогноз накоплений к выбранной дате" loading="lazy" decoding="async">
+          
+        </div>
+      </div>
+    </div>
+<div class="slide" data-idx="1" style="background:radial-gradient(closest-side at 68% 40%, rgba(130,81,244,.5), rgba(130,81,244,0) 72%), linear-gradient(180deg,#000 0%,#000 38%,#4a1fb0 76%,#7c3fe0 100%)">
+      <div class="slide-inner">
+        <div class="slide-text">
+          <h2>План не рухнет из-за<br>одной ошибки</h2>
+          <p>Если после очередной получки получилось отложить меньше, чем планировалось, или пришлось взять часть денег из накоплений, Кубыш пересчитает прогноз по целям и заранее покажет, какие сроки изменились и где появился риск.</p>
+        </div>
+        <div class="slide-fade"></div>
+        <div class="slide-phone">
+          <img class="mockup" src="img/goals-15.webp" width="1100" height="1396" alt="Экран «Цели» Кубыша: прогноз даты достижения и предупреждение о риске" loading="lazy" decoding="async">
+          
+        </div>
+      </div>
+    </div>
+<div class="slide" data-idx="2" style="background:linear-gradient(180deg,#000 0%,#000 44%,#123a4d 84%,#a9dbe6 100%)">
+      <div class="slide-inner">
+        <div class="slide-text">
+          <h2>Все накопления на одном счете.<br>Каждая цель под контролем</h2>
+          <p>Не нужно держать в голове, какая часть денег уже относится к отпуску, машине или подушке безопасности. Кубыш сам распределяет общую сумму накоплений между целями и всегда показывает, сколько уже накоплено и сколько ещё осталось.</p>
+        </div>
+        <div class="slide-fade"></div>
+        <div class="slide-phone">
+          <img class="mockup" src="img/envelopes-15.webp" width="1100" height="1396" alt="Экран Кубыша: накопления разложены по конвертам — подушка, цели и свободные деньги" loading="lazy" decoding="async">
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="grad-blue2" style="background-image:url(data:image/webp;base64,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)"><div class="seam-blur seam-blur--tight"></div></div>
+
+<section class="faq-section" id="faq">
+  <div class="wrap">
+    <h2>Заранее отвечаем на ваши вопросы</h2>
+    <div class="faq-list"><div class="faq-item" data-idx="0">
+      <button class="faq-q">
+        <span>Чем Кубыш отличается от zen-money и coin keeper?</span>
+        <span class="faq-icon"><span></span><span></span></span>
+      </button>
+      <div class="faq-a"><p>Zen-Money и CoinKeeper — это учёт того, что уже произошло: вы фиксируете траты и смотрите отчёты постфактум. Кубыш вместо этого держит живой план до следующей получки и каждый день честно говорит, сколько ещё можно потратить, чтобы всё запланированное — от аренды до отпуска — случилось вовремя. Подробнее о разнице подходов — в разборе <a href="alternativa-dzen-mani/">Кубыш и Дзен-мани</a>.</p></div>
+    </div>
+<div class="faq-item" data-idx="1">
+      <button class="faq-q">
+        <span>Кому точно подойдёт Кубыш?</span>
+        <span class="faq-icon"><span></span><span></span></span>
+      </button>
+      <div class="faq-a"><p>Тем, кто устал держать в голове, сколько уже отложено на отпуск, машину или подушку безопасности, и не хочет вести таблицы. Кубыш сам распределяет накопления между целями и показывает, сколько уже готово, а сколько ещё осталось. Как посчитать размер резерва — в гайде <a href="finansovaya-podushka/">про финансовую подушку</a>.</p></div>
+    </div>
+<div class="faq-item" data-idx="2">
+      <button class="faq-q">
+        <span>Подходит ли людям с нерегулярным доходом?</span>
+        <span class="faq-icon"><span></span><span></span></span>
+      </button>
+      <div class="faq-a"><p>Да. План строится не на «среднем доходе», а на реальных датах и суммах поступлений — аванс, зарплата, разовые платежи. Если доход в этом периоде другой, Кубыш пересчитывает бюджет на день и прогноз целей заново, а не держится за устаревшую цифру.</p></div>
+    </div>
+<div class="faq-item" data-idx="3">
+      <button class="faq-q">
+        <span>Нужно ли подключать банк?</span>
+        <span class="faq-icon"><span></span><span></span></span>
+      </button>
+      <div class="faq-a"><p>Нет. Достаточно скриншота из банка, фото чека с кассы самообслуживания или простого ручного ввода — Кубыш сам распознает сумму и дату. Банковские данные и пароли Кубышу не нужны вообще.</p></div>
+    </div>
+<div class="faq-item" data-idx="4">
+      <button class="faq-q">
+        <span>Как Кубыш рассчитывает бюджет?</span>
+        <span class="faq-icon"><span></span><span></span></span>
+      </button>
+      <div class="faq-a"><p>От дохода в периоде отнимаются обязательные платежи и запланированные категории расходов, откладывается небольшой кошелёк на спонтанные покупки — а из того, что остаётся, считается честный бюджет на каждый день до следующей получки. Формула и пример расчёта — на странице <a href="skolko-mozhno-tratit/">сколько можно тратить в день</a>.</p></div>
+    </div>
+<div class="faq-item" data-idx="5">
+      <button class="faq-q">
+        <span>Как работает финансовый план?</span>
+        <span class="faq-icon"><span></span><span></span></span>
+      </button>
+      <div class="faq-a"><p>После онбординга Кубыш строит план на весь период между получками: обязательные платежи, категории расходов, вклад в цели и подушку. После каждой внесённой траты план пересчитывается заново, чтобы прогноз всегда отражал реальность, а не то, что вы задумали в начале месяца.</p></div>
+    </div>
+<div class="faq-item" data-idx="6">
+      <button class="faq-q">
+        <span>Когда появится версия для Android?</span>
+        <span class="faq-icon"><span></span><span></span></span>
+      </button>
+      <div class="faq-a"><p>Пока Кубыш выходит только на iOS — версия для Android в работе. О дате запуска объявим в <a href="https://t.me/kubyshka_user" target="_blank" rel="noopener">нашем телеграм-канале</a>, подпишитесь, чтобы не пропустить. Если ждёте именно Android — <a href="https://t.me/kubyshka_user" data-goal="android_wait" target="_blank" rel="noopener">скажите нам об этом</a>, так мы поймём, сколько вас, и когда браться.</p>
+</div>
+    </div>
+<div class="faq-item" data-idx="7">
+      <button class="faq-q">
+        <span>Нужно ли вносить каждую трату вручную?</span>
+        <span class="faq-icon"><span></span><span></span></span>
+      </button>
+      <div class="faq-a"><p>Нет. Можно загрузить скриншот из банковского приложения или сфотографировать чек — Кубыш сам распознает сумму и дату. Ручной ввод остаётся на случай, когда так быстрее.</p></div>
+    </div>
+<div class="faq-item" data-idx="8">
+      <button class="faq-q">
+        <span>Что будет, если я потрачу больше, чем запланировал?</span>
+        <span class="faq-icon"><span></span><span></span></span>
+      </button>
+      <div class="faq-a"><p>Ничего не сломается. Кубыш пересчитает остаток периода и заранее покажет, какие цели сдвинутся по срокам и где появился риск, — чтобы решение принимали вы, а не календарь.</p></div>
+    </div>
+<div class="faq-item" data-idx="9">
+      <button class="faq-q">
+        <span>Что происходит с моими данными?</span>
+        <span class="faq-icon"><span></span><span></span></span>
+      </button>
+      <div class="faq-a"><p>Кубыш не подключается к банковским счетам: логины, пароли, коды из СМС и номера карт ей не нужны. Что именно обрабатывается и зачем — в <a href="privacy/">политике конфиденциальности</a>.</p></div>
+    </div></div>
+  </div>
+</section>
+
+<section class="final-cta" id="final-cta">
+  <div class="final-cta-inner">
+    <h2>Получите свой<br>финансовый план <em>бесплатно</em></h2>
+    <a href="https://apps.apple.com/app/id6778792103?ct=lp_final&amp;mt=8" class="btn-lime" data-appstore data-pos="final" target="_blank" rel="noopener">Скачать приложение</a>
+  </div>
+  <img class="footer-scallop" src="data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjEyODgiIGhlaWdodD0iNjEzIiB2aWV3Qm94PSIwIDAgMTI4OCA2MTMiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxnIGlkPSJHcm91cCA2MDciPgo8cmVjdCBpZD0iUmVjdGFuZ2xlIDIxOCIgeT0iMjU3IiB3aWR0aD0iMTI4MiIgaGVpZ2h0PSIzNTYiIGZpbGw9ImJsYWNrIi8+CjxlbGxpcHNlIGlkPSJFbGxpcHNlIDEyNiIgY3g9IjEyMTEiIGN5PSIyNTcuNSIgcng9IjcxIiByeT0iNzEuNSIgZmlsbD0iYmxhY2siLz4KPGVsbGlwc2UgaWQ9IkVsbGlwc2UgMTM4IiBjeD0iMTEzOC41IiBjeT0iMjgzLjUiIHJ4PSIxNDkuNSIgcnk9IjEzNC41IiBmaWxsPSJibGFjayIvPgo8ZWxsaXBzZSBpZD0iRWxsaXBzZSAxMzciIGN4PSIxMTM5IiBjeT0iNzEuNSIgcng9IjcxIiByeT0iNzEuNSIgZmlsbD0iYmxhY2siLz4KPGNpcmNsZSBpZD0iRWxsaXBzZSAxMjkiIGN4PSIxMDY4LjUiIGN5PSIyNTcuNSIgcj0iNzEuNSIgZmlsbD0iYmxhY2siLz4KPGVsbGlwc2UgaWQ9IkVsbGlwc2UgMTMwIiBjeD0iOTI2IiBjeT0iMjU3LjUiIHJ4PSI3MSIgcnk9IjcxLjUiIGZpbGw9ImJsYWNrIi8+CjxjaXJjbGUgaWQ9IkVsbGlwc2UgMTMxIiBjeD0iNzgzLjUiIGN5PSIyNTcuNSIgcj0iNzEuNSIgZmlsbD0iYmxhY2siLz4KPGVsbGlwc2UgaWQ9IkVsbGlwc2UgMTMyIiBjeD0iNjQxIiBjeT0iMjU3LjUiIHJ4PSI3MSIgcnk9IjcxLjUiIGZpbGw9ImJsYWNrIi8+CjxjaXJjbGUgaWQ9IkVsbGlwc2UgMTMzIiBjeD0iNDk4LjUiIGN5PSIyNTcuNSIgcj0iNzEuNSIgZmlsbD0iYmxhY2siLz4KPGVsbGlwc2UgaWQ9IkVsbGlwc2UgMTM0IiBjeD0iMzU2IiBjeT0iMjU3LjUiIHJ4PSI3MSIgcnk9IjcxLjUiIGZpbGw9ImJsYWNrIi8+CjxjaXJjbGUgaWQ9IkVsbGlwc2UgMTM1IiBjeD0iMjEzLjUiIGN5PSIyNTcuNSIgcj0iNzEuNSIgZmlsbD0iYmxhY2siLz4KPGVsbGlwc2UgaWQ9IkVsbGlwc2UgMTM2IiBjeD0iNzEiIGN5PSIyNTcuNSIgcng9IjcxIiByeT0iNzEuNSIgZmlsbD0iYmxhY2siLz4KPC9nPgo8L3N2Zz4K" alt="">
+</section>
+
+</main>
+
+<footer id="footer-contacts">
+  <div class="footer-links">
+    <a href="https://t.me/kubyshka_user" target="_blank" rel="noopener" data-pos="footer">TELEGRAM</a>
+    <a href="https://www.instagram.com/kubyshkaai?igsh=MWxzM3h0ZThzM3hxdQ%3D%3D&amp;utm_source=qr" target="_blank" rel="noopener">INSTAGRAM</a>
+  </div>
+  <div class="footer-email"><a href="mailto:KubyshkaAI@Proton.Me">KubyshkaAI@Proton.Me</a></div>
+  <div class="footer-legal">
+    <a href="https://pay.kubysh.com/account/">Вход в аккаунт</a>
+    <a href="https://pay.kubysh.com/offer/">Оферта</a>
+    <a href="https://pay.kubysh.com/recurrent/">Регулярные операции</a>
+    <a href="privacy/">Политика конфиденциальности</a>
+    <a href="terms/">Пользовательское соглашение</a>
+    <span>© 2026 Кубыш. Все права защищены</span>
+    <span class="footer-build">сборка 2026-09-15-40</span>
+  </div>
+</footer>
+
+<div class="cookie-bar" id="cookieBar" role="region" aria-label="Согласие на использование cookie" hidden>
+  <p class="cookie-bar__text">
+    Мы используем файлы cookie, в том числе для статистики посещений. Подробнее — в
+    <a href="privacy/">политике конфиденциальности</a>.
+  </p>
+  <div class="cookie-bar__btns">
+    <button type="button" class="cookie-bar__no" data-consent="no">Только необходимое</button>
+    <button type="button" class="cookie-bar__yes" data-consent="yes">Принять</button>
+  </div>
+</div>
+
+<div class="android-dialog" id="androidDialog" hidden>
+  <div class="android-dialog__backdrop" data-close></div>
+  <div class="android-dialog__card" role="dialog" aria-modal="true" aria-labelledby="androidDialogTitle">
+    <button type="button" class="android-dialog__x" data-close aria-label="Закрыть">×</button>
+    <h3 id="androidDialogTitle">Android уже в работе 🤝</h3>
+    <p>Дату запуска объявим первым делом в телеграм-канале — подпишитесь, и узнаете раньше всех. Там же коротко пишем, что нового в приложении.</p>
+    <a class="btn-lime" href="https://t.me/kubyshka_user" target="_blank" rel="noopener" data-pos="android_dialog" data-goal="android_tg_click">Подписаться на канал</a>
+    <button type="button" class="android-dialog__later" data-close>Не сейчас</button>
+  </div>
+</div>
+
+<script>
+// ---------- snow: scroll-driven, with carry-over ----------
+// Designer's brief: the flakes are tied to the scroll ("как только человек начинает
+// скролить, они двигаются"), they travel UPWARD out of the dark, they keep drifting for
+// another second or two after the scroll stops, and the position shown in the mock is the
+// FINAL state. So each flake starts `rise` px below its mocked spot and arrives at exactly
+// 0 as its zone finishes passing through — no random walk, and the size is never touched
+// (scale has to stay exactly as drawn).
+function makeSnow(zoneId, count) {
+  const zone = document.getElementById(zoneId);
+  if (!zone) return;
+  const layer = document.createElement('div');
+  layer.className = 'snow-layer';
+  zone.appendChild(layer);
+  for (let i = 0; i < count; i++) {
+    const el = document.createElement('div');
+    el.className = 'snow';
+    const size = 10 + Math.random() * 34;
+    el.style.width = size + 'px';
+    el.style.height = size + 'px';
+    el.style.left = (Math.random() * 100) + '%';
+    el.style.top = (10 + Math.random() * 80) + '%';
+    el.style.opacity = 0.10 + Math.random() * 0.22;   // dark zone: bottom of the ladder
+    layer.appendChild(el);
+  }
+}
+makeSnow('snowzone0', 18);
+
+const snowZones = ['snowzone0', 'snowzone1', 'snowzone2'].map(id => {
+  const zone = document.getElementById(id);
+  if (!zone) return null;
+  const zoneH = zone.offsetHeight;
+  const flakes = [...zone.querySelectorAll('.snow')].map((el, i) => {
+    // deterministic per-flake spread so they don't rise as one rigid sheet
+    const want = 120 + (i % 9) * 34;
+    // ...but never further than the room below it, otherwise a flake low in the zone gets
+    // pushed past the bottom edge and overflow:hidden slices it flat mid-scroll (which is
+    // exactly the half-cut flake with a visible contour). Capping the travel removes the
+    // cause; the mocked resting position is untouched either way.
+    const room = Math.max(0, zoneH - (el.offsetTop + el.offsetHeight));
+    return {
+      el,
+      rise: Math.min(want, room),
+      baseOpacity: parseFloat(el.style.opacity || '1'),
+      cur: 0,
+    };
+  });
+  return {zone, flakes};
+}).filter(Boolean);
+
+// Lerping toward the scroll-derived target is what produces the carry-over: at 60fps a
+// 0.05 factor still has visible travel ~1.2s after the last scroll event, then settles.
+const SNOW_EASE = 0.05;
+// The snow is driven by JS transforms now, so the CSS `prefers-reduced-motion` rule can't
+// reach it: honour the preference by jumping straight to the mocked final state instead.
+const SNOW_STILL = window.matchMedia
+  && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function animateSnow() {
+  const vh = window.innerHeight;
+  let moving = false;
+  if (SNOW_STILL) {
+    snowZones.forEach(z => z.flakes.forEach(f => {
+      f.el.style.transform = 'translateY(0)';
+      f.el.style.opacity = f.baseOpacity;
+    }));
+    snowRaf = 0;
+    return;
+  }
+  snowZones.forEach(z => {
+    const r = z.zone.getBoundingClientRect();
+    // Snap rather than ease while the zone is out of view, so it is already sitting at its
+    // start offset when it scrolls in — easing from a stale 0 would make the flakes lurch
+    // downward on entry instead of rising.
+    const off = r.bottom < -400 || r.top > vh + 400;
+    // 0 as the zone first appears from below, 1 once it has fully passed the top
+    let p = (vh - r.top) / (r.height + vh);
+    p = Math.max(0, Math.min(1, p));
+    const fade = Math.min(1, p * 2.2);                 // emerge out of the dark
+    z.flakes.forEach(f => {
+      const target = (1 - p) * f.rise;
+      if (off || !f.primed) { f.cur = target; f.primed = true; }
+      else f.cur += (target - f.cur) * SNOW_EASE;
+      if (Math.abs(target - f.cur) > 0.15) moving = true;
+      f.el.style.transform = 'translateY(' + f.cur.toFixed(2) + 'px)';
+      f.el.style.opacity = (f.baseOpacity * fade).toFixed(3);
+    });
+  });
+  snowRaf = moving || snowDirty ? requestAnimationFrame(animateSnow) : 0;
+  snowDirty = false;
+}
+let snowRaf = 0, snowDirty = false;
+function kickSnow() {
+  snowDirty = true;
+  if (!snowRaf) snowRaf = requestAnimationFrame(animateSnow);
+}
+window.addEventListener('scroll', kickSnow, {passive: true});
+window.addEventListener('resize', kickSnow);
+kickSnow();
+
+// ---------- hero scroll text fill ----------
+(function() {
+  const el = document.getElementById('fillText');
+  if (!el) return;
+  const text = el.textContent;
+  el.innerHTML = text.split(/(\s+)/).map(tok =>
+    /^\s+$/.test(tok)
+      ? tok
+      : '<span class="w">' + [...tok].map(ch => `<span>${ch}</span>`).join('') + '</span>'
+  ).join('');
+  const spans = el.querySelectorAll('.w > span');
+  function update() {
+    const rect = el.getBoundingClientRect();
+    const vh = window.innerHeight;
+    let progress = (vh * 0.8 - rect.top) / (rect.height + vh * 0.5);
+    progress = Math.max(0, Math.min(1, progress));
+    // Purely a function of scroll position, so scrolling back up un-fills by the same
+    // amount rather than latching.
+    const litCount = Math.round(progress * spans.length);
+    spans.forEach((s, i) => s.classList.toggle('lit', i < litCount));
+  }
+  window.addEventListener('scroll', update, {passive:true});
+  window.addEventListener('resize', update);
+  update();
+})();
+
+// ---------- benefit cards hover ----------
+(function() {
+  const row = document.getElementById('benefitRow');
+  if (!row) return;
+  const cards = [...row.querySelectorAll('.benefit-card')];
+  // Hover, not click (designer was explicit). The eye card is open by default and only
+  // closes while another card is hovered — leaving the row restores that default.
+  // На телефоне карточки складываются в столбец, и смена display раскрывала их
+  // рывком. Приём тот же, что в аккордеоне FAQ: измеряем итоговую высоту и ведём
+  // max-height от текущей к ней. На десктопе анимацию делает flex-grow, там не трогаем.
+  const isPhone = () => window.matchMedia('(max-width: 900px)').matches;
+  const SLIDE_MS = 440;
+  function slide(card, from, to) {
+    clearTimeout(card._slideTimer);
+    card.style.maxHeight = from + 'px';
+    void card.offsetHeight;                     // зафиксировать старт до перехода
+    card.style.maxHeight = to + 'px';
+    const settle = () => {
+      clearTimeout(card._slideTimer);
+      card.removeEventListener('transitionend', onEnd);
+      // снимаем ограничение, иначе раскрытая карточка не переживёт поворот экрана
+      card.classList.remove('closing');
+      card.style.maxHeight = card.classList.contains('active') ? 'none' : '';
+    };
+    const onEnd = (e) => {
+      if (e.target !== card || e.propertyName !== 'max-height') return;
+      settle();
+    };
+    card.addEventListener('transitionend', onEnd);
+    // Страховка: если перехода не случилось (прерван или анимации отключены в системе),
+    // transitionend не придёт, и карточка залипнет в промежуточном состоянии —
+    // с содержимым в потоке, но обрезанным до 88px.
+    card._slideTimer = setTimeout(settle, SLIDE_MS + 120);
+  }
+  const open = (c) => {
+    if (c.classList.contains('active')) return;
+    const prev = cards.find(x => x.classList.contains('active'));
+    if (!isPhone()) {
+      cards.forEach(x => x.classList.remove('active'));
+      c.classList.add('active');
+      return;
+    }
+    const fromOpen  = c.getBoundingClientRect().height;
+    const fromClose = prev ? prev.getBoundingClientRect().height : 0;
+    cards.forEach(x => { x.classList.remove('active'); x.style.maxHeight = ''; });
+    // свёрнутая высота уходящей карточки — читаем, пока её содержимое вне потока
+    const toClose = prev && prev !== c ? prev.offsetHeight : 0;
+    // .closing возвращает содержимое в поток: без него карточка схлопывается мгновенно,
+    // max-height нечего сжимать, и страница под пальцем прыгает
+    if (prev && prev !== c) prev.classList.add('closing');
+    c.classList.add('active');
+    const toOpen = c.scrollHeight;
+    if (prev && prev !== c) slide(prev, fromClose, toClose);
+    slide(c, fromOpen, toOpen);
+  };
+  cards.forEach(c => {
+    // на тач-устройстве наведение синтезируется при тапе, но открывать должен клик
+    c.addEventListener('mouseenter', () => { if (!isPhone()) open(c); });
+    c.addEventListener('click', () => open(c));
+  });
+  row.addEventListener('mouseleave', () => {
+    // На телефоне mouseleave прилетает, как только палец отрывается от экрана, и
+    // сбрасывал выбор обратно на первую карточку в обход open() — со стороны это
+    // выглядело так, будто карточки вообще не открываются.
+    if (isPhone()) return;
+    cards.forEach((x, i) => x.classList.toggle('active', i === 0));
+  });
+})();
+
+// ---------- FAQ accordion ----------
+(function() {
+  const items = [...document.querySelectorAll('.faq-item')];
+  items.forEach(item => {
+    const btn = item.querySelector('.faq-q');
+    const a = item.querySelector('.faq-a');
+    btn.addEventListener('click', () => {
+      const isOpen = item.classList.contains('open');
+      items.forEach(i => {
+        i.classList.remove('open');
+        i.querySelector('.faq-a').style.maxHeight = null;
+      });
+      if (!isOpen) {
+        item.classList.add('open');
+        a.style.maxHeight = a.scrollHeight + 'px';
+      }
+    });
+  });
+})();
+
+// ---------- carousel: scroll-locked ----------
+(function() {
+  const section = document.getElementById('carouselSection');
+  // Иначе при обновлении или возврате «назад» браузер восстановит прежнюю позицию —
+  // и если она внутри карусели, замок удержит человека там, сколько бы он ни скроллил.
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  const slides = [...document.querySelectorAll('.slide')];
+  const bullets = [...document.querySelectorAll('.bullet')];
+  const prevBtn = document.getElementById('prevArrow');
+  const nextBtn = document.getElementById('nextArrow');
+  let idx = 0;
+  const n = slides.length;
+  let cooldown = false;
+  let released = true;       // замок снят: значение оставлено, чтобы не переписывать armRelease/навигацию
+  let releaseTimer = 0;
+
+  function render(direction) {
+    const outgoing = slides.find(s => s.classList.contains('active'));
+    slides.forEach((s, i) => {
+      if (i === idx) {
+        s.classList.remove('enter-right', 'enter-left', 'leave-left', 'leave-right');
+        if (direction === 1) s.classList.add('enter-right');
+        else if (direction === -1) s.classList.add('enter-left');
+        void s.offsetWidth; // force reflow so the start position applies before transitioning
+        s.classList.add('active');
+      } else {
+        s.classList.remove('active', 'enter-right', 'enter-left');
+      }
+    });
+    // Slide the old card out the opposite way, then park it so it's centred next time.
+    if (outgoing && outgoing !== slides[idx] && direction) {
+      const cls = direction === 1 ? 'leave-left' : 'leave-right';
+      outgoing.classList.add(cls);
+      setTimeout(() => outgoing.classList.remove(cls), 800);
+    }
+    // Cumulative, per the kit: a passed bullet stays lit, so all three are on by the last
+    // card. It shows how far you have come, not which step you are on.
+    bullets.forEach((b, i) => b.classList.toggle('active', i <= idx));
+    // drives how far the section's bottom edge has dissolved (see .seam-blur--tight)
+    document.body.dataset.slide = idx;
+    prevBtn.classList.toggle('disabled', idx === 0);
+    nextBtn.classList.toggle('disabled', idx === n - 1);
+    armRelease();
+  }
+
+  // The way onward opens only on the LAST card, and only once its bottom edge has finished
+  // dissolving — so the release lines up with the blur completing rather than firing the
+  // instant the card changes. Stepping back onto an earlier card locks it again.
+  const DISSOLVE_MS = 900;   // matches the .85s CSS transition, plus a beat
+  function armRelease() {
+    clearTimeout(releaseTimer);
+    if (idx === n - 1) {
+      releaseTimer = setTimeout(() => { released = true; }, DISSOLVE_MS);
+    } else {
+      released = false;
+    }
+  }
+  function step(dir) {
+    if (cooldown) return;
+    cooldown = true;
+    go(dir);
+    setTimeout(() => { cooldown = false; }, 650);
+  }
+  function go(delta) {
+    const next = idx + delta;
+    if (next < 0 || next > n - 1) return false;
+    idx = next;
+    render(delta > 0 ? 1 : -1);
+    return true;
+  }
+  prevBtn.addEventListener('click', () => go(-1));
+  nextBtn.addEventListener('click', () => go(1));
+  bullets.forEach((b, i) => b.addEventListener('click', () => { const dir = i > idx ? 1 : -1; idx = i; render(dir); }));
+
+  function inLockZone() {
+    const rect = section.getBoundingClientRect();
+    return rect.top <= 1 && rect.bottom >= window.innerHeight - 1;
+  }
+
+  // One gate for every way of scrolling. Returns true when the event was consumed by the
+  // carousel and the page must not move. Forward is blocked until `released`; backward
+  // always rewinds through the cards first.
+  // 🚨 Правка 25.08.2026 по просьбе Кирилла: «убрать обязательное пролистывание 3х слайдов».
+  // Замок был сделан осознанно (человек видел все три карточки), но цена — страница не
+  // скроллится, пока не отлистаешь. Для лендинга это худшая из возможных проблем: часть
+  // людей просто уходит, решив, что сайт сломан. Теперь карусель — необязательная
+  // возможность: листается стрелками, точками и свайпом, но скролл не перехватывает.
+  function gate(_forward) {
+    return false;
+  }
+
+  // A gate on wheel/key/touch alone can be leapfrogged: one trackpad flick can jump the page
+  // clean past the section, and inLockZone() only holds while the section exactly fills the
+  // viewport. So the page is also PINNED here - scrolling down past the section's top is
+  // clamped back until the last card has finished dissolving. Scrolling back up stays free.
+  // The dissolve follows the scroll that carries the card away, not which card is showing:
+  // pinned means feather 0, so the card is whole under the arrows, and it only opens as the
+  // section actually leaves.
+  const FEATHER_MAX = 160;   // = the -160px lift on .grad-blue2 below (сокращено 31.08)
+  function sectionTop() { return section.getBoundingClientRect().top + window.scrollY; }
+  function updateFeather() {
+    const past = Math.max(0, Math.min(FEATHER_MAX, window.scrollY - sectionTop()));
+    section.style.setProperty('--feather', past.toFixed(1) + 'px');
+  }
+  window.addEventListener('scroll', () => {
+    // Прежде здесь страница «пришпиливалась» обратно к началу секции, пока не пролистаны
+    // все карточки. Оставляем только растворение нижнего края.
+    updateFeather();
+  }, {passive: true});
+  window.addEventListener('resize', updateFeather);
+
+  // An explicit jump from the header (КОНТАКТЫ / FAQ) is the user asking to go somewhere -
+  // honour it rather than trapping them in the carousel.
+  document.querySelectorAll('nav.pill a[href^="#"]').forEach((a) => {
+    a.addEventListener('click', () => {
+      released = true;
+      clearTimeout(releaseTimer);
+      idx = n - 1;
+      render();
+    });
+  });
+
+  window.addEventListener('wheel', (e) => {
+    if (Math.abs(e.deltaY) < 1) return;
+    if (gate(e.deltaY > 0)) e.preventDefault();
+  }, {passive:false});
+
+  // Wheel alone is bypassable — keys and touch have to respect the same lock.
+  const FWD_KEYS = ['ArrowDown', 'PageDown', 'End', ' ', 'Spacebar'];
+  const BACK_KEYS = ['ArrowUp', 'PageUp', 'Home'];
+  window.addEventListener('keydown', (e) => {
+    if (!FWD_KEYS.includes(e.key) && !BACK_KEYS.includes(e.key)) return;
+    if (gate(FWD_KEYS.includes(e.key))) e.preventDefault();
+  });
+
+  let touchY = null;
+  window.addEventListener('touchstart', (e) => { touchY = e.touches[0].clientY; }, {passive:true});
+  // Горизонтальный свайп по карусели листает карточки; вертикальный не трогаем — это
+  // обычная прокрутка страницы.
+  let touchX = null;
+  window.addEventListener('touchstart', (e) => { touchX = e.touches[0].clientX; }, {passive:true});
+  window.addEventListener('touchend', (e) => {
+    if (touchX === null || !inLockZone()) { touchX = null; return; }
+    const dx = touchX - (e.changedTouches[0] ? e.changedTouches[0].clientX : touchX);
+    touchX = null;
+    if (Math.abs(dx) < 45) return;
+    go(dx > 0 ? 1 : -1);
+  }, {passive:true});
+
+  render();
+  updateFeather();
+})();
+</script>
+<script>
+/* Диалог «Хочу Android-версию». Кнопка не ведёт сразу в телеграм: сначала объясняем,
+   зачем подписываться, иначе человек уходит на канал, не понимая, что там будет. */
+(function(){
+  var dlg = document.getElementById('androidDialog');
+  var btn = document.getElementById('androidBtn');
+  if (!dlg || !btn) return;
+  var lastFocus = null;
+  function open(){
+    lastFocus = document.activeElement;
+    dlg.hidden = false;
+    var first = dlg.querySelector('.btn-lime');
+    if (first) first.focus();
+    document.addEventListener('keydown', onKey);
+  }
+  function close(){
+    dlg.hidden = true;
+    document.removeEventListener('keydown', onKey);
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+  function onKey(e){ if (e.key === 'Escape') close(); }
+  btn.addEventListener('click', open);
+  dlg.addEventListener('click', function(e){
+    if (e.target.closest('[data-close]')) close();
+  });
+})();
+</script>
+
+</body>
+</html>

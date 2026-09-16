@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<!-- Политика безопасности содержимого. Дубль заголовка из .htaccess:
+     если mod_headers на хостинге выключен, работает хотя бы это.
+     На странице с деньгами разрешено только своё, API Кубыша и вход Apple. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'self'; form-action 'self' https://appleid.apple.com; script-src 'self' https://appleid.cdn-apple.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.kubysh.com https://appleid.apple.com; frame-src https://appleid.apple.com; object-src 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>Подписка — Кубыш</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Подписка Кубыша: живой план до получки, безопасная сумма на сегодня и прогноз важных целей.">
+<meta name="robots" content="noindex, follow">
+<meta name="theme-color" content="#0a0a0a">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/assets/pay.css?v=20260913a">
+<link rel="stylesheet" href="/assets/checkout-polish.css?v=20260915c">
+<script src="/assets/pay-frame-guard.js?v=20260902b"></script>
+<!-- Сторонних аналитик и трекеров здесь нет сознательно: на странице ПД и деньги. -->
+</head>
+<body>
+
+<header class="top">
+  <a class="logo" href="https://kubysh.com/">Кубы<span>ш</span></a>
+  <a class="top-link" href="https://kubysh.com/">На главную</a>
+</header>
+
+<main class="wrap">
+
+  <section id="state-loading" class="center pad-xl">
+    <div class="spinner" aria-hidden="true"></div>
+    <p class="muted">Загружаем кабинет…</p>
+  </section>
+
+  <section id="state-signin" class="hidden" hidden>
+    <h1>Войди, чтобы продолжить</h1>
+    <p class="lead">Используй тот же Apple ID, что и в Кубыше. Так оплата попадёт именно в твой аккаунт — отдельный пароль не нужен.</p>
+
+    <div id="signin-error" class="notice notice--error hidden" role="alert"></div>
+
+    <div class="btn-row">
+      <button type="button" class="btn btn-apple" id="apple-signin">
+        <svg class="apple-logo" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.05 12.54c.02-2.2 1.79-3.26 1.87-3.31-1.02-1.5-2.61-1.7-3.17-1.73-1.35-.14-2.63.79-3.32.79-.68 0-1.74-.77-2.86-.75-1.47.02-2.82.85-3.58 2.17-1.53 2.65-.39 6.57 1.1 8.72.73 1.05 1.6 2.23 2.74 2.19 1.1-.04 1.51-.71 2.84-.71 1.32 0 1.7.71 2.86.69 1.18-.02 1.94-1.07 2.67-2.12.84-1.22 1.18-2.4 1.2-2.46-.03-.01-2.3-.88-2.32-3.51zM14.9 5.8c.6-.73 1-1.74.89-2.75-.86.04-1.92.58-2.54 1.3-.56.64-1.04 1.67-.91 2.65.96.08 1.94-.49 2.56-1.2z"/></svg>
+        Войти через Apple
+      </button>
+    </div>
+
+    <p class="small muted gap-md">
+      Кубыш не получает пароль Apple. После входа сайт знает только идентификатор аккаунта и контакт для чека.
+    </p>
+  </section>
+
+  <section id="state-contact" class="hidden" hidden>
+    <h1>Куда прислать чек</h1>
+    <p class="lead">
+      Apple не передал контакт для чека. Оставь почту или телефон — только для
+      подтверждения оплаты, не для рассылок.
+    </p>
+
+    <div id="contact-error" class="notice notice--error hidden" role="alert"></div>
+
+    <form id="contact-form" novalidate>
+      <input class="field" type="email" id="contact-email" name="email"
+             placeholder="Почта" autocomplete="email" inputmode="email">
+      <p class="small muted or-divider">или</p>
+      <input class="field" type="tel" id="contact-phone" name="phone"
+             placeholder="Телефон" autocomplete="tel" inputmode="tel">
+      <button type="submit" class="btn btn-primary" id="contact-submit">Продолжить</button>
+    </form>
+  </section>
+
+  <section id="state-plans" class="hidden" hidden>
+    <h1>Спокойно тратить сегодня. Не сдвигать важное завтра.</h1>
+    <p class="lead">Кубыш строит маршрут между получками и показывает, сколько можно потратить сейчас, чтобы обязательные расходы и цели остались в плане.</p>
+
+    <div class="checkout-value" aria-label="Что даёт подписка">
+      <div class="value-point">
+        <strong>На сегодня</strong>
+        <span>Сразу видно сумму, которую можно потратить спокойно.</span>
+      </div>
+      <div class="value-point">
+        <strong>До получки</strong>
+        <span>План пересчитывается после трат, а не остаётся старой таблицей.</span>
+      </div>
+      <div class="value-point">
+        <strong>По целям</strong>
+        <span>Видно, как покупка влияет на сроки важных накоплений.</span>
+      </div>
+      <div class="value-point">
+        <strong>Без банка</strong>
+        <span>Не нужен доступ к счетам: скриншот или ручной ввод.</span>
+      </div>
+    </div>
+
+    <div id="plans-error" class="notice notice--error hidden" role="alert"></div>
+
+    <div class="plans" id="plans-list" role="group" aria-label="Тарифы"></div>
+
+    <p class="checkout-trust" aria-label="Безопасность оплаты">
+      <span>Оплата на стороне Т-Банка</span>
+      <span>Данные карты Кубыш не видит</span>
+      <span>Продление отключается здесь</span>
+    </p>
+
+    <div class="terms">
+      <strong class="ink">Перед оплатой</strong>
+      <ul>
+        <li id="terms-period">Списание раз в выбранный период с карты, которой оплатил.</li>
+        <li>Подписка продлевается автоматически. Отключить продление можно здесь же в любой момент — доступ сохранится до конца оплаченного срока.</li>
+        <li>Условия: <a href="/offer/">оферта</a>, <a href="/recurrent/">порядок регулярных операций</a>, <a href="/privacy/">политика обработки персональных данных</a>.</li>
+      </ul>
+    </div>
+
+    <label class="consent">
+      <input type="checkbox" id="consent">
+      <span>Соглашаюсь с <a href="/offer/">офертой</a>,
+        <a href="/recurrent/">порядком регулярных операций</a> и
+        <a href="/privacy/">политикой обработки персональных данных</a>.</span>
+    </label>
+
+    <button type="button" class="btn btn-primary" id="pay-btn" disabled>Перейти к оплате</button>
+    <p class="small muted gap-sm" id="pay-hint">Выбери тариф и отметь согласие с условиями.</p>
+  </section>
+
+  <section id="state-active" class="hidden" hidden>
+    <h1>Подписка активна</h1>
+
+    <div id="active-error" class="notice notice--error hidden" role="alert"></div>
+    <div id="cancel-done" class="notice notice--info hidden"></div>
+
+    <div class="card">
+      <dl class="flush">
+        <div class="status-row">
+          <dt>Тариф</dt>
+          <dd id="active-plan">—</dd>
+        </div>
+        <div class="status-row">
+          <dt>Активна до</dt>
+          <dd id="active-until">—</dd>
+        </div>
+        <div class="status-row">
+          <dt>Продление</dt>
+          <dd id="active-renew">—</dd>
+        </div>
+      </dl>
+    </div>
+
+    <div id="renew-block">
+      <p class="small muted flush-top">
+        Продлится автоматически, чтобы доступ не прерывался. Отключишь — доступ останется до конца оплаченного срока.
+      </p>
+      <button type="button" class="btn btn-danger" id="cancel-btn">Отключить продление</button>
+    </div>
+
+    
+
+    <div class="btn-row gap-lg">
+  <a class="btn btn-primary" href="kubyshka://">Открыть Кубыш</a>
+  <a class="btn btn-ghost" href="https://apps.apple.com/app/id6778792103">Открыть в App Store</a>
+</div>
+
+<button type="button" class="btn btn-quiet" id="signout-btn">Выйти</button>
+  </section>
+
+  <section id="state-confirm-cancel" class="hidden" hidden>
+    <h1>Отключить продление?</h1>
+    <p class="lead" id="cancel-explain">
+      Доступ останется до конца оплаченного срока. После этого Кубыш перейдёт
+      в бесплатный режим — данные никуда не пропадут.
+    </p>
+    <div class="btn-row">
+      <button type="button" class="btn btn-danger" id="cancel-confirm">Да, отключить</button>
+      <button type="button" class="btn btn-ghost" id="cancel-back">Оставить подписку</button>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <div class="foot-links">
+    <a href="/offer/">Оферта</a>
+    <a href="/recurrent/">Регулярные операции</a>
+    <a href="/privacy/">Политика ПД</a>
+    <a href="https://kubysh.com/terms/">Пользовательское соглашение</a>
+    <a href="https://t.me/kubyshka_user" target="_blank" rel="noopener">Поддержка</a>
+  </div>
+  <div class="foot-req">KubyshkaAI@Proton.Me</div>
+</footer>
+
+<script src="/assets/pay-config.js?v=20260915b"></script>
+<script src="/assets/pay-api.js?v=20260913a"></script>
+<!-- Грузим SDK ДО обработчика клика: popup Apple должен открываться в рамках user gesture. -->
+<script src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/ru_RU/appleid.auth.js"></script>
+<script src="/assets/pay-auth.js?v=20260915b"></script>
+<script src="/assets/account.js?v=20260913a"></script>
+</body>
+</html>

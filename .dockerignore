@@ -1,0 +1,7 @@
+.git
+.github
+tests
+scripts
+deploy
+**/*.md
+.pytest_cache
