@@ -2,9 +2,10 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="build" content="2026-09-15-40">  <!-- метка сборки, видно в исходнике страницы -->
+<meta name="build" content="2026-09-17-41">  <!-- метка сборки, видно в исходнике страницы -->
 <title>Кубыш — сколько можно потратить сегодня до получки</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="apple-itunes-app" content="app-id=6778792103, app-argument=https://apps.apple.com/app/id6778792103">
 <meta name="description" content="Кубыш сам строит план до следующей получки и каждый день показывает, сколько можно потратить, чтобы цели не сдвинулись. Скриншот из банка вместо учёта.">
 <meta name="theme-color" content="#000000">
 <meta property="og:type" content="website">
@@ -39,7 +40,8 @@
   } catch (e) { /* file:// и приватные режимы могут запрещать replaceState — не страшно */ }
 })();
 </script>
-<link rel="preload" href="fonts/InterTight-500.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/InterTight-cyrillic-500.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/InterTight-latin-500.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/Inter-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
@@ -48,7 +50,8 @@
 <style>
 @font-face { font-family:'Inter'; src:url('fonts/Inter-400.woff2') format('woff2'); font-weight:400; font-style:normal; font-display:swap; }
 @font-face { font-family:'Inter'; src:url('fonts/Inter-500.woff2') format('woff2'); font-weight:500; font-style:normal; font-display:swap; }
-@font-face { font-family:'Inter Tight'; src:url('fonts/InterTight-500.woff2') format('woff2'); font-weight:500; font-style:normal; font-display:swap; }
+@font-face { font-family:'Inter Tight'; src:url('fonts/InterTight-cyrillic-500.woff2') format('woff2'); font-weight:500; font-style:normal; font-display:swap; unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116; }
+@font-face { font-family:'Inter Tight'; src:url('fonts/InterTight-latin-500.woff2') format('woff2'); font-weight:500; font-style:normal; font-display:swap; unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
 @font-face { font-family:'Inter Tight'; src:url('fonts/InterTight-600.woff2') format('woff2'); font-weight:600; font-style:normal; font-display:swap; }
 @font-face { font-family:'Inter Tight'; src:url('fonts/InterTight-700.woff2') format('woff2'); font-weight:700; font-style:normal; font-display:swap; }
 
@@ -966,11 +969,11 @@ footer{background:#000; padding:26px 40px 24px;}
 <meta property="og:site_name" content="Кубыш">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://kubysh.com/">
-<meta property="og:image" content="https://kubysh.com/og-cover.png">
+<meta property="og:image" content="https://kubysh.com/og-cover.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Экран Кубыша: сколько можно потратить сегодня">
-<meta name="twitter:image" content="https://kubysh.com/og-cover.png">
+<meta name="twitter:image" content="https://kubysh.com/og-cover.jpg">
 <meta name="twitter:title" content="Кубыш — сколько можно потратить сегодня">
 <meta name="twitter:description" content="План до получки Кубыш строит сам и каждый день говорит сумму, с которой цели не сдвинутся.">
 <script type="application/ld+json">
@@ -1010,7 +1013,7 @@ footer{background:#000; padding:26px 40px 24px;}
    "@id": "https://kubysh.com/#app",
    "name": "Кубыш",
    "applicationCategory": "FinanceApplication",
-   "operatingSystem": "iOS 17.0+",
+   "operatingSystem": "iOS 17.6+",
    "url": "https://apps.apple.com/app/id6778792103",
    "inLanguage": "ru-RU",
    "publisher": {
@@ -1228,7 +1231,7 @@ footer{background:#000; padding:26px 40px 24px;}
 <main>
 <section class="block2 snowzone" id="snowzone0">
   <div class="hero-phone-block wrap">
-    <img class="mockup mockup--hero" src="img/paycheck-15-lg.webp" width="1300" height="1629" alt="Экран «Получка» Кубыша: план до следующей получки, пульс периода и кнопка «Могу ли я себе это позволить»" decoding="async">
+    <img class="mockup mockup--hero" src="img/paycheck-appstore.jpg" width="1300" height="1629" alt="Экран «Получка» Кубыша: сколько можно потратить до следующей получки и прогресс периода" decoding="async">
           
     <p class="hero-side-text" id="fillText">После каждой получки Кубыш автоматически строит финансовый план и каждый день показывает сколько можно потратить, чтобы все цели были достигнуты вовремя</p>
   </div>
@@ -1399,7 +1402,7 @@ footer{background:#000; padding:26px 40px 24px;}
         </div>
         <div class="slide-fade"></div>
         <div class="slide-phone">
-          <img class="mockup" src="img/overview-15.webp" width="1200" height="1523" alt="Экран «Обзор» Кубыша: структура расходов по плану и прогноз накоплений к выбранной дате" loading="lazy" decoding="async">
+          <img class="mockup" src="img/overview-appstore.jpg" width="1200" height="1523" alt="Финансовая картина в Кубыше: доходы, расходы, обязательства, подушка и цели" loading="lazy" decoding="async">
           
         </div>
       </div>
@@ -1412,7 +1415,7 @@ footer{background:#000; padding:26px 40px 24px;}
         </div>
         <div class="slide-fade"></div>
         <div class="slide-phone">
-          <img class="mockup" src="img/goals-15.webp" width="1100" height="1396" alt="Экран «Цели» Кубыша: прогноз даты достижения и предупреждение о риске" loading="lazy" decoding="async">
+          <img class="mockup" src="img/insight-appstore.jpg" width="1100" height="1396" alt="Инсайт Кубыша: сравнение доходов и расходов за текущий период" loading="lazy" decoding="async">
           
         </div>
       </div>
@@ -1425,7 +1428,7 @@ footer{background:#000; padding:26px 40px 24px;}
         </div>
         <div class="slide-fade"></div>
         <div class="slide-phone">
-          <img class="mockup" src="img/envelopes-15.webp" width="1100" height="1396" alt="Экран Кубыша: накопления разложены по конвертам — подушка, цели и свободные деньги" loading="lazy" decoding="async">
+          <img class="mockup" src="img/goals-appstore.jpg" width="1100" height="1396" alt="Экран цели Кубыша: подушка безопасности, накопленная сумма и план пополнения" loading="lazy" decoding="async">
           
         </div>
       </div>
