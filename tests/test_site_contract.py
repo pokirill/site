@@ -16,7 +16,10 @@ def test_required_files_exist():
         "llms.txt",
         "assets/seo.css",
         "assets/seo.js",
+        "assets/about.css",
+        "img/kirill-popov.jpg",
         "lichnye-finansy/index.html",
+        "o-proekte/index.html",
         "kontrol-finansov/index.html",
         "kalkulyator-nakopleniy/index.html",
         "kalkulyator-finansovoy-podushki/index.html",
@@ -142,6 +145,24 @@ def test_all_json_ld_is_valid_json():
         )
         for block in blocks:
             json.loads(block)
+
+
+def test_about_page_connects_creator_product_and_publications():
+    text = (LANDING / "o-proekte/index.html").read_text(encoding="utf-8")
+    for expected in (
+        '<link rel="canonical" href="https://kubysh.com/o-proekte/">',
+        '"@type": "Person"',
+        '"name": "Кирилл Попов"',
+        '"founder": {"@id": "https://kubysh.com/o-proekte/#kirill-popov"}',
+        'https://habr.com/ru/users/popov_kirill_a/',
+        'https://vc.ru/id6066630',
+        'https://apps.apple.com/app/id6778792103',
+        '/img/kirill-popov.jpg',
+    ):
+        assert expected in text
+
+    sitemap = (LANDING / "sitemap.xml").read_text(encoding="utf-8")
+    assert "https://kubysh.com/o-proekte/" in sitemap
 
 
 def test_ai_search_discovery_files_are_consistent():
