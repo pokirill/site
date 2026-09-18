@@ -1,5 +1,7 @@
 from pathlib import Path
+import json
 import re
+from xml.etree import ElementTree
 
 ROOT = Path(__file__).resolve().parents[1]
 LANDING = ROOT / "landing"
@@ -28,6 +30,22 @@ def test_main_build_marker_and_metrica():
     assert "44147844" in text
 
 
+def test_main_has_complete_search_and_social_metadata():
+    text = (LANDING / "index.html").read_text(encoding="utf-8")
+    for expected in (
+        '<link rel="canonical" href="https://kubysh.com/">',
+        '<meta property="og:url" content="https://kubysh.com/">',
+        '<meta property="og:image" content="https://kubysh.com/og-cover.jpg">',
+        '<meta name="twitter:card" content="summary_large_image">',
+        '"@type": "SoftwareApplication"',
+        '"applicationCategory": "FinanceApplication"',
+        '"downloadUrl": "https://apps.apple.com/app/id6778792103"',
+    ):
+        assert expected in text
+    assert text.count('<meta name="robots"') == 1
+    assert text.count('<meta property="og:url"') == 1
+
+
 def test_main_landing_local_assets_exist():
     text = (LANDING / "index.html").read_text(encoding="utf-8")
     references = set(re.findall(r'(?:src|href)=["\']([^"\']+)["\']', text))
@@ -41,6 +59,22 @@ def test_main_landing_local_assets_exist():
         if not clean.lower().endswith(asset_suffixes):
             continue
         assert (LANDING / clean.lstrip("/")).is_file(), reference
+
+
+def test_all_landing_pages_reference_existing_local_assets():
+    asset_suffixes = (".css", ".ico", ".jpeg", ".jpg", ".js", ".png", ".webp", ".woff", ".woff2")
+    for page in LANDING.rglob("*.html"):
+        text = page.read_text(encoding="utf-8")
+        references = set(re.findall(r'(?:src|href)=["\']([^"\']+)["\']', text))
+        references.update(re.findall(r'url\((?:["\'])?([^\)"\']+)', text))
+        for reference in references:
+            clean = reference.split("#", 1)[0].split("?", 1)[0].strip()
+            if clean.startswith(("data:", "http://", "https://", "mailto:", "tel:", "javascript:")):
+                continue
+            if not clean.lower().endswith(asset_suffixes):
+                continue
+            asset = LANDING / clean.lstrip("/") if clean.startswith("/") else page.parent / clean
+            assert asset.resolve().is_file(), f"{page}: {reference}"
 
 
 def test_seo_cluster_has_unique_canonicals_and_sitemap_entries():
@@ -74,6 +108,50 @@ def test_seo_cluster_has_unique_canonicals_and_sitemap_entries():
             canonicals.append(match.group(1))
     assert canonicals
     assert len(canonicals) == len(set(canonicals))
+
+
+def test_sitemap_uses_truthful_lastmod_without_ignored_hints():
+    sitemap = (LANDING / "sitemap.xml").read_text(encoding="utf-8")
+    assert "<changefreq>" not in sitemap
+    assert "<priority>" not in sitemap
+    root = ElementTree.fromstring(sitemap)
+    namespace = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9"}
+    rows = root.findall("s:url", namespace)
+    assert rows
+    for row in rows:
+        assert row.find("s:loc", namespace) is not None
+        assert row.find("s:lastmod", namespace) is not None
+
+
+def test_generated_pages_expose_article_entities_and_social_images():
+    for page in LANDING.glob("*/index.html"):
+        text = page.read_text(encoding="utf-8")
+        if '/assets/seo.css?' not in text:
+            continue
+        assert '<meta property="og:image" content="https://kubysh.com/og-cover.jpg">' in text
+        assert '<script type="application/ld+json">' in text
+
+
+def test_all_json_ld_is_valid_json():
+    for page in LANDING.rglob("*.html"):
+        text = page.read_text(encoding="utf-8")
+        blocks = re.findall(
+            r'<script type="application/ld\+json">(.*?)</script>',
+            text,
+            flags=re.DOTALL,
+        )
+        for block in blocks:
+            json.loads(block)
+
+
+def test_ai_search_discovery_files_are_consistent():
+    robots = (LANDING / "robots.txt").read_text(encoding="utf-8")
+    assert "User-agent: OAI-SearchBot\nAllow: /" in robots
+    llms = (LANDING / "llms.txt").read_text(encoding="utf-8")
+    assert "финансовый навигатор" in llms
+    assert "https://apps.apple.com/app/id6778792103" in llms
+    key = "e71cfcc509bb37c30ca5eafc01a4bb9a"
+    assert (LANDING / f"{key}.txt").read_text(encoding="utf-8").strip() == key
 
 
 def test_generated_seo_pages_track_appstore_clicks():
