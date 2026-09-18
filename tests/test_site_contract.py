@@ -28,6 +28,21 @@ def test_main_build_marker_and_metrica():
     assert "44147844" in text
 
 
+def test_main_landing_local_assets_exist():
+    text = (LANDING / "index.html").read_text(encoding="utf-8")
+    references = set(re.findall(r'(?:src|href)=["\']([^"\']+)["\']', text))
+    references.update(re.findall(r'url\((?:["\'])?([^\)"\']+)', text))
+    asset_suffixes = (".css", ".ico", ".jpeg", ".jpg", ".js", ".png", ".webp", ".woff", ".woff2")
+
+    for reference in references:
+        clean = reference.split("#", 1)[0].split("?", 1)[0].strip()
+        if clean.startswith(("data:", "http://", "https://", "mailto:", "tel:", "javascript:")):
+            continue
+        if not clean.lower().endswith(asset_suffixes):
+            continue
+        assert (LANDING / clean.lstrip("/")).is_file(), reference
+
+
 def test_seo_cluster_has_unique_canonicals_and_sitemap_entries():
     sitemap = (LANDING / "sitemap.xml").read_text(encoding="utf-8")
     required = (

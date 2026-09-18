@@ -2,9 +2,10 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="build" content="2026-09-15-40">  <!-- метка сборки, видно в исходнике страницы -->
+<meta name="build" content="2026-09-18-47">  <!-- метка сборки, видно в исходнике страницы -->
 <title>Кубыш — сколько можно потратить сегодня до получки</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="apple-itunes-app" content="app-id=6778792103, app-argument=https://apps.apple.com/app/id6778792103">
 <meta name="description" content="Кубыш сам строит план до следующей получки и каждый день показывает, сколько можно потратить, чтобы цели не сдвинулись. Скриншот из банка вместо учёта.">
 <meta name="theme-color" content="#000000">
 <meta property="og:type" content="website">
@@ -39,7 +40,8 @@
   } catch (e) { /* file:// и приватные режимы могут запрещать replaceState — не страшно */ }
 })();
 </script>
-<link rel="preload" href="fonts/InterTight-500.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/InterTight-cyrillic-500.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/InterTight-latin-500.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/Inter-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
@@ -48,7 +50,8 @@
 <style>
 @font-face { font-family:'Inter'; src:url('fonts/Inter-400.woff2') format('woff2'); font-weight:400; font-style:normal; font-display:swap; }
 @font-face { font-family:'Inter'; src:url('fonts/Inter-500.woff2') format('woff2'); font-weight:500; font-style:normal; font-display:swap; }
-@font-face { font-family:'Inter Tight'; src:url('fonts/InterTight-500.woff2') format('woff2'); font-weight:500; font-style:normal; font-display:swap; }
+@font-face { font-family:'Inter Tight'; src:url('fonts/InterTight-cyrillic-500.woff2') format('woff2'); font-weight:500; font-style:normal; font-display:swap; unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116; }
+@font-face { font-family:'Inter Tight'; src:url('fonts/InterTight-latin-500.woff2') format('woff2'); font-weight:500; font-style:normal; font-display:swap; unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
 @font-face { font-family:'Inter Tight'; src:url('fonts/InterTight-600.woff2') format('woff2'); font-weight:600; font-style:normal; font-display:swap; }
 @font-face { font-family:'Inter Tight'; src:url('fonts/InterTight-700.woff2') format('woff2'); font-weight:700; font-style:normal; font-display:swap; }
 
@@ -275,54 +278,42 @@ body[data-slide="2"] .seam-blur--tight{
   font-family:var(--display); font-weight:500; font-size:clamp(32px,7.8vw,135px);
   letter-spacing:-.04em; line-height:.81; margin-bottom:44px; color:#0a0a0a;
 }
-.benefit-row{display:flex; gap:3.37%; height:min(43.3vw,748px);}
-.benefit-card{
-  /* No border: the reference has none, and it is what makes the white glyphs read as cut
-     OUT of the card rather than drawn inside a framed box. Widths are the measured
-     378:147 ratio from the reference. */
-  position:relative; flex:147 0 0; background:#0b0b0b; border:none;
-  border-radius:24px; overflow:hidden; cursor:pointer;
-  transition:flex-grow .55s cubic-bezier(.22,.61,.36,1);
+.benefit-row{
+  display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:18px; height:auto;
 }
-.benefit-card.active{flex:378 0 0;}
-/* Badge keeps ONE width in both states (measured 129 vs 136): centred while the card is
-   collapsed - where it nearly fills it - and right-aligned once the card opens. */
-.benefit-top{position:absolute; top:2.9%; left:6%; right:6%; display:flex; justify-content:center; z-index:3;}
-.benefit-card.active .benefit-top{left:auto; right:1%; justify-content:flex-end;}
+.benefit-card,
+.benefit-card.active{
+  position:relative; grid-column:span 2; min-height:430px; padding:26px;
+  display:flex; flex-direction:column; background:#0b0b0b; border:none;
+  border-radius:24px; overflow:hidden;
+}
+.benefit-card:nth-child(4){grid-column:2 / span 2;}
+.benefit-card:nth-child(5){grid-column:4 / span 2;}
+.benefit-top,
+.benefit-card.active .benefit-top{
+  position:static; display:flex; justify-content:flex-end; margin-bottom:18px; z-index:3;
+}
 .benefit-num{
-  width:min(10.1vw,174px); height:min(3.13vw,54px);
-  display:flex; align-items:center; justify-content:center;
-  border:1px solid rgba(255,255,255,.30); border-radius:10px;
-  font-size:clamp(11px,1.05vw,18px); font-weight:600; color:rgba(255,255,255,.40);
-  font-family:var(--display); transition:color .3s ease, border-color .3s ease;
+  width:72px; height:34px; display:flex; align-items:center; justify-content:center;
+  border:1px solid rgba(255,255,255,.55); border-radius:10px;
+  font-size:14px; font-weight:600; color:#fff; font-family:var(--display);
 }
-/* active: fully white number and frame; collapsed: semi-transparent so it recedes */
-.benefit-card.active .benefit-num{color:#fff; border-color:#fff;}
-.benefit-icon{
-  position:absolute; left:50%; top:38.7%; transform:translate(-50%,-50%);
-  width:88%; height:auto; max-width:none; object-fit:contain; opacity:0; transition:opacity .3s ease;
+.benefit-icon,
+.benefit-card.active .benefit-icon{
+  position:static; width:min(52%,180px); height:148px; max-width:none;
+  object-fit:contain; opacity:1; transform:none; margin:4px auto 28px;
 }
-.benefit-card.active .benefit-icon{opacity:1;}
-.benefit-icon-closed{
-  /* Measured: 36% of the card height, centred at 43% of it, and flush to the LEFT edge so
-     the card clips it - that clipping is what makes the shape read as cut out of the card. */
-  position:absolute; left:0; top:43%; transform:translateY(-50%);
-  height:36%; width:auto; max-width:none; object-fit:contain;
-  opacity:1; transition:opacity .3s ease;
+.benefit-icon-closed,
+.benefit-card.active .benefit-icon-closed{display:none;}
+.benefit-text,
+.benefit-card.active .benefit-text{
+  position:static; margin-top:auto; text-align:left; opacity:1; z-index:2;
 }
-.benefit-card.active .benefit-icon-closed{opacity:0;}
-.benefit-card.active .benefit-icon-closed{opacity:0;}
-.benefit-text{
-  position:absolute; left:2.1%; right:2.1%; bottom:4.2%; text-align:left;
-  opacity:0; transition:opacity .3s ease .1s; z-index:2;
-}
-.benefit-card.active .benefit-text{opacity:1;}
-/* "ЗАГОЛОВОК 4 - карточки 1": Inter 25 / 110% / -6% / regular */
 .benefit-text h3{
-  font-family:var(--sans); font-weight:400; font-size:clamp(18px,1.95vw,34px);
-  line-height:1.1; letter-spacing:-.06em; margin-bottom:12px;
- text-transform:uppercase;}
-.benefit-text p{color:rgba(255,255,255,.55); font-size:14.5px; line-height:1.55; max-width:min(40.625vw,702px);}
+  font-family:var(--sans); font-weight:500; font-size:clamp(21px,1.55vw,27px);
+  line-height:1.08; letter-spacing:-.04em; margin-bottom:14px;
+}
+.benefit-text p{color:rgba(255,255,255,.62); font-size:14.5px; line-height:1.5; max-width:48ch;}
 /* ---------- Carousel ---------- */
 .carousel-section{
   /* Everything in a card is sized off this unit instead of raw vw. At the mock ratio
@@ -371,13 +362,13 @@ body[data-slide="2"] .seam-blur--tight{
 /* "ЗАГОЛОВОК 2": Inter Tight 80 / 85% / -4% / medium */
 .slide-text h2{
   font-family:var(--display); font-weight:500; font-size:clamp(28px,calc(7 * var(--cu)),121px);
-  line-height:.85; letter-spacing:-.04em; margin-bottom:26px;
+  line-height:.9; letter-spacing:-.04em; margin-bottom:clamp(24px,2vw,34px);
 
   /* Ширина заголовка считается от фактического левого края мокапа. Раньше здесь
      стояли 101.5vw (след отрицательного right:-1.5%) и прежняя ширина телефона
      70vh — после уменьшения мокапа формула устарела, и жёсткие переносы <br>
      ложились не по смыслу. Теперь мокап стоит right:4% и уже, отсюда 96vw и 56vh. */
-  max-width:calc(96vw - min(46vw,795px,64vh) - 90px);
+  max-width:calc(96vw - min(32vw,560px,36vh) - 90px);
   /* Если строка всё же переносится сама — распределяем строки ровно, а не
      оставляем висящее слово в конце. */
   text-wrap:balance;
@@ -385,8 +376,10 @@ body[data-slide="2"] .seam-blur--tight{
 /* "Основной": Inter 30 / 85% / -1% / regular */
 .slide-text p{
   color:var(--lime); font-family:var(--sans); font-weight:400;
-  font-size:clamp(15px,calc(2.3 * var(--cu)),40px); line-height:.85; letter-spacing:-.01em; max-width:min(49.6vw,857px);
+  font-size:clamp(15px,calc(2.15 * var(--cu)),36px); line-height:1.08; letter-spacing:-.015em; max-width:min(46vw,780px);
 }
+.slide-text p span{display:block; text-wrap:balance;}
+.slide-text p span + span{margin-top:.55em;}
 /* The bottom of the CARD itself melts as you advance through the carousel: card 1 keeps a
    defined edge, card 2 goes hazy, card 3 dissolves completely — that is what visually opens
    the way on to the FAQ block, and it lands on the same card where the scroll lock releases.
@@ -430,10 +423,11 @@ body[data-slide="2"] .slide-fade{
   /* Было right:-1.5% — мокап намеренно свисал за правый край. После уменьшения
      размера этот приём перестал читаться и телефон стал выглядеть приклеенным
      к правой стенке, поэтому отступ положительный и соразмерен левому полю. */
-  position:absolute; right:4%; top:50%; transform:translateY(-50%); z-index:3;
-  /* Новые мокапы 0.788 Ш/В вместо прежних 1:1, поэтому потолок по высоте
-     пересчитан: 70vh ширины дают 89vh высоты — влезает в 100vh секции с полями. */
-  width:min(46vw,795px,64vh);
+  position:absolute; right:6%; top:50%; transform:translateY(-50%) rotate(7deg); z-index:3;
+  transform-origin:center;
+  /* Фронтальные мокапы имеют реальные вытянутые пропорции телефона. Ширина
+     ограничена через высоту окна, чтобы после наклона корпус целиком оставался в кадре. */
+  width:min(32vw,560px,36vh);
 }
 /* deliberately smaller than block 2's: the carousel viewport is only 100vh tall, and at
    the previous size the device ran into the section's bottom edge and got clipped. */
@@ -649,46 +643,25 @@ footer{background:#000; padding:26px 40px 24px;}
   nav.pill{height:48px; padding:0 22px 0 30px; font-size:16px; gap:18px;}
 }
 
-@media (max-width:900px){
-  /* Narrow screens: the desktop row is five side-by-side columns, which on a phone
-     collapsed into overlapping slivers. Same idea turned 90 degrees - a vertical
-     accordion. A closed card is a bar with the glyph still cut out of its LEFT edge
-     (the detail that makes it read as carved out of the card) and the number on the
-     right; the open one lays the icon, title and copy out in normal flow. */
-  .benefit-row{flex-direction:column; height:auto; gap:12px;}
-  .benefit-card{
-    flex:0 0 auto !important; height:auto; min-height:88px;
-    /* на телефоне раскрывается высота, а не flex-grow; конкретное значение
-       max-height ставит JS, потому что итоговая высота у карточек разная */
-    transition:max-height .44s cubic-bezier(.33,1,.68,1);
-  }
-  .benefit-card.active .benefit-icon{animation:card-reveal .42s ease .10s both;}
-  .benefit-card.active .benefit-text{animation:card-reveal .42s ease .17s both;}
-  .benefit-card:is(.active,.closing){padding:18px 18px 22px;}
-  @keyframes card-reveal{
-    from{opacity:0; transform:translateY(9px);}
-    to{opacity:1; transform:none;}
-  }
+@media (max-width:1100px){
+  .benefit-row{grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px;}
+  .benefit-card,
+  .benefit-card.active,
+  .benefit-card:nth-child(4){grid-column:auto; min-height:410px;}
+  .benefit-card:nth-child(5){grid-column:1 / -1; min-height:350px;}
+}
 
-  .benefit-top{position:absolute; top:14px; right:14px; left:auto; justify-content:flex-end;}
-  .benefit-card:is(.active,.closing) .benefit-top{position:static; margin-bottom:16px;}
-  .benefit-num{width:58px; height:26px; font-size:11px; border-radius:8px;}
-
-  /* closed: only the carved glyph and the number */
-  .benefit-icon-closed{height:52px; top:50%;}
-  .benefit-icon{display:none;}
-  .benefit-text{display:none;}
-
-  /* open: normal flow, nothing absolutely placed */
-  .benefit-card:is(.active,.closing) .benefit-icon-closed{display:none;}
-  .benefit-card:is(.active,.closing) .benefit-icon{
-    display:block; position:static; transform:none;
-    width:min(52%,190px); opacity:1; margin:2px 0 18px;
-  }
-  .benefit-card:is(.active,.closing) .benefit-text{
-    display:block; position:static; opacity:1; left:auto; right:auto; bottom:auto;
-  }
-  .benefit-text h3{font-size:20px; letter-spacing:-.035em; margin-bottom:10px;}
+@media (max-width:700px){
+  .benefit-row{grid-template-columns:1fr; gap:12px;}
+  .benefit-card,
+  .benefit-card.active,
+  .benefit-card:nth-child(4),
+  .benefit-card:nth-child(5){grid-column:auto; min-height:0; padding:20px;}
+  .benefit-top,
+  .benefit-card.active .benefit-top{margin-bottom:12px;}
+  .benefit-icon,
+  .benefit-card.active .benefit-icon{width:min(46%,150px); height:116px; margin:0 auto 22px;}
+  .benefit-text h3{font-size:21px; letter-spacing:-.035em; margin-bottom:10px;}
   .benefit-text p{font-size:14px; line-height:1.5; max-width:none;}
 }
 
@@ -708,8 +681,8 @@ footer{background:#000; padding:26px 40px 24px;}
   .slide-text h2{font-size:clamp(26px,7.2vw,40px); line-height:.94; max-width:none;}
   .slide-text p{font-size:15px; line-height:1.45; max-width:none; margin-top:14px;}
   .slide-phone{
-    position:static; transform:none; margin:18px auto 0;
-    width:min(60vw,260px); right:auto; top:auto;
+    position:static; transform:rotate(3.5deg); margin:18px auto 0;
+    width:min(42vw,190px); right:auto; top:auto;
   }
   .carousel-bullets{top:24px;}
   .carousel-arrows{left:22px; right:22px; width:auto; bottom:26px;}
@@ -960,17 +933,150 @@ footer{background:#000; padding:26px 40px 24px;}
 .footer-build{opacity:.35; font-size:12px; letter-spacing:.02em;}
 .cookie-bar--in{transform:translateY(0); opacity:1;}
 @media (prefers-reduced-motion:reduce){ .cookie-bar{transition:none;} }
+
+/* ---- Визуальная приёмка 17.09.2026 ---- */
+/* Главный смысл всегда поверх декоративных вопросов. Навигация остаётся выше обоих слоёв. */
+.hero-headline{z-index:4;}
+
+/* Подзаголовок читается как единая мысль, а не как узкая колонка с одиноким словом. */
+.hero-sub{text-wrap:balance;}
+@media (min-width:961px){
+  .hero-sub{
+    max-width:min(820px,58vw); font-size:clamp(19px,1.7vw,26px);
+    line-height:1.28; letter-spacing:-.015em;
+  }
+}
+
+/* Текст рядом с телефоном: спокойная колонка из сбалансированных строк. */
+@media (min-width:901px){
+  .hero-phone-block{flex-wrap:nowrap; justify-content:space-between; gap:clamp(40px,4vw,72px);}
+  .hero-side-text{
+    flex:0 1 620px; max-width:620px; font-size:clamp(36px,3.2vw,56px);
+    line-height:.98; letter-spacing:-.035em; text-wrap:balance;
+  }
+}
+
+/* В модальном окне оба действия образуют одну центрированную вертикальную группу. */
+.android-dialog__card .btn-lime{display:block; width:max-content; max-width:100%; margin:0 auto; text-align:center;}
+.android-dialog__later{width:max-content; margin:16px auto 0; text-align:center;}
+
+/* Преимущества: компактные problem/solution-карточки вместо высоких одинаковых плиток. */
+.benefits{background:#f7f7fb; padding:72px 0 44px;}
+.benefits h2{
+  max-width:none; margin:0 auto 52px; text-align:center;
+  font-size:clamp(48px,7vw,118px); line-height:.86; text-wrap:balance;
+}
+.benefit-row{grid-template-columns:repeat(12,minmax(0,1fr)); gap:20px;}
+.benefit-card,
+.benefit-card.active{
+  --card-glow:rgba(141,92,255,.18);
+  grid-column:span 6; min-height:300px; padding:30px;
+  display:grid; grid-template-columns:140px minmax(0,1fr); grid-template-rows:1fr;
+  column-gap:28px; align-items:center;
+  background:radial-gradient(circle at 8% 50%,var(--card-glow),transparent 38%),#0b0b0b;
+  border:1px solid rgba(255,255,255,.06); border-radius:30px;
+}
+.benefit-card:nth-child(1){--card-glow:rgba(219,64,142,.24);}
+.benefit-card:nth-child(2){--card-glow:rgba(253,132,150,.22);}
+.benefit-card:nth-child(3){--card-glow:rgba(141,92,255,.24);}
+.benefit-card:nth-child(4){--card-glow:rgba(152,221,253,.20); grid-column:span 6;}
+.benefit-card:nth-child(5){--card-glow:rgba(206,241,108,.16); grid-column:3 / span 8;}
+.benefit-top,
+.benefit-card.active .benefit-top{
+  position:absolute; top:24px; right:24px; margin:0; z-index:3;
+}
+.benefit-num{width:62px; height:30px; font-size:13px; border-color:rgba(255,255,255,.38);}
+.benefit-icon,
+.benefit-card.active .benefit-icon{
+  grid-column:1; grid-row:1; width:100%; height:138px; margin:0;
+  align-self:center; justify-self:center;
+}
+.benefit-text,
+.benefit-card.active .benefit-text{
+  grid-column:2; grid-row:1; align-self:center; margin:0; padding-right:58px;
+}
+.benefit-text h3{font-size:clamp(22px,1.65vw,30px); line-height:1.08; margin-bottom:16px;}
+.benefit-text p{font-size:15px; line-height:1.5; max-width:56ch;}
+
+/* Четыре понятные пиктограммы: кошелёк, цель к дате, несколько целей и распределение получки. */
+.benefit-card .benefit-icon{display:none;}
+.benefit-card::before{
+  content:""; grid-column:1; grid-row:1; width:100%; height:138px;
+  align-self:center; justify-self:center; background:center/contain no-repeat;
+}
+.benefit-card:nth-child(1)::before{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 160' fill='none'%3E%3Crect x='20' y='43' width='120' height='84' rx='22' stroke='%23DB408E' stroke-width='9'/%3E%3Cpath d='M28 47v-5c0-10 8-18 18-18h69' stroke='%23DB408E' stroke-width='9' stroke-linecap='round'/%3E%3Cpath d='M97 68h43v36H97c-10 0-18-8-18-18s8-18 18-18Z' stroke='%23DB408E' stroke-width='9' stroke-linejoin='round'/%3E%3Ccircle cx='101' cy='86' r='5' fill='%23DB408E'/%3E%3C/svg%3E");
+}
+.benefit-card:nth-child(2)::before{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 160' fill='none'%3E%3Crect x='23' y='29' width='114' height='108' rx='20' stroke='%23FD8496' stroke-width='9'/%3E%3Cpath d='M23 60h114M52 18v24M108 18v24' stroke='%23FD8496' stroke-width='9' stroke-linecap='round'/%3E%3Ccircle cx='80' cy='96' r='24' stroke='%23FD8496' stroke-width='8'/%3E%3Ccircle cx='80' cy='96' r='7' fill='%23FD8496'/%3E%3Cpath d='m105 70-20 20' stroke='%23FD8496' stroke-width='8' stroke-linecap='round'/%3E%3Cpath d='m95 69 11 1-1 11' stroke='%23FD8496' stroke-width='7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+.benefit-card:nth-child(3)::before{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 160' fill='none'%3E%3Cpath d='M80 116V83M80 83 40 54M80 83l40-29' stroke='%238D5CFF' stroke-width='8' stroke-linecap='round'/%3E%3Ccircle cx='40' cy='42' r='23' stroke='%238D5CFF' stroke-width='9'/%3E%3Ccircle cx='120' cy='42' r='23' stroke='%238D5CFF' stroke-width='9'/%3E%3Ccircle cx='80' cy='124' r='23' stroke='%238D5CFF' stroke-width='9'/%3E%3Ccircle cx='40' cy='42' r='6' fill='%238D5CFF'/%3E%3Ccircle cx='120' cy='42' r='6' fill='%238D5CFF'/%3E%3Ccircle cx='80' cy='124' r='6' fill='%238D5CFF'/%3E%3C/svg%3E");
+}
+.benefit-card:nth-child(4)::before{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 160' fill='none'%3E%3Ccircle cx='80' cy='28' r='17' stroke='%2398DDFD' stroke-width='8'/%3E%3Cpath d='M80 47v33M80 80H35v20M80 80h45v20M80 80v20' stroke='%2398DDFD' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'/%3E%3Crect x='15' y='99' width='40' height='34' rx='10' stroke='%2398DDFD' stroke-width='8'/%3E%3Crect x='60' y='99' width='40' height='34' rx='10' stroke='%2398DDFD' stroke-width='8'/%3E%3Crect x='105' y='99' width='40' height='34' rx='10' stroke='%2398DDFD' stroke-width='8'/%3E%3C/svg%3E");
+}
+.benefit-card[hidden]{display:none;}
+
+/* Контрастные самостоятельные стрелки без подложки: хорошо видны, но не спорят с мокапом. */
+.carousel-arrow{
+  width:auto; aspect-ratio:auto; padding:10px 4px; border:0; border-radius:0;
+  background:transparent; backdrop-filter:none; -webkit-backdrop-filter:none;
+  box-shadow:none;
+  filter:drop-shadow(0 5px 12px rgba(0,0,0,.28));
+}
+.carousel-arrow.prev{color:rgba(255,255,255,.82);}
+.carousel-arrow.next{color:var(--lime);}
+.carousel-arrow:hover{transform:translateY(-2px) scale(1.04);}
+.carousel-arrow.disabled{opacity:.64;}
+.carousel-arrow svg{width:clamp(82px,7vw,120px); height:auto;}
+body[data-slide="2"] .carousel-arrow.prev{
+  color:rgba(18,58,77,.72);
+}
+body[data-slide="2"] .carousel-arrow.next{
+  color:#123a4d;
+}
+
+@media (max-width:1050px){
+  .benefit-row{grid-template-columns:1fr; gap:16px;}
+  .benefit-card,
+  .benefit-card.active,
+  .benefit-card:nth-child(4),
+  .benefit-card:nth-child(5){grid-column:auto; min-height:270px;}
+}
+
+@media (max-width:700px){
+  .benefits{padding:42px 0 26px;}
+  .benefits h2{margin-bottom:28px; font-size:clamp(42px,14vw,66px);}
+  .benefit-card,
+  .benefit-card.active,
+  .benefit-card:nth-child(4),
+  .benefit-card:nth-child(5){
+    min-height:0; padding:22px; display:grid;
+    grid-template-columns:88px minmax(0,1fr); column-gap:18px; border-radius:24px;
+  }
+  .benefit-top,
+  .benefit-card.active .benefit-top{top:18px; right:18px;}
+  .benefit-num{width:50px; height:26px; font-size:11px;}
+  .benefit-icon,
+  .benefit-card.active .benefit-icon{width:88px; height:100px; margin:0;}
+  .benefit-card::before{width:88px; height:100px;}
+  .benefit-text,
+  .benefit-card.active .benefit-text{padding:44px 0 0;}
+  .benefit-text h3{font-size:20px; margin-bottom:10px;}
+  .benefit-text p{font-size:13.5px; line-height:1.48;}
+}
 </style>
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
 <meta property="og:locale" content="ru_RU">
 <meta property="og:site_name" content="Кубыш">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://kubysh.com/">
-<meta property="og:image" content="https://kubysh.com/og-cover.png">
+<meta property="og:image" content="https://kubysh.com/og-cover.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Экран Кубыша: сколько можно потратить сегодня">
-<meta name="twitter:image" content="https://kubysh.com/og-cover.png">
+<meta name="twitter:image" content="https://kubysh.com/og-cover.jpg">
 <meta name="twitter:title" content="Кубыш — сколько можно потратить сегодня">
 <meta name="twitter:description" content="План до получки Кубыш строит сам и каждый день говорит сумму, с которой цели не сдвинутся.">
 <script type="application/ld+json">
@@ -1010,7 +1116,7 @@ footer{background:#000; padding:26px 40px 24px;}
    "@id": "https://kubysh.com/#app",
    "name": "Кубыш",
    "applicationCategory": "FinanceApplication",
-   "operatingSystem": "iOS 17.0+",
+   "operatingSystem": "iOS 17.6+",
    "url": "https://apps.apple.com/app/id6778792103",
    "inLanguage": "ru-RU",
    "publisher": {
@@ -1213,8 +1319,8 @@ footer{background:#000; padding:26px 40px 24px;}
   </div>
   <div class="hero-headline">
    <div class="hero-copy">
-    <h1>Сколько можно<br><span class="h1-line2">тратить сегодня</span></h1>
-    <p class="hero-sub">Другие приложения объясняют, куда ушли деньги. Кубыш сам строит план до получки и каждый день говорит сумму, с которой цели не сдвинутся.</p>
+    <h1>Тратьте деньги<br><span class="h1-line2">осознанно</span></h1>
+    <p class="hero-sub">Кубыш строит план от получки до получки и каждый день показывает, сколько можно спокойно потратить</p>
     <div class="hero-cta-wrap">
       <a href="https://apps.apple.com/app/id6778792103?ct=lp_hero&amp;mt=8" class="btn-appstore" data-appstore data-pos="hero" target="_blank" rel="noopener" aria-label="Скачать в App Store">
         <img src="data:image/svg+xml;base64,PHN2ZyBpZD0ibGl2ZXR5cGUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjExOS42NjQwNyIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDExOS42NjQwNyA0MCI+CiAgPHRpdGxlPkRvd25sb2FkX29uX3RoZV9BcHBfU3RvcmVfQmFkZ2VfUlVfUkdCX2Jsa18xMDAzMTc8L3RpdGxlPgogIDxnPgogICAgPGc+CiAgICAgIDxnPgogICAgICAgIDxwYXRoIGQ9Ik0xMTAuMTM0NzcsMEg5LjUzNDY4Yy0uMzY2NywwLS43MjksMC0xLjA5NDczLjAwMi0uMzA2MTUuMDAyLS42MDk4Ni4wMDc4MS0uOTE4OTUuMDEyN0ExMy4yMTQ3NiwxMy4yMTQ3NiwwLDAsMCw1LjUxNzEuMTkxNDFhNi42NjUwOSw2LjY2NTA5LDAsMCwwLTEuOTAwODguNjI3QTYuNDM3NzksNi40Mzc3OSwwLDAsMCwxLjk5NzU3LDEuOTk3MDcsNi4yNTg0NCw2LjI1ODQ0LDAsMCwwLC44MTkzNSwzLjYxODE2YTYuNjAxMTksNi42MDExOSwwLDAsMC0uNjI1LDEuOTAzMzIsMTIuOTkzLDEyLjk5MywwLDAsMC0uMTc5MiwyLjAwMkMuMDA1ODcsNy44MzAwOC4wMDQ4OSw4LjEzNzcsMCw4LjQ0NDM0VjMxLjU1ODZjLjAwNDg5LjMxMDUuMDA1ODcuNjExMy4wMTUxNS45MjE5YTEyLjk5MjMyLDEyLjk5MjMyLDAsMCwwLC4xNzkyLDIuMDAxOSw2LjU4NzU2LDYuNTg3NTYsMCwwLDAsLjYyNSwxLjkwNDNBNi4yMDc3OCw2LjIwNzc4LDAsMCwwLDEuOTk3NTcsMzguMDAxYTYuMjc0NDUsNi4yNzQ0NSwwLDAsMCwxLjYxODY1LDEuMTc4Nyw2LjcwMDgyLDYuNzAwODIsMCwwLDAsMS45MDA4OC42MzA4LDEzLjQ1NTE0LDEzLjQ1NTE0LDAsMCwwLDIuMDAzOS4xNzY4Yy4zMDkwOS4wMDY4LjYxMjguMDEwNy45MTg5NS4wMTA3QzguODA1NjcsNDAsOS4xNjgsNDAsOS41MzQ2OCw0MEgxMTAuMTM0NzdjLjM1OTQsMCwuNzI0NiwwLDEuMDg0LS4wMDIuMzA0NywwLC42MTcyLS4wMDM5LjkyMTktLjAxMDdhMTMuMjc5LDEzLjI3OSwwLDAsMCwyLS4xNzY4LDYuODA0MzIsNi44MDQzMiwwLDAsMCwxLjkwODItLjYzMDgsNi4yNzc0Miw2LjI3NzQyLDAsMCwwLDEuNjE3Mi0xLjE3ODcsNi4zOTQ4Miw2LjM5NDgyLDAsMCwwLDEuMTgxNi0xLjYxNDMsNi42MDQxMyw2LjYwNDEzLDAsMCwwLC42MTkxLTEuOTA0MywxMy41MDY0MywxMy41MDY0MywwLDAsMCwuMTg1Ni0yLjAwMTljLjAwMzktLjMxMDYuMDAzOS0uNjExNC4wMDM5LS45MjE5LjAwNzgtLjM2MzMuMDA3OC0uNzI0Ni4wMDc4LTEuMDkzOFY5LjUzNjEzYzAtLjM2NjIxLDAtLjcyOTQ5LS4wMDc4LTEuMDkxNzksMC0uMzA2NjQsMC0uNjE0MjYtLjAwMzktLjkyMDlhMTMuNTA3MSwxMy41MDcxLDAsMCwwLS4xODU2LTIuMDAyLDYuNjE3Nyw2LjYxNzcsMCwwLDAtLjYxOTEtMS45MDMzMiw2LjQ2NjE5LDYuNDY2MTksMCwwLDAtMi43OTg4LTIuNzk5OCw2Ljc2NzU0LDYuNzY3NTQsMCwwLDAtMS45MDgyLS42MjcsMTMuMDQzOTQsMTMuMDQzOTQsMCwwLDAtMi0uMTc2NzZjLS4zMDQ3LS4wMDQ4OC0uNjE3Mi0uMDEwNzQtLjkyMTktLjAxMjY5LS4zNTk0LS4wMDItLjcyNDYtLjAwMi0xLjA4NC0uMDAyWiIgc3R5bGU9ImZpbGw6ICNhNmE2YTYiLz4KICAgICAgICA8cGF0aCBkPSJNOC40NDQ4MywzOS4xMjVjLS4zMDQ2OCwwLS42MDItLjAwMzktLjkwNDI5LS4wMTA3YTEyLjY4NzE0LDEyLjY4NzE0LDAsMCwxLTEuODY5MTQtLjE2MzEsNS44ODM4MSw1Ljg4MzgxLDAsMCwxLTEuNjU2NzQtLjU0NzksNS40MDU3Myw1LjQwNTczLDAsMCwxLTEuMzk3LTEuMDE2Niw1LjMyMDgyLDUuMzIwODIsMCwwLDEtMS4wMjA1MS0xLjM5NjUsNS43MjE4Niw1LjcyMTg2LDAsMCwxLS41NDMtMS42NTcyLDEyLjQxMzUxLDEyLjQxMzUxLDAsMCwxLS4xNjY1LTEuODc1Yy0uMDA2MzQtLjIxMDktLjAxNDY0LS45MTMxLS4wMTQ2NC0uOTEzMVY4LjQ0NDM0Uy44ODE4NSw3Ljc1MjkzLjg4NzcsNy41NDk4YTEyLjM3MDM5LDEyLjM3MDM5LDAsMCwxLC4xNjU1My0xLjg3MjA3LDUuNzU1NSw1Ljc1NTUsMCwwLDEsLjU0MzQ2LTEuNjYyMUE1LjM3MzQ5LDUuMzczNDksMCwwLDEsMi42MTE4MywyLjYxNzY4LDUuNTY1NDMsNS41NjU0MywwLDAsMSw0LjAxNDE3LDEuNTk1MjFhNS44MjMwOSw1LjgyMzA5LDAsMCwxLDEuNjUzMzItLjU0Mzk0QTEyLjU4NTg5LDEyLjU4NTg5LDAsMCwxLDcuNTQzLjg4NzIxTDguNDQ1MzIuODc1SDExMS4yMTM4N2wuOTEzMS4wMTI3YTEyLjM4NDkzLDEyLjM4NDkzLDAsMCwxLDEuODU4NC4xNjI1OSw1LjkzODMzLDUuOTM4MzMsMCwwLDEsMS42NzA5LjU0Nzg1LDUuNTkzNzQsNS41OTM3NCwwLDAsMSwyLjQxNSwyLjQxOTkzLDUuNzYyNjcsNS43NjI2NywwLDAsMSwuNTM1MiwxLjY0ODkyLDEyLjk5NSwxMi45OTUsMCwwLDEsLjE3MzgsMS44ODcyMWMuMDAyOS4yODMyLjAwMjkuNTg3NC4wMDI5Ljg5MDE0LjAwNzkuMzc1LjAwNzkuNzMxOTMuMDA3OSwxLjA5MTc5VjMwLjQ2NDhjMCwuMzYzMywwLC43MTc4LS4wMDc5LDEuMDc1MiwwLC4zMjUyLDAsLjYyMzEtLjAwMzkuOTI5N2ExMi43MzEyNiwxMi43MzEyNiwwLDAsMS0uMTcwOSwxLjg1MzUsNS43MzksNS43MzksMCwwLDEtLjU0LDEuNjcsNS40ODAyOSw1LjQ4MDI5LDAsMCwxLTEuMDE1NiwxLjM4NTcsNS40MTI5LDUuNDEyOSwwLDAsMS0xLjM5OTQsMS4wMjI1LDUuODYxNjgsNS44NjE2OCwwLDAsMS0xLjY2OC41NDk4LDEyLjU0MjE4LDEyLjU0MjE4LDAsMCwxLTEuODY5Mi4xNjMxYy0uMjkyOS4wMDY4LS41OTk2LjAxMDctLjg5NzQuMDEwN2wtMS4wODQuMDAyWiIvPgogICAgICA8L2c+CiAgICAgIDxnIGlkPSJfR3JvdXBfIiBkYXRhLW5hbWU9IiZsdDtHcm91cCZndDsiPgogICAgICAgIDxnIGlkPSJfR3JvdXBfMiIgZGF0YS1uYW1lPSImbHQ7R3JvdXAmZ3Q7Ij4KICAgICAgICAgIDxnIGlkPSJfR3JvdXBfMyIgZGF0YS1uYW1lPSImbHQ7R3JvdXAmZ3Q7Ij4KICAgICAgICAgICAgPHBhdGggaWQ9Il9QYXRoXyIgZGF0YS1uYW1lPSImbHQ7UGF0aCZndDsiIGQ9Ik0yNC43Njg4OCwyMC4zMDA2OGE0Ljk0ODgxLDQuOTQ4ODEsMCwwLDEsMi4zNTY1Ni00LjE1MjA2LDUuMDY1NjYsNS4wNjU2NiwwLDAsMC0zLjk5MTE2LTIuMTU3NjhjLTEuNjc5MjQtLjE3NjI2LTMuMzA3MTksMS4wMDQ4My00LjE2MjksMS4wMDQ4My0uODcyMjcsMC0yLjE4OTc3LS45ODczMy0zLjYwODUtLjk1ODE0YTUuMzE1MjksNS4zMTUyOSwwLDAsMC00LjQ3MjkyLDIuNzI3ODdjLTEuOTM0LDMuMzQ4NDItLjQ5MTQxLDguMjY5NDcsMS4zNjEyLDEwLjk3NjA4LjkyNjksMS4zMjUzNSwyLjAxMDE4LDIuODA1OCwzLjQyNzYzLDIuNzUzMywxLjM4NzA2LS4wNTc1MywxLjkwNTEtLjg4NDQ4LDMuNTc5NC0uODg0NDgsMS42NTg3NiwwLDIuMTQ0NzkuODg0NDgsMy41OTEuODUxMSwxLjQ4ODM4LS4wMjQxNiwyLjQyNjEzLTEuMzMxMjQsMy4zMjA1MS0yLjY2OTE0YTEwLjk2MiwxMC45NjIsMCwwLDAsMS41MTg0Mi0zLjA5MjUxQTQuNzgyMDUsNC43ODIwNSwwLDAsMSwyNC43Njg4OCwyMC4zMDA2OFoiIHN0eWxlPSJmaWxsOiAjZmZmIi8+CiAgICAgICAgICAgIDxwYXRoIGlkPSJfUGF0aF8yIiBkYXRhLW5hbWU9IiZsdDtQYXRoJmd0OyIgZD0iTTIyLjAzNzI1LDEyLjIxMDg5YTQuODcyNDgsNC44NzI0OCwwLDAsMCwxLjExNDUyLTMuNDkwNjIsNC45NTc0Niw0Ljk1NzQ2LDAsMCwwLTMuMjA3NTgsMS42NTk2MSw0LjYzNjM0LDQuNjM2MzQsMCwwLDAtMS4xNDM3MSwzLjM2MTM5QTQuMDk5MDUsNC4wOTkwNSwwLDAsMCwyMi4wMzcyNSwxMi4yMTA4OVoiIHN0eWxlPSJmaWxsOiAjZmZmIi8+CiAgICAgICAgICA8L2c+CiAgICAgICAgPC9nPgogICAgICAgIDxnPgogICAgICAgICAgPHBhdGggZD0iTTQyLjMwMjI3LDI3LjEzOTY1aC00LjczMzRsLTEuMTM2NzIsMy4zNTY0NUgzNC40MjcyN2w0LjQ4MzQtMTIuNDE4aDIuMDgzbDQuNDgzNCwxMi40MThINDMuNDM4Wk0zOC4wNTkxLDI1LjU5MDgyaDMuNzUybC0xLjg0OTYxLTUuNDQ3MjdoLS4wNTE3NloiIHN0eWxlPSJmaWxsOiAjZmZmIi8+CiAgICAgICAgICA8cGF0aCBkPSJNNTUuMTU5NjksMjUuOTY5NzNjMCwyLjgxMzQ4LTEuNTA1ODYsNC42MjEwOS0zLjc3ODMyLDQuNjIxMDlhMy4wNjkzLDMuMDY5MywwLDAsMS0yLjg0ODYzLTEuNTg0aC0uMDQzdjQuNDg0MzhoLTEuODU4NFYyMS40NDIzOEg0OC40MzAydjEuNTA1ODZoLjAzNDE4YTMuMjExNjIsMy4yMTE2MiwwLDAsMSwyLjg4MjgxLTEuNjAwNTlDNTMuNjQ1LDIxLjM0NzY2LDU1LjE1OTY5LDIzLjE2NDA2LDU1LjE1OTY5LDI1Ljk2OTczWm0tMS45MTAxNiwwYzAtMS44MzMtLjk0NzI3LTMuMDM4MDktMi4zOTI1OC0zLjAzODA5LTEuNDE5OTIsMC0yLjM3NSwxLjIzMDQ3LTIuMzc1LDMuMDM4MDksMCwxLjgyNDIyLjk1NTA4LDMuMDQ1OSwyLjM3NSwzLjA0NTlDNTIuMzAyMjcsMjkuMDE1NjMsNTMuMjQ5NTMsMjcuODE5MzQsNTMuMjQ5NTMsMjUuOTY5NzNaIiBzdHlsZT0iZmlsbDogI2ZmZiIvPgogICAgICAgICAgPHBhdGggZD0iTTY1LjEyNDUzLDI1Ljk2OTczYzAsMi44MTM0OC0xLjUwNTg2LDQuNjIxMDktMy43NzgzMiw0LjYyMTA5YTMuMDY5MywzLjA2OTMsMCwwLDEtMi44NDg2My0xLjU4NGgtLjA0M3Y0LjQ4NDM4aC0xLjg1ODRWMjEuNDQyMzhINTguMzk1djEuNTA1ODZoLjAzNDE4QTMuMjExNjIsMy4yMTE2MiwwLDAsMSw2MS4zMTIsMjEuMzQ3NjZDNjMuNjA5ODgsMjEuMzQ3NjYsNjUuMTI0NTMsMjMuMTY0MDYsNjUuMTI0NTMsMjUuOTY5NzNabS0xLjkxMDE2LDBjMC0xLjgzMy0uOTQ3MjctMy4wMzgwOS0yLjM5MjU4LTMuMDM4MDktMS40MTk5MiwwLTIuMzc1LDEuMjMwNDctMi4zNzUsMy4wMzgwOSwwLDEuODI0MjIuOTU1MDgsMy4wNDU5LDIuMzc1LDMuMDQ1OUM2Mi4yNjcxMSwyOS4wMTU2Myw2My4yMTQzOCwyNy44MTkzNCw2My4yMTQzOCwyNS45Njk3M1oiIHN0eWxlPSJmaWxsOiAjZmZmIi8+CiAgICAgICAgICA8cGF0aCBkPSJNNzEuNzEwNDcsMjcuMDM2MTNjLjEzNzcsMS4yMzE0NSwxLjMzNCwyLjA0LDIuOTY4NzUsMi4wNCwxLjU2NjQxLDAsMi42OTMzNi0uODA4NTksMi42OTMzNi0xLjkxODk1LDAtLjk2Mzg3LS42Nzk2OS0xLjU0MS0yLjI4OTA2LTEuOTM2NTJsLTEuNjA5MzctLjM4NzdjLTIuMjgwMjctLjU1MDc4LTMuMzM4ODctMS42MTcxOS0zLjMzODg3LTMuMzQ3NjYsMC0yLjE0MjU4LDEuODY3MTktMy42MTQyNiw0LjUxODU1LTMuNjE0MjYsMi42MjQsMCw0LjQyMjg1LDEuNDcxNjgsNC40ODM0LDMuNjE0MjZoLTEuODc2Yy0uMTEyMy0xLjIzOTI2LTEuMTM2NzItMS45ODczLTIuNjMzNzktMS45ODczcy0yLjUyMTQ4Ljc1Njg0LTIuNTIxNDgsMS44NTg0YzAsLjg3NzkzLjY1NDMsMS4zOTQ1MywyLjI1NDg4LDEuNzlsMS4zNjgxNi4zMzU5NGMyLjU0Nzg1LjYwMjU0LDMuNjA2NDUsMS42MjYsMy42MDY0NSwzLjQ0MjM4LDAsMi4zMjMyNC0xLjg1MDU5LDMuNzc4MzItNC43OTM5NSwzLjc3ODMyLTIuNzUzOTEsMC00LjYxMzI4LTEuNDIwOS00LjczMzQtMy42NjdaIiBzdHlsZT0iZmlsbDogI2ZmZiIvPgogICAgICAgICAgPHBhdGggZD0iTTgzLjM0NjIxLDE5LjI5OTh2Mi4xNDI1OGgxLjcyMTY4djEuNDcxNjhIODMuMzQ2MjF2NC45OTEyMWMwLC43NzUzOS4zNDQ3MywxLjEzNjcyLDEuMTAxNTYsMS4xMzY3MmE1LjgwNzUyLDUuODA3NTIsMCwwLDAsLjYxMTMzLS4wNDN2MS40NjI4OWE1LjEwMzUxLDUuMTAzNTEsMCwwLDEtMS4wMzIyMy4wODU5NGMtMS44MzMsMC0yLjU0Nzg1LS42ODg0OC0yLjU0Nzg1LTIuNDQ0MzRWMjIuOTE0MDZIODAuMTYyNjJWMjEuNDQyMzhIODEuNDc5VjE5LjI5OThaIiBzdHlsZT0iZmlsbDogI2ZmZiIvPgogICAgICAgICAgPHBhdGggZD0iTTg2LjA2NSwyNS45Njk3M2MwLTIuODQ4NjMsMS42Nzc3My00LjYzODY3LDQuMjkzOTUtNC42Mzg2NywyLjYyNSwwLDQuMjk0OTIsMS43OSw0LjI5NDkyLDQuNjM4NjcsMCwyLjg1NjQ1LTEuNjYxMTMsNC42Mzg2Ny00LjI5NDkyLDQuNjM4NjdDODcuNzI2MDksMzAuNjA4NCw4Ni4wNjUsMjguODI2MTcsODYuMDY1LDI1Ljk2OTczWm02LjY5NTMxLDBjMC0xLjk1NDEtLjg5NTUxLTMuMTA3NDItMi40MDEzNy0zLjEwNzQycy0yLjQwMDM5LDEuMTYyMTEtMi40MDAzOSwzLjEwNzQyYzAsMS45NjE5MS44OTQ1MywzLjEwNjQ1LDIuNDAwMzksMy4xMDY0NVM5Mi43NjAyNywyNy45MzE2NCw5Mi43NjAyNywyNS45Njk3M1oiIHN0eWxlPSJmaWxsOiAjZmZmIi8+CiAgICAgICAgICA8cGF0aCBkPSJNOTYuMTg2MDYsMjEuNDQyMzhoMS43NzI0NnYxLjU0MWguMDQzYTIuMTU5NCwyLjE1OTQsMCwwLDEsMi4xNzc3My0xLjYzNTc0LDIuODY2MTYsMi44NjYxNiwwLDAsMSwuNjM2NzIuMDY5MzR2MS43MzgyOGEyLjU5Nzk0LDIuNTk3OTQsMCwwLDAtLjgzNS0uMTEyMywxLjg3MjY0LDEuODcyNjQsMCwwLDAtMS45MzY1MiwyLjA4M3Y1LjM3MDEyaC0xLjg1ODRaIiBzdHlsZT0iZmlsbDogI2ZmZiIvPgogICAgICAgICAgPHBhdGggZD0iTTEwOS4zODQzLDI3LjgzNjkxYy0uMjUsMS42NDM1NS0xLjg1MDU5LDIuNzcxNDgtMy44OTg0NCwyLjc3MTQ4LTIuNjMzNzksMC00LjI2ODU1LTEuNzY0NjUtNC4yNjg1NS00LjU5NTcsMC0yLjgzOTg0LDEuNjQzNTUtNC42ODE2NCw0LjE5MDQzLTQuNjgxNjQsMi41MDQ4OCwwLDQuMDgwMDgsMS43MjA3LDQuMDgwMDgsNC40NjU4MnYuNjM2NzJoLTYuMzk0NTN2LjExMjNhMi4zNTgsMi4zNTgsMCwwLDAsMi40MzU1NSwyLjU2NDQ1LDIuMDQ4MzQsMi4wNDgzNCwwLDAsMCwyLjA5MDgyLTEuMjczNDRabS02LjI4MjIzLTIuNzAyMTVoNC41MjYzN2EyLjE3NzMsMi4xNzczLDAsMCwwLTIuMjIwNy0yLjI5Nzg1QTIuMjkyLDIuMjkyLDAsMCwwLDEwMy4xMDIwNywyNS4xMzQ3N1oiIHN0eWxlPSJmaWxsOiAjZmZmIi8+CiAgICAgICAgPC9nPgogICAgICA8L2c+CiAgICA8L2c+CiAgICA8ZyBpZD0iX0dyb3VwXzQiIGRhdGEtbmFtZT0iJmx0O0dyb3VwJmd0OyI+CiAgICAgIDxnPgogICAgICAgIDxwYXRoIGQ9Ik0zNi43MzgzLDExLjI1MzQyaC43OTc4NWExLjAwMjEsMS4wMDIxLDAsMCwwLDEuMTI1LS45NTExN2MwLS41NTAyOS0uNDE0MDYtLjkwNTc2LTEuMTE2MjEtLjkwNTc2YTEuMDYzNTcsMS4wNjM1NywwLDAsMC0xLjIwNDEuOTM0NTdoLS44NzZhMS44NzA1NywxLjg3MDU3LDAsMCwxLDIuMTA4NC0xLjc0NTEyYzEuMTc0OCwwLDIuMDAyLjY1NzcxLDIuMDAyLDEuNjA0NDlhMS4zODYsMS4zODYsMCwwLDEtMS4wODQsMS4zNjQ3NXYuMDcwMzFhMS4zODk4LDEuMzg5OCwwLDAsMSwxLjMyNzE1LDEuNDQyODcsMS45OTMyLDEuOTkzMiwwLDAsMS0yLjIyODUyLDEuNzczOTMsMS45ODMzNSwxLjk4MzM1LDAsMCwxLTIuMjQxMjEtMS43NjU2MmguODg5NjVjLjA1MzcxLjU3MDguNTc4MTMuOTM5LDEuMzUxNTYuOTM5czEuMjc4MzItLjQxMzU3LDEuMjc4MzItLjk5NjU4YzAtLjU5MTMxLS40NzU1OS0uOTU1NTctMS4zMDY2NC0uOTU1NTdIMzYuNzM4M1oiIHN0eWxlPSJmaWxsOiAjZmZmIi8+CiAgICAgICAgPHBhdGggZD0iTTQwLjgyOTEyLDEzLjQyNDMyYzAtLjgxMDU1LjYwNDQ5LTEuMjc3ODMsMS42NzQ4LTEuMzQ0MjRsMS4yMTk3My0uMDcwMzF2LS4zODg2N2MwLS40NzU1OS0uMzEzNDgtLjc0NDE0LS45MjE4Ny0uNzQ0MTQtLjQ5NjA5LDAtLjgzODg3LjE4MjEzLS45Mzg0OC41MDA0OWgtLjg2MDM1Yy4wOTA4Mi0uNzczNDQuODE5MzQtMS4yNjk1MywxLjg0MDgyLTEuMjY5NTMsMS4xMjg5MSwwLDEuNzY1NjMuNTYyLDEuNzY1NjMsMS41MTMxOHYzLjA3NjY2aC0uODU2NDV2LS42MzI4MWgtLjA3MDMxYTEuNTE1LDEuNTE1LDAsMCwxLTEuMzUyNTQuNzA3QTEuMzYwMjYsMS4zNjAyNiwwLDAsMSw0MC44MjkxMiwxMy40MjQzMlptMi44OTQ1My0uMzg0Nzd2LS4zNzY0Nkw0Mi42MjQsMTIuNzMzNGMtLjYyMDEyLjA0MTUtLjkwMTM3LjI1MjQ0LS45MDEzNy42NDk0MSwwLC40MDUyNy4zNTE1Ni42NDExMS44MzUuNjQxMTFBMS4wNjE1LDEuMDYxNSwwLDAsMCw0My43MjM2NSwxMy4wMzk1NVoiIHN0eWxlPSJmaWxsOiAjZmZmIi8+CiAgICAgICAgPHBhdGggZD0iTTQ2Ljk2Nzc5LDEwLjk0Mjg3djMuNzU0ODhoLS44ODg2N1YxMC4xOTQ4Mkg0OS4wNDR2Ljc0OFoiIHN0eWxlPSJmaWxsOiAjZmZmIi8+CiAgICAgICAgPHBhdGggZD0iTTU0LjQyOTcxLDEyLjQ0NDM0YzAsMS40MzA2Ni0uNzIzNjMsMi4zMjc2NC0xLjg2MDM1LDIuMzI3NjRhMS40Njc3OCwxLjQ2Nzc4LDAsMCwxLTEuMzg1NzQtLjc1NjM1SDUxLjExMzN2Mi4xNzkyaC0uODg4Njd2LTZoLjg1NTQ3VjEwLjkzOWguMDY2NDFhMS41NjQzNywxLjU2NDM3LDAsMCwxLDEuNDE0MDYtLjgxODg1QzUzLjcwNjA3LDEwLjEyMDEyLDU0LjQyOTcxLDExLjAxMzE4LDU0LjQyOTcxLDEyLjQ0NDM0Wm0tLjkxNDA2LDBjMC0uOTUxMTctLjQ1MDItMS41MjU4OC0xLjIwMzEyLTEuNTI1ODgtLjc0OCwwLTEuMjE1ODIuNTg2OTEtMS4yMTU4MiwxLjUyOTc5LDAsLjkzODQ4LjQ2Nzc3LDEuNTI1ODgsMS4yMTE5MSwxLjUyNTg4QzUzLjA2NTQ1LDEzLjk3NDEyLDUzLjUxNTY1LDEzLjM5OTQxLDUzLjUxNTY1LDEyLjQ0NDM0WiIgc3R5bGU9ImZpbGw6ICNmZmYiLz4KICAgICAgICA8cGF0aCBkPSJNNTUuNjEzMywxNi4zMTA1NXYtLjc2NTE0YTIuMSwyLjEsMCwwLDAsLjI5LjAxNjYuNzcwMzQuNzcwMzQsMCwwLDAsLjgxNDQ1LS42Mjg0MmwuMDY2NDEtLjIxOTI0LTEuNjI5ODgtNC41MTk1M2guOTY3NzdMNTcuMjUxLDEzLjc3MTQ4aC4wNzAzMWwxLjEyNS0zLjU3NjY2aC45NDIzOEw1Ny43MSwxNC44ODM3OWMtLjM4NDc3LDEuMDk1Ny0uODEwNTUsMS40NDcyNy0xLjcyODUyLDEuNDQ3MjdDNTUuOTA3MjUsMTYuMzMxMDUsNTUuNjk2MzEsMTYuMzIyNzUsNTUuNjEzMywxNi4zMTA1NVoiIHN0eWxlPSJmaWxsOiAjZmZmIi8+CiAgICAgICAgPHBhdGggZD0iTTYwLjA4MTA3LDEzLjQxOTkyaC44ODQ3N2MuMDg2OTEuMzk3LjQ1OS42MDQuOTc5NDkuNjA0LjU5MTgsMCwuOTU1MDgtLjI2MDc0Ljk1NTA4LS42NjYsMC0uNDM0MDgtLjMyNjE3LS42NDExMS0uOTU1MDgtLjY0MTExSDYxLjI3MTV2LS42OTA0M2guNjYyMTFjLjUzNzExLDAsLjgxMDU1LS4yMDY1NC44MTA1NS0uNTgzLDAtLjMzMDU3LS4yNjQ2NS0uNTgzLS44MTA1NS0uNTgzLS40OTcwNywwLS44NjAzNS4yMTA5NC0uOTE4LjU2NjQxSDYwLjE1OTJhMS41NzgsMS41NzgsMCwwLDEsMS43NzQ0MS0xLjMxODg1YzEuMDcwMzEsMCwxLjY4MjYyLjQ4Mzg5LDEuNjgyNjIsMS4yNDQ2M2EuOTI1MTQuOTI1MTQsMCwwLDEtLjcxMDk0LjkyMTg4di4wNzAzMWExLjAxMDE1LDEuMDEwMTUsMCwwLDEsLjg4MDg2LDEuMDEzMThjMCwuODU2LS43Mjg1MiwxLjQyMjM2LTEuODQwODIsMS40MjIzNkM2MC45NjE5MywxNC43ODAyNyw2MC4xNjMxMSwxNC4zMjk1OSw2MC4wODEwNywxMy40MTk5MloiIHN0eWxlPSJmaWxsOiAjZmZmIi8+CiAgICAgICAgPHBhdGggZD0iTTY1LjA2NTk0LDE0LjY5Nzc1VjEwLjE5NDgyaC44ODA4NlYxMy4yOTJoLjA3MDMxbDIuMDc1Mi0zLjA5NzE3aC44ODA4NnY0LjUwMjkzaC0uODgwODZWMTEuNTg0SDY4LjAyNTlsLTIuMDc5MSwzLjExMzc3WiIgc3R5bGU9ImZpbGw6ICNmZmYiLz4KICAgICAgICA8cGF0aCBkPSJNNzMuODI1NywxMC45NDI4N2gtMS40MTh2My43NTQ4OGgtLjg4OTY1VjEwLjk0Mjg3aC0xLjQxOHYtLjc0OEg3My44MjU3WiIgc3R5bGU9ImZpbGw6ICNmZmYiLz4KICAgICAgICA8cGF0aCBkPSJNNzguNjEyODEsMTMuNDgxOTNhMS44Mjk5LDEuODI5OSwwLDAsMS0xLjk1MjE1LDEuMzAyNzMsMi4wNDUzMSwyLjA0NTMxLDAsMCwxLTIuMDgwMDgtMi4zMjQyMiwyLjA3Njg1LDIuMDc2ODUsMCwwLDEsMi4wNzYxNy0yLjM1MjU0YzEuMjUyOTMsMCwyLjAwOTc3Ljg1NiwyLjAwOTc3LDIuMjdWMTIuNjg4SDc1LjQ4Njg0di4wNDk4YTEuMTg5MTQsMS4xODkxNCwwLDAsMCwxLjE5OTIyLDEuMjksMS4wNzg3MiwxLjA3ODcyLDAsMCwwLDEuMDcwMzEtLjU0NTlabS0zLjEyNi0xLjQ1MTE3aDIuMjczNDRhMS4wODYyNSwxLjA4NjI1LDAsMCwwLTEuMTA3NDItMS4xNjY1QTEuMTUwNDUsMS4xNTA0NSwwLDAsMCw3NS40ODY4NCwxMi4wMzA3NloiIHN0eWxlPSJmaWxsOiAjZmZmIi8+CiAgICAgICAgPHBhdGggZD0iTTgyLjM4MDM5LDEwLjE5NDgyaDIuMDMwMjdjLjg4MDg2LDAsMS4zOTc0Ni40NDYyOSwxLjM5NzQ2LDEuMTQ1YS45Njc1NS45Njc1NSwwLDAsMS0uNzYwNzQuOTUxMTd2LjA3MDMxYTEuMDI3NzcsMS4wMjc3NywwLDAsMSwuOTYyODksMS4wMzgwOWMwLC43ODU2NC0uNTkwODIsMS4yOTgzNC0xLjU3OTEsMS4yOTgzNEg4Mi4zODAzOVptLjg4MDg2LjY4MjEzdjEuMTY2aC44ODA4NmMuNTM3MTEsMCwuNzkzOTUtLjIwNjU0Ljc5Mzk1LS41ODc0LDAtLjM1MTA3LS4yMjM2My0uNTc4NjEtLjY5NTMxLS41Nzg2MVptMCwxLjgxOTM0djEuMzE5MzRIODQuMzE1Yy41MjUzOSwwLC44MDY2NC0uMjMxOTMuODA2NjQtLjY1NzcxLDAtLjQ1MDY4LS4zMTgzNi0uNjYxNjItLjkxOC0uNjYxNjJaIiBzdHlsZT0iZmlsbDogI2ZmZiIvPgogICAgICA8L2c+CiAgICA8L2c+CiAgPC9nPgo8L3N2Zz4K" alt="Скачать в App Store" width="200" height="67">
@@ -1228,7 +1334,7 @@ footer{background:#000; padding:26px 40px 24px;}
 <main>
 <section class="block2 snowzone" id="snowzone0">
   <div class="hero-phone-block wrap">
-    <img class="mockup mockup--hero" src="img/paycheck-15-lg.webp" width="1300" height="1629" alt="Экран «Получка» Кубыша: план до следующей получки, пульс периода и кнопка «Могу ли я себе это позволить»" decoding="async">
+    <img class="mockup mockup--hero" src="img/paycheck-device-v2.png" width="1120" height="1404" alt="Экран «Получка» Кубыша: сколько можно потратить до следующей получки и прогресс периода" decoding="async">
           
     <p class="hero-side-text" id="fillText">После каждой получки Кубыш автоматически строит финансовый план и каждый день показывает сколько можно потратить, чтобы все цели были достигнуты вовремя</p>
   </div>
@@ -1276,15 +1382,15 @@ footer{background:#000; padding:26px 40px 24px;}
 
 <section class="benefits">
   <div class="wrap">
-    <h2>Как мне это поможет?</h2>
+    <h2>Зачем мне это?</h2>
     <div class="benefit-row" id="benefitRow">
       <div class="benefit-card active" data-idx="0">
       <div class="benefit-top"><span class="benefit-num">01</span></div>
       <img class="benefit-icon" src="data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjM3MiIgaGVpZ2h0PSIyNDIiIHZpZXdCb3g9IjAgMCAzNzIgMjQyIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBpZD0iRXllIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTM3MiAxMjFDMzcyIDEyMSAyODguNzI1IDI0MiAxODYgMjQyQzgzLjI3NTQgMjQyIDAgMTIxIDAgMTIxQzAgMTIxIDgzLjI3NTQgMCAxODYgMEMyODguNzI1IDAgMzcyIDEyMSAzNzIgMTIxWk0yNzAuODkyIDEyMUMyNzAuODkyIDE2OS42MiAyMzIuODg1IDIwOS4wMzYgMTg2IDIwOS4wMzZDMTM5LjExNSAyMDkuMDM2IDEwMS4xMDggMTY5LjYyIDEwMS4xMDggMTIxQzEwMS4xMDggNzIuMzc5NiAxMzkuMTE1IDMyLjk2NDMgMTg2IDMyLjk2NDNDMjMyLjg4NSAzMi45NjQzIDI3MC44OTIgNzIuMzc5NiAyNzAuODkyIDEyMVpNMTg2IDE3MS40NDdDMjEyLjg2NyAxNzEuNDQ3IDIzNC42NDYgMTQ4Ljg2MSAyMzQuNjQ2IDEyMUMyMzQuNjQ2IDkzLjEzOTIgMjEyLjg2NyA3MC41NTMgMTg2IDcwLjU1M0MxNTkuMTMzIDcwLjU1MyAxMzcuMzU0IDkzLjEzOTIgMTM3LjM1NCAxMjFDMTM3LjM1NCAxNDguODYxIDE1OS4xMzMgMTcxLjQ0NyAxODYgMTcxLjQ0N1oiIGZpbGw9IiNEQjQwOEUiLz4KPC9zdmc+Cg==" alt="">
       <div class="benefit-text">
-        <h3>Сразу видно — сколько можно спокойно потратить.</h3>
+        <h3>Я вроде мало трачу, но деньги быстро заканчиваются</h3>
         
-        <p>После каждой получки Кубыш составляет план с учётом обязательных платежей, запланированных расходов и ваших целей. По фактическим тратам он показывает бюджет на день, текущий темп и хватит ли денег до следующей получки.</p>
+        <p>Кубыш распределяет получку с учётом обязательных платежей, планов и целей. Каждый день показывает, сколько можно спокойно потратить, чтобы денег хватило до следующего дохода</p>
       </div>
 <img class="benefit-icon-closed" src="data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjE0MS44MTMiIGhlaWdodD0iMTkzLjU2OCIgdmlld0JveD0iMCAwIDE0MS44MTMgMTkzLjU2OCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggaWQ9IlN1YnRyYWN0IiBkPSJNMCAwQzc4Ljk4NDkgNS42MTExMyAxNDEuODEzIDk2Ljc4NDIgMTQxLjgxMyA5Ni43ODQyQzE0MS44MTMgOTYuNzg0MiA3OC45ODQ5IDE4Ny45NTcgMCAxOTMuNTY4VjE2Ni45NjZDMzQuMDkyNCAxNjMuMDY1IDYwLjYwOTQgMTMzLjEzMyA2MC42MDk0IDk2Ljc4NDJDNjAuNjA5NCA2MC40MzU3IDM0LjA5MjUgMzAuNTAyMSAwIDI2LjYwMTZWMFpNMCA1Ny4wODJDMTcuOTU0NCA2MC43MzMzIDMxLjQ5OSA3Ny4xMTk1IDMxLjQ5OSA5Ni43ODQyQzMxLjQ5OSAxMTYuNDQ5IDE3Ljk1NDMgMTMyLjgzNCAwIDEzNi40ODVWNTcuMDgyWiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+Cg==" alt="">
     </div>
@@ -1292,9 +1398,9 @@ footer{background:#000; padding:26px 40px 24px;}
       <div class="benefit-top"><span class="benefit-num">02</span></div>
       <img class="benefit-icon" src="data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjMxOSIgaGVpZ2h0PSIyOTciIHZpZXdCb3g9IjAgMCAzMTkgMjk3IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBpZD0iVmVjdG9yIiBkPSJNMjgxLjkwNyAxNzQuNDg4QzI4MS45MDcgMTcxLjUzNCAyODAuNzM1IDE2OC43MDEgMjc4LjY0OCAxNjYuNjEyQzI3Ni41NjEgMTY0LjUyMyAyNzMuNzMgMTYzLjM1IDI3MC43NzkgMTYzLjM1SDIyNi4yNjdDMjIzLjMxNiAxNjMuMzUgMjIwLjQ4NiAxNjQuNTIzIDIxOC4zOTkgMTY2LjYxMkMyMTYuMzEyIDE2OC43MDEgMjE1LjE0IDE3MS41MzQgMjE1LjE0IDE3NC40ODhWMjc0LjcyNUgxOTIuODg0VjMzLjQxMjVDMTkyLjg4NCAyMi42MDE3IDE5Mi44NTQgMTUuNTkyNSAxOTIuMTcyIDEwLjQ1NDRDMTkxLjUxOSA1LjYyODE1IDE5MC40NjUgNC4xMTM0NSAxODkuNjIgMy4yNjdDMTg4Ljc3NCAyLjQyMDU1IDE4Ny4yNiAxLjM2NjIgMTgyLjQzOCAwLjcxMjgwMUMxNzcuMjkgMC4wMjk3MDE0IDE3MC4zMDEgMCAxNTkuNSAwQzE0OC42OTkgMCAxNDEuNjk1IDAuMDI5NzAxNCAxMzYuNTYyIDAuNzEyODAxQzEzMS43NCAxLjM2NjIgMTMwLjIyNiAyLjQyMDU1IDEyOS4zOCAzLjI2N0MxMjguNTM1IDQuMTEzNDUgMTI3LjQ4MSA1LjYyODE1IDEyNi44MjggMTAuNDU0NEMxMjYuMTQ2IDE1LjYwNzQgMTI2LjExNiAyMi42MDE3IDEyNi4xMTYgMzMuNDEyNVYyNzQuNzI1SDEwMy44NlYxMDAuMjM4QzEwMy44NiA5Ny4yODM3IDEwMi42ODggOTQuNDUwOCAxMDAuNjAxIDkyLjM2MjFDOTguNTE0MyA5MC4yNzM0IDk1LjY4MzkgODkuMSA5Mi43MzI2IDg5LjFINDguMjIwOUM0NS4yNjk2IDg5LjEgNDIuNDM5MiA5MC4yNzM0IDQwLjM1MjMgOTIuMzYyMUMzOC4yNjU0IDk0LjQ1MDggMzcuMDkzIDk3LjI4MzcgMzcuMDkzIDEwMC4yMzhWMjc0LjcyNUgxMS4xMjc5QzguMTc2NiAyNzQuNzI1IDUuMzQ2MTggMjc1Ljg5OCAzLjI1OTI5IDI3Ny45ODdDMS4xNzI0IDI4MC4wNzYgMCAyODIuOTA5IDAgMjg1Ljg2M0MwIDI4OC44MTYgMS4xNzI0IDI5MS42NDkgMy4yNTkyOSAyOTMuNzM4QzUuMzQ2MTggMjk1LjgyNyA4LjE3NjYgMjk3IDExLjEyNzkgMjk3SDMwNy44NzJDMzEwLjgyMyAyOTcgMzEzLjY1NCAyOTUuODI3IDMxNS43NDEgMjkzLjczOEMzMTcuODI4IDI5MS42NDkgMzE5IDI4OC44MTYgMzE5IDI4NS44NjNDMzE5IDI4Mi45MDkgMzE3LjgyOCAyODAuMDc2IDMxNS43NDEgMjc3Ljk4N0MzMTMuNjU0IDI3NS44OTggMzEwLjgyMyAyNzQuNzI1IDMwNy44NzIgMjc0LjcyNUgyODEuOTA3VjE3NC40ODhaIiBmaWxsPSIjRkQ4NDk2Ii8+Cjwvc3ZnPgo=" alt="">
       <div class="benefit-text">
-        <h3>Видно, как движется каждая цель.</h3>
+        <h3>Я коплю, но не понимаю, успею ли к нужной дате</h3>
         
-        <p>Кубыш показывает, сколько уже накоплено, сколько нужно откладывать на цель и когда она будет достигнута при текущем плане. Если прогноз начинает расходиться с желаемой датой, приложение заранее покажет риск.</p>
+        <p>Кубыш показывает, сколько уже накоплено, сколько ещё нужно отложить и когда цель будет достигнута при текущем плане. Если срок окажется под угрозой, приложение предупредит об этом заранее</p>
       </div>
 <img class="benefit-icon-closed" src="data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjE0NyIgaGVpZ2h0PSIyMjguNTgyIiB2aWV3Qm94PSIwIDAgMTQ3IDIyOC41ODIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGlkPSJTdWJ0cmFjdCIgZD0iTTI0LjI0MzIgMEMzMi41NTYzIDAgMzcuOTM1IDAuMDIzMTA2MiA0MS44OTc1IDAuNTQ4ODI4QzQ1LjYwODcgMS4wNTE3MSA0Ni43NzM5IDEuODYzMTkgNDcuNDI0OCAyLjUxNDY1QzQ4LjA3NTcgMy4xNjYxMiA0OC44ODYyIDQuMzMyNTkgNDkuMzg4NyA4LjA0Njg4QzQ5LjkxMzkgMTIuMDAxMyA0OS45MzY1IDE3LjM5NTcgNDkuOTM2NSAyNS43MTU4VjIxMS40MzhINjcuMDY1NFYxMzQuMjkyQzY3LjA2NTQgMTMyLjAxOSA2Ny45NjgxIDEyOS44MzggNjkuNTc0MiAxMjguMjNDNzEuMTgwMyAxMjYuNjIzIDczLjM1ODYgMTI1LjcyIDc1LjYyOTkgMTI1LjcySDEwOS44ODhDMTEyLjE1OSAxMjUuNzIgMTE0LjMzNyAxMjYuNjIzIDExNS45NDMgMTI4LjIzQzExNy41NDkgMTI5LjgzOCAxMTguNDUyIDEzMi4wMTkgMTE4LjQ1MiAxMzQuMjkyVjIxMS40MzhIMTM4LjQzNkMxNDAuNzA3IDIxMS40MzggMTQyLjg4NSAyMTIuMzQxIDE0NC40OTEgMjEzLjk0OEMxNDYuMDk3IDIxNS41NTYgMTQ3IDIxNy43MzYgMTQ3IDIyMC4wMUMxNDcgMjIyLjI4MyAxNDYuMDk3IDIyNC40NjQgMTQ0LjQ5MSAyMjYuMDcxQzE0Mi44ODUgMjI3LjY3OSAxNDAuNzA3IDIyOC41ODIgMTM4LjQzNiAyMjguNTgySDBWNC4xOTQzNEMwLjM1NDM2NiAzLjMxNzQgMC43MjkxMDQgMi44NDgzMyAxLjA2MjUgMi41MTQ2NUMxLjcxMzM5IDEuODYzMjQgMi44NzgyIDEuMDUxNjggNi41ODg4NyAwLjU0ODgyOEMxMC41Mzk5IDAuMDIzMDk3NSAxNS45MzAxIDUuMjU4NDVlLTA3IDI0LjI0MzIgMFoiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo=" alt="">
     </div>
@@ -1302,9 +1408,9 @@ footer{background:#000; padding:26px 40px 24px;}
       <div class="benefit-top"><span class="benefit-num">03</span></div>
       <img class="benefit-icon" src="data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjMwMS4wNTYiIGhlaWdodD0iMzAyIiB2aWV3Qm94PSIwIDAgMzAxLjA1NiAzMDIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxnIGlkPSJHcm91cCA2MDgiPgo8Y2lyY2xlIGlkPSJFbGxpcHNlIDE0NiIgY3g9Ijc1LjUwMDIiIGN5PSI3NS41IiByPSI3NS41IiBmaWxsPSIjOEQ1Q0ZGIi8+CjxjaXJjbGUgaWQ9IkVsbGlwc2UgMTQ4IiBjeD0iNzUuNTAwMiIgY3k9IjIyNi41IiByPSI3NS41IiBmaWxsPSIjOEQ1Q0ZGIi8+CjxlbGxpcHNlIGlkPSJFbGxpcHNlIDE0NyIgY3g9IjIyNi4wMjgiIGN5PSI3NS41IiByeD0iNzUuMDI4MSIgcnk9Ijc1LjUiIGZpbGw9IiM4RDVDRkYiLz4KPGVsbGlwc2UgaWQ9IkVsbGlwc2UgMTQ5IiBjeD0iMjI2LjAyOCIgY3k9IjIyNi41IiByeD0iNzUuMDI4MSIgcnk9Ijc1LjUiIGZpbGw9IiM4RDVDRkYiLz4KPC9nPgo8L3N2Zz4K" alt="">
       <div class="benefit-text">
-        <h3>Копите на несколько целей к нужным датам.</h3>
+        <h3>У меня несколько целей, и я не знаю, сколько откладывать на каждую</h3>
         
-        <p>Добавьте важные и менее приоритетные цели — например, свадьбу, отпуск и новый телефон. Кубыш рассчитает, когда получится их достигнуть и сколько нужно откладывать на каждую цель в месяц, чтобы достичь их к нужным датам.</p>
+        <p>Добавьте все цели и желаемые даты — Кубыш рассчитает посильный взнос на каждую и распределит накопления с учётом ваших приоритетов</p>
       </div>
 <img class="benefit-icon-closed" src="data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjYzLjU4MDEiIGhlaWdodD0iMjM0IiB2aWV3Qm94PSIwIDAgNjMuNTgwMSAyMzQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGlkPSJTdWJ0cmFjdCIgZD0iTTUuNDQ1MzEgMTE3QzM3LjU1MiAxMTcgNjMuNTgwMSAxNDMuMTkxIDYzLjU4MDEgMTc1LjVDNjMuNTgwMSAyMDcuODA5IDM3LjU1MiAyMzQgNS40NDUzMSAyMzRDMy42MDkwMyAyMzQgMS43OTI3OCAyMzMuOTEzIDAgMjMzLjc0NVYxMTcuMjU0QzEuNzkyNzUgMTE3LjA4NiAzLjYwOTA2IDExNyA1LjQ0NTMxIDExN1pNNS40NDUzMSAwQzM3LjU1MiAwIDYzLjU4MDEgMjYuMTkxMyA2My41ODAxIDU4LjVDNjMuNTgwMSA5MC44MDg3IDM3LjU1MiAxMTcgNS40NDUzMSAxMTdDMy42MDkwMyAxMTcgMS43OTI3OCAxMTYuOTEzIDAgMTE2Ljc0NVYwLjI1MzkwNkMxLjc5Mjc1IDAuMDg2MzIwNSAzLjYwOTA2IDIuOTEyMjZlLTA3IDUuNDQ1MzEgMFoiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo=" alt="">
     </div>
@@ -1312,13 +1418,13 @@ footer{background:#000; padding:26px 40px 24px;}
       <div class="benefit-top"><span class="benefit-num">04</span></div>
       <img class="benefit-icon" src="data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjMyNSIgaGVpZ2h0PSIyNTEiIHZpZXdCb3g9IjAgMCAzMjUgMjUxIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBpZD0iVmVjdG9yIiBkPSJNOTguNTc5NSA4MS4wNzQ5TDE2MS42NDggMTIuNUwyMjQuNzE2IDgxLjA3NDlNMTYxLjY0OCAxMi41VjE3NC41MzhNMjQ4LjU4IDExMi4yODFMMzEyLjUgMTc1LjM5MUwyNDguNTggMjM4LjVNMzEyLjUgMTc1LjM5MUgxNjMuMzUyTTc2LjQyMDUgMTEyLjI4MUwxMi41IDE3NS4zOTFMNzYuNDIwNSAyMzguNU0xMi41IDE3NS4zOTFIMTYxLjY0OCIgc3Ryb2tlPSIjOThEREZEIiBzdHJva2Utd2lkdGg9IjI1IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+Cg==" alt="">
       <div class="benefit-text">
-        <h3>Каждая получка уже распределена.</h3>
+        <h3>После получки я каждый раз заново решаю, куда распределить деньги</h3>
         
-        <p>Кубыш сначала закладывает обязательные платежи, запланированные категории трат и кошелёк на небольшие незапланированные покупки. Оставшиеся деньги направляет в накопления и распределяет между целями по вашему плану.</p>
+        <p>Кубыш заранее закладывает обязательные платежи и запланированные траты, оставляет сумму на небольшие незапланированные покупки, а остальное распределяет между накоплениями и целями по вашему плану</p>
       </div>
 <img class="benefit-icon-closed" src="data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjE0Mi4xNTciIGhlaWdodD0iMjE2LjUyIiB2aWV3Qm94PSIwIDAgMTQyLjE1NyAyMTYuNTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGlkPSJTdWJ0cmFjdCIgZD0iTTEuODIwMzEgMEM1LjMxNjY0IDAuMDAwMTY5ODkzIDguNjUzNjQgMS40NjQ3MSAxMS4wMjA1IDQuMDM4MDlMNjQuNDY2OCA2Mi4xNTE0QzY5LjEzOTMgNjcuMjMyNiA2OC44MDg0IDc1LjE0MDQgNjMuNzI3NSA3OS44MTM1QzU4LjY0NjQgODQuNDg2MiA1MC43Mzg2IDg0LjE1NSA0Ni4wNjU0IDc5LjA3NDJMMTQuMzIwMyA0NC41NTY2VjEzOC4wMzlIOTkuMjA1MUw2Ni43MDcgMTA1Ljk1M0M2MS43OTQ0IDEwMS4xMDMgNjEuNzQzNiA5My4xODggNjYuNTkzOCA4OC4yNzU0QzcxLjQ0NDEgODMuMzYzIDc5LjM1ODkgODMuMzEyOSA4NC4yNzE1IDg4LjE2MzFMMTM4LjQzOSAxNDEuNjQ0QzE0MC44MTggMTQzLjk5MiAxNDIuMTU3IDE0Ny4xOTYgMTQyLjE1NyAxNTAuNTM5QzE0Mi4xNTcgMTUzLjg4MiAxNDAuODE4IDE1Ny4wODUgMTM4LjQzOSAxNTkuNDM0TDg0LjI3MTUgMjEyLjkxNUM3OS4zNTkgMjE3Ljc2NSA3MS40NDQxIDIxNy43MTQgNjYuNTkzOCAyMTIuODAyQzYxLjc0MzcgMjA3Ljg4OSA2MS43OTQ2IDE5OS45NzUgNjYuNzA3IDE5NS4xMjVMOTkuMjA1MSAxNjMuMDM5SDMuMjY0NjVDMy4wMjIyNyAxNjMuMDM5IDIuNzgwOTcgMTYzLjAzIDIuNTQxOTkgMTYzLjAxN0MyLjMwMzM0IDE2My4wMyAyLjA2MjM3IDE2My4wMzkgMS44MjAzMSAxNjMuMDM5SDBWMC4xMzI4MTJDMC41OTg4MjYgMC4wNDQ3MDQzIDEuMjA3MzEgMCAxLjgyMDMxIDBaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K" alt="">
     </div>
-<div class="benefit-card" data-idx="4">
+<div class="benefit-card" data-idx="4" hidden>
       <div class="benefit-top"><span class="benefit-num">05</span></div>
       <img class="benefit-icon" src="data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjM4OCIgaGVpZ2h0PSIzODgiIHZpZXdCb3g9IjAgMCAzODggMzg4IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8ZyBpZD0ibWRpOmJyYWluLWZyZWV6ZSI+CjxwYXRoIGlkPSJWZWN0b3IiIGQ9Ik0yMTAuMTY3IDQ4LjVDMTQ5LjIxOSA0OC41IDEwMC4wNzIgOTYuMTkxNyA5Ny4wMDAzIDE1Ni4xN0w2NS45NjAzIDE5Ny4wNzJDNjIuMDgwMyAyMDIuMDgzIDY1Ljk2MDMgMjEwLjE2NyA3Mi43NTAzIDIxMC4xNjdIOTcuMDAwM1YyNTguNjY3Qzk3LjAwMDMgMjc2LjYxMiAxMTEuMzg5IDI5MSAxMjkuMzM0IDI5MUgxNDUuNVYzMzkuNUgyNTguNjY3VjI2My42NzhDMjk2Ljk4MiAyNDUuNTcyIDMyMy4zMzQgMjA2LjkzMyAzMjMuMzM0IDE2MS42NjdDMzIzLjMzNCA5OS4yNjMzIDI3Mi44OTQgNDguNSAyMTAuMTY3IDQ4LjVaTTI3NS44MDQgMTU0LjcxNUwyNDQuMTE3IDE2My4xMjJMMjY3LjM5NyAxODYuNTYzQzI3MC4xMTIgMTg5LjI5IDI3MS42MzYgMTkyLjk4MSAyNzEuNjM2IDE5Ni44MjlDMjcxLjYzNiAyMDAuNjc3IDI3MC4xMTIgMjA0LjM2OCAyNjcuMzk3IDIwNy4wOTVDMjY0LjY3IDIwOS44MSAyNjAuOTc5IDIxMS4zMzQgMjU3LjEzMSAyMTEuMzM0QzI1My4yODMgMjExLjMzNCAyNDkuNTkyIDIwOS44MSAyNDYuODY1IDIwNy4wOTVMMjIzLjI2MiAxODMuODE1TDIxNS4wMTcgMjE1LjUwMkMyMTMuMDc3IDIyMy40MjMgMjA0Ljk5NCAyMjcuOTUgMTk3LjM5NSAyMjUuODQ4QzE5NS41MzcgMjI1LjM3OSAxOTMuNzkxIDIyNC41NDQgMTkyLjI2IDIyMy4zOUMxOTAuNzI5IDIyMi4yMzcgMTg5LjQ0NCAyMjAuNzkgMTg4LjQ4MSAyMTkuMTMzQzE4Ny41MTcgMjE3LjQ3NyAxODYuODk0IDIxNS42NDQgMTg2LjY0OCAyMTMuNzQ0QzE4Ni40MDIgMjExLjg0MyAxODYuNTM4IDIwOS45MTIgMTg3LjA0OSAyMDguMDY1TDE5NS42MTcgMTc2LjIxN0wxNjMuNzY5IDE4NC43ODVDMTYxLjkyMSAxODUuMzAyIDE1OS45ODkgMTg1LjQ0NCAxNTguMDg2IDE4NS4yMDFDMTU2LjE4MyAxODQuOTU4IDE1NC4zNDggMTg0LjMzNiAxNTIuNjkgMTgzLjM3MUMxNTEuMDMxIDE4Mi40MDYgMTQ5LjU4NCAxODEuMTE5IDE0OC40MzIgMTc5LjU4NEMxNDcuMjggMTc4LjA1IDE0Ni40NDggMTc2LjMgMTQ1Ljk4NSAxNzQuNDM4QzE0My44ODQgMTY2Ljg0IDE0OC40MSAxNTguNzU3IDE1Ni4zMzIgMTU2LjgxN0wxODguMDE5IDE0OC41NzJMMTY0LjczOSAxMjQuOTY4QzE2Mi4zMDYgMTIyLjE5IDE2MS4wMjEgMTE4LjU5MiAxNjEuMTQ0IDExNC45MDJDMTYxLjI2NiAxMTEuMjEyIDE2Mi43ODYgMTA3LjcwNiAxNjUuMzk3IDEwNS4wOTVDMTY4LjAwOCAxMDIuNDg0IDE3MS41MTQgMTAwLjk2NCAxNzUuMjA0IDEwMC44NDJDMTc4Ljg5NCAxMDAuNzE5IDE4Mi40OTIgMTAyLjAwNCAxODUuMjcgMTA0LjQzN0wyMDguNzEyIDEyNy43MTdMMjE3LjExOSA5Ni4wM0MyMTcuNTcyIDk0LjIxMyAyMTguMzggOTIuNTAzNCAyMTkuNDk1IDkwLjk5OTNDMjIwLjYxMSA4OS40OTUxIDIyMi4wMTIgODguMjI2IDIyMy42MTkgODcuMjY0N0MyMjUuMjI3IDg2LjMwMzUgMjI3LjAwOCA4NS42Njg5IDIyOC44NjEgODUuMzk3NkMyMzAuNzEzIDg1LjEyNjIgMjMyLjYwMiA4NS4yMjMzIDIzNC40MTcgODUuNjgzM0MyNDIuNSA4Ny43ODUgMjQ3LjAyNyA5NS43MDY3IDI0NS4wODcgMTAzLjYyOEwyMzYuNTE5IDEzNS4zMTVMMjY4LjIwNSAxMjYuNzQ3QzI3MC4wODQgMTI2LjI2MiAyNzIuMDQxIDEyNi4xNTQgMjczLjk2MiAxMjYuNDI4QzI3NS44ODMgMTI2LjcwMyAyNzcuNzMxIDEyNy4zNTUgMjc5LjM5OCAxMjguMzQ3QzI4MS4wNjYgMTI5LjMzOSAyODIuNTIyIDEzMC42NTEgMjgzLjY4MSAxMzIuMjA3QzI4NC44MzkgMTMzLjc2NCAyODUuNjc5IDEzNS41MzQgMjg2LjE1IDEzNy40MTdDMjg2LjYxIDEzOS4yMzIgMjg2LjcwNyAxNDEuMTIgMjg2LjQzNiAxNDIuOTczQzI4Ni4xNjUgMTQ0LjgyNiAyODUuNTMgMTQ2LjYwNyAyODQuNTY5IDE0OC4yMTRDMjgzLjYwOCAxNDkuODIxIDI4Mi4zMzkgMTUxLjIyMyAyODAuODM0IDE1Mi4zMzhDMjc5LjMzIDE1My40NTQgMjc3LjYyMSAxNTQuMjYyIDI3NS44MDQgMTU0LjcxNVoiIGZpbGw9IiNDRUYxNkMiLz4KPC9nPgo8L3N2Zz4K" alt="">
       <div class="benefit-text">
@@ -1385,21 +1491,21 @@ footer{background:#000; padding:26px 40px 24px;}
 <span class="bullet" data-idx="2"></span></div>
     <div class="carousel-arrows">
       <button class="carousel-arrow prev disabled" id="prevArrow" aria-label="Назад">
-        <svg viewBox="0 0 88 88" fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter"><path d="M83 44H6"/><path d="M44 6L6 44L44 82"/></svg>
+        <svg viewBox="0 0 120 72" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"><path d="M108 36H16"/><path d="m40 12-24 24 24 24"/></svg>
       </button>
       <button class="carousel-arrow next" id="nextArrow" aria-label="Далее">
-        <svg viewBox="0 0 88 88" fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter"><path d="M5 44H82"/><path d="M44 6L82 44L44 82"/></svg>
+        <svg viewBox="0 0 120 72" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 36h92"/><path d="m80 12 24 24-24 24"/></svg>
       </button>
     </div>
     <div class="slide active" data-idx="0" style="background:radial-gradient(closest-side at 68% 40%, rgba(130,81,244,.5), rgba(130,81,244,0) 72%), linear-gradient(180deg,#000 0%,#000 38%,#141ec4 76%,#2a2ef0 100%)">
       <div class="slide-inner">
         <div class="slide-text">
           <h2>Все финансы<br>— в одной картине</h2>
-          <p>Доходы, обязательные платежи, расходы, накопления и цели собраны в одном месте. Сразу видно, как устроен ваш личный бюджет и сколько денег действительно можно спокойно потратить.</p>
+          <p><span>Доходы, обязательные платежи, расходы, накопления и цели собраны в одном месте</span><span>Сразу видно, как устроен личный бюджет и сколько можно спокойно потратить</span></p>
         </div>
         <div class="slide-fade"></div>
         <div class="slide-phone">
-          <img class="mockup" src="img/overview-15.webp" width="1200" height="1523" alt="Экран «Обзор» Кубыша: структура расходов по плану и прогноз накоплений к выбранной дате" loading="lazy" decoding="async">
+          <img class="mockup" src="img/overview-device-front-v4.png" width="852" height="1847" alt="Финансовая картина в Кубыше: доходы, расходы, обязательства, подушка и цели" loading="lazy" decoding="async">
           
         </div>
       </div>
@@ -1408,11 +1514,11 @@ footer{background:#000; padding:26px 40px 24px;}
       <div class="slide-inner">
         <div class="slide-text">
           <h2>План не рухнет из-за<br>одной ошибки</h2>
-          <p>Если после очередной получки получилось отложить меньше, чем планировалось, или пришлось взять часть денег из накоплений, Кубыш пересчитает прогноз по целям и заранее покажет, какие сроки изменились и где появился риск.</p>
+          <p><span>Если после получки удалось отложить меньше или пришлось взять деньги из накоплений</span><span>Кубыш пересчитает прогноз и заранее покажет, что изменилось</span></p>
         </div>
         <div class="slide-fade"></div>
         <div class="slide-phone">
-          <img class="mockup" src="img/goals-15.webp" width="1100" height="1396" alt="Экран «Цели» Кубыша: прогноз даты достижения и предупреждение о риске" loading="lazy" decoding="async">
+          <img class="mockup" src="img/insight-device-front-v4.png" width="853" height="1844" alt="Инсайт Кубыша: сравнение доходов и расходов за текущий период" loading="lazy" decoding="async">
           
         </div>
       </div>
@@ -1420,12 +1526,12 @@ footer{background:#000; padding:26px 40px 24px;}
 <div class="slide" data-idx="2" style="background:linear-gradient(180deg,#000 0%,#000 44%,#123a4d 84%,#a9dbe6 100%)">
       <div class="slide-inner">
         <div class="slide-text">
-          <h2>Все накопления на одном счете.<br>Каждая цель под контролем</h2>
-          <p>Не нужно держать в голове, какая часть денег уже относится к отпуску, машине или подушке безопасности. Кубыш сам распределяет общую сумму накоплений между целями и всегда показывает, сколько уже накоплено и сколько ещё осталось.</p>
+          <h2>Все накопления<br>на одном счёте<br>Каждая цель под контролем</h2>
+          <p><span>Кубыш распределяет общую сумму накоплений между подушкой и целями</span><span>Всегда видно, сколько уже накоплено и сколько ещё осталось</span></p>
         </div>
         <div class="slide-fade"></div>
         <div class="slide-phone">
-          <img class="mockup" src="img/envelopes-15.webp" width="1100" height="1396" alt="Экран Кубыша: накопления разложены по конвертам — подушка, цели и свободные деньги" loading="lazy" decoding="async">
+          <img class="mockup" src="img/goals-device-front-v4.png" width="852" height="1846" alt="Экран цели Кубыша: подушка безопасности, накопленная сумма и план пополнения" loading="lazy" decoding="async">
           
         </div>
       </div>
@@ -1535,7 +1641,7 @@ footer{background:#000; padding:26px 40px 24px;}
     <a href="privacy/">Политика конфиденциальности</a>
     <a href="terms/">Пользовательское соглашение</a>
     <span>© 2026 Кубыш. Все права защищены</span>
-    <span class="footer-build">сборка 2026-09-15-40</span>
+    <span class="footer-build">сборка 2026-09-18-47</span>
   </div>
 </footer>
 
@@ -1684,75 +1790,6 @@ kickSnow();
   window.addEventListener('scroll', update, {passive:true});
   window.addEventListener('resize', update);
   update();
-})();
-
-// ---------- benefit cards hover ----------
-(function() {
-  const row = document.getElementById('benefitRow');
-  if (!row) return;
-  const cards = [...row.querySelectorAll('.benefit-card')];
-  // Hover, not click (designer was explicit). The eye card is open by default and only
-  // closes while another card is hovered — leaving the row restores that default.
-  // На телефоне карточки складываются в столбец, и смена display раскрывала их
-  // рывком. Приём тот же, что в аккордеоне FAQ: измеряем итоговую высоту и ведём
-  // max-height от текущей к ней. На десктопе анимацию делает flex-grow, там не трогаем.
-  const isPhone = () => window.matchMedia('(max-width: 900px)').matches;
-  const SLIDE_MS = 440;
-  function slide(card, from, to) {
-    clearTimeout(card._slideTimer);
-    card.style.maxHeight = from + 'px';
-    void card.offsetHeight;                     // зафиксировать старт до перехода
-    card.style.maxHeight = to + 'px';
-    const settle = () => {
-      clearTimeout(card._slideTimer);
-      card.removeEventListener('transitionend', onEnd);
-      // снимаем ограничение, иначе раскрытая карточка не переживёт поворот экрана
-      card.classList.remove('closing');
-      card.style.maxHeight = card.classList.contains('active') ? 'none' : '';
-    };
-    const onEnd = (e) => {
-      if (e.target !== card || e.propertyName !== 'max-height') return;
-      settle();
-    };
-    card.addEventListener('transitionend', onEnd);
-    // Страховка: если перехода не случилось (прерван или анимации отключены в системе),
-    // transitionend не придёт, и карточка залипнет в промежуточном состоянии —
-    // с содержимым в потоке, но обрезанным до 88px.
-    card._slideTimer = setTimeout(settle, SLIDE_MS + 120);
-  }
-  const open = (c) => {
-    if (c.classList.contains('active')) return;
-    const prev = cards.find(x => x.classList.contains('active'));
-    if (!isPhone()) {
-      cards.forEach(x => x.classList.remove('active'));
-      c.classList.add('active');
-      return;
-    }
-    const fromOpen  = c.getBoundingClientRect().height;
-    const fromClose = prev ? prev.getBoundingClientRect().height : 0;
-    cards.forEach(x => { x.classList.remove('active'); x.style.maxHeight = ''; });
-    // свёрнутая высота уходящей карточки — читаем, пока её содержимое вне потока
-    const toClose = prev && prev !== c ? prev.offsetHeight : 0;
-    // .closing возвращает содержимое в поток: без него карточка схлопывается мгновенно,
-    // max-height нечего сжимать, и страница под пальцем прыгает
-    if (prev && prev !== c) prev.classList.add('closing');
-    c.classList.add('active');
-    const toOpen = c.scrollHeight;
-    if (prev && prev !== c) slide(prev, fromClose, toClose);
-    slide(c, fromOpen, toOpen);
-  };
-  cards.forEach(c => {
-    // на тач-устройстве наведение синтезируется при тапе, но открывать должен клик
-    c.addEventListener('mouseenter', () => { if (!isPhone()) open(c); });
-    c.addEventListener('click', () => open(c));
-  });
-  row.addEventListener('mouseleave', () => {
-    // На телефоне mouseleave прилетает, как только палец отрывается от экрана, и
-    // сбрасывал выбор обратно на первую карточку в обход open() — со стороны это
-    // выглядело так, будто карточки вообще не открываются.
-    if (isPhone()) return;
-    cards.forEach((x, i) => x.classList.toggle('active', i === 0));
-  });
 })();
 
 // ---------- FAQ accordion ----------
