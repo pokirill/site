@@ -8,7 +8,7 @@ Total output lines: 1998
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="build" content="2026-09-19-50">  <!-- метка сборки, видно в исходнике страницы -->
+<meta name="build" content="2026-09-19-51">  <!-- метка сборки, видно в исходнике страницы -->
 <title>Кубыш — сколько можно потратить сегодня до получки</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="apple-itunes-app" content="app-id=6778792103, app-argument=https://apps.apple.com/app/id6778792103">
@@ -1041,11 +1041,11 @@ footer{background:#000; padding:26px 40px 24px;}
   box-shadow:none;
   filter:drop-shadow(0 5px 12px rgba(0,0,0,.28));
 }
-.carousel-arrows{bottom:clamp(96px,12vh,132px);}
+.carousel-arrows{bottom:clamp(96px,12vh,132px);pointer-events:none;}
+.carousel-arrow{position:relative;z-index:1;pointer-events:auto;}
 .carousel-arrow.prev{color:rgba(255,255,255,.82);}
 .carousel-arrow.next{color:var(--lime);}
 .carousel-arrow:hover{transform:translateY(-2px) scale(1.04);}
-.carousel-arrow.disabled{opacity:.64;}
 .carousel-arrow svg{width:clamp(82px,7vw,120px); height:auto;}
 body[data-slide="2"] .carousel-arrow.prev{
   color:rgba(255,255,255,.82);
@@ -1054,52 +1054,34 @@ body[data-slide="2"] .carousel-arrow.next{
   color:var(--lime);
 }
 
-/* Один язык переходов: мягкие цветовые мосты и отдельные «пузырьки» вместо
-   растянутых растровых облаков. Все три стыка собраны одной системой. */
+/* Один язык переходов: чистые многоступенчатые градиенты без шаров,
+   облаков и резких стыков. Все три перехода собраны одной системой. */
 .grad-blue2,.block2 + .seam-wrap{display:none;}
 .grad-blue,.grad-pink1,.carousel-transition{
   position:relative; z-index:0; overflow:hidden; isolation:isolate; margin-top:-1px;
 }
 .grad-blue>.snow-layer,.grad-pink1>.snow-layer{display:none;}
 .grad-blue{
-  --bubble-a:rgba(91,94,211,.55); --bubble-b:rgba(255,255,255,.72);
   height:clamp(138px,12vw,210px);
-  background-image:linear-gradient(180deg,#8082e3 0%,#b5b7ed 46%,#fff 100%) !important;
+  background-image:linear-gradient(180deg,#777adb 0%,#a5a8e7 38%,#d9daf4 72%,#fff 100%) !important;
 }
 .grad-pink1{
-  --bubble-a:rgba(255,255,255,.72); --bubble-b:rgba(113,55,220,.62);
   height:clamp(170px,15vw,250px);
-  background-image:linear-gradient(180deg,#fff 0%,#eed3ed 25%,#7a43d8 60%,#000 100%) !important;
+  background-image:linear-gradient(180deg,#fff 0%,#f2e7f5 19%,#d5afea 39%,#7440d2 63%,#25113f 84%,#000 100%) !important;
 }
 .carousel-transition{
-  --carousel-edge:#2a2ef0; --bubble-a:rgba(255,255,255,.2); --bubble-b:rgba(0,0,0,.62);
+  --carousel-edge:#2a2ef0;
   height:clamp(148px,13vw,220px);
-  background:linear-gradient(180deg,var(--carousel-edge) 0%,color-mix(in srgb,var(--carousel-edge) 48%,#000) 50%,#000 100%);
+  background:linear-gradient(180deg,var(--carousel-edge) 0%,color-mix(in srgb,var(--carousel-edge) 66%,#000) 28%,color-mix(in srgb,var(--carousel-edge) 28%,#000) 66%,#000 100%);
   transition:background .7s ease;
 }
 body[data-slide="1"] .carousel-transition{--carousel-edge:#7c3fe0;}
 body[data-slide="2"] .carousel-transition{--carousel-edge:#a9dbe6;}
 .grad-blue::before,.grad-pink1::before,.carousel-transition::before{
-  content:""; position:absolute; z-index:1; inset:0; pointer-events:none;
-  background:
-    radial-gradient(circle clamp(18px,3.3vw,56px) at 4% 48%,var(--bubble-a) 98%,transparent 100%),
-    radial-gradient(circle clamp(25px,4.8vw,78px) at 12% 61%,var(--bubble-b) 98%,transparent 100%),
-    radial-gradient(circle clamp(16px,2.8vw,46px) at 21% 43%,var(--bubble-a) 98%,transparent 100%),
-    radial-gradient(circle clamp(30px,5.3vw,86px) at 31% 68%,var(--bubble-b) 98%,transparent 100%),
-    radial-gradient(circle clamp(20px,3.7vw,61px) at 43% 45%,var(--bubble-a) 98%,transparent 100%),
-    radial-gradient(circle clamp(28px,4.6vw,76px) at 54% 64%,var(--bubble-b) 98%,transparent 100%),
-    radial-gradient(circle clamp(17px,3vw,50px) at 65% 40%,var(--bubble-a) 98%,transparent 100%),
-    radial-gradient(circle clamp(31px,5.1vw,84px) at 76% 67%,var(--bubble-b) 98%,transparent 100%),
-    radial-gradient(circle clamp(20px,3.4vw,56px) at 87% 44%,var(--bubble-a) 98%,transparent 100%),
-    radial-gradient(circle clamp(26px,4.5vw,74px) at 97% 61%,var(--bubble-b) 98%,transparent 100%);
+  display:none;
 }
 .grad-blue::after,.grad-pink1::after,.carousel-transition::after{
-  content:""; position:absolute; z-index:2; inset:0; height:auto; pointer-events:none;
-  background:
-    radial-gradient(circle clamp(7px,1vw,15px) at 17% 30%,rgba(255,255,255,.36) 98%,transparent 100%),
-    radial-gradient(circle clamp(9px,1.3vw,20px) at 48% 30%,rgba(255,255,255,.24) 98%,transparent 100%),
-    radial-gradient(circle clamp(6px,.9vw,14px) at 70% 27%,rgba(255,255,255,.3) 98%,transparent 100%),
-    radial-gradient(circle clamp(8px,1.1vw,17px) at 92% 32%,rgba(255,255,255,.22) 98%,transparent 100%);
+  display:none;
 }
 
 /* Полноразмерные мокапы сохраняют исходные пропорции. Направление меняется от
@@ -1393,7 +1375,7 @@ body[data-slide="2"] .carousel-transition{--carousel-edge:#a9dbe6;}
 
 <header class="top">
   <nav class="pill">
-    <a href="/lichnye-finansy/">МАТЕРИАЛЫ</a>
+    <a href="lichnye-finansy/">МАТЕРИАЛЫ</a>
     <a href="#faq">FAQ</a>
     <a href="https://pay.kubysh.com/account/">ВХОД</a>
   </nav>
@@ -1580,14 +1562,16 @@ body[data-slide="2"] .carousel-transition{--carousel-edge:#a9dbe6;}
 <section class="carousel-section" id="carouselSection">
   <div class="carousel-viewport">
     <div class="carousel-fade"></div>
-    <div class="carousel-bullets"><span class="bullet active" data-idx="0"></span>
-<span class="bullet" data-idx="1"></span>
-<span class="bullet" data-idx="2"></span></div>
+    <div class="carousel-bullets" aria-label="Слайды о возможностях">
+      <button type="button" class="bullet active" data-idx="0" aria-label="Слайд 1" aria-current="true"></button>
+      <button type="button" class="bullet" data-idx="1" aria-label="Слайд 2"></button>
+      <button type="button" class="bullet" data-idx="2" aria-label="Слайд 3"></button>
+    </div>
     <div class="carousel-arrows">
-      <button class="carousel-arrow prev disabled" id="prevArrow" aria-label="Назад">
+      <button type="button" class="carousel-arrow prev" id="prevArrow" aria-label="Предыдущий слайд">
         <svg viewBox="0 0 120 72" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"><path d="M108 36H16"/><path d="m40 12-24 24 24 24"/></svg>
       </button>
-      <button class="carousel-arrow next" id="nextArrow" aria-label="Далее">
+      <button type="button" class="carousel-arrow next" id="nextArrow" aria-label="Следующий слайд">
         <svg viewBox="0 0 120 72" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 36h92"/><path d="m80 12 24 24-24 24"/></svg>
       </button>
     </div>
@@ -1731,7 +1715,7 @@ body[data-slide="2"] .carousel-transition{--carousel-edge:#a9dbe6;}
   </div>
   <div class="footer-email"><a href="mailto:KubyshkaAI@Proton.Me">KubyshkaAI@Proton.Me</a></div>
   <div class="footer-legal">
-    <a href="/lichnye-finansy/">Материалы</a>
+    <a href="lichnye-finansy/">Материалы</a>
     <a href="/o-proekte/">О проекте</a>
     <a href="https://pay.kubysh.com/account/">Вход в аккаунт</a>
     <a href="https://pay.kubysh.com/offer/">Оферта</a>
@@ -1739,7 +1723,7 @@ body[data-slide="2"] .carousel-transition{--carousel-edge:#a9dbe6;}
     <a href="privacy/">Политика конфиденциальности</a>
     <a href="terms/">Пользовательское соглашение</a>
     <span>© 2026 Кубыш. Все права защищены</span>
-    <span class="footer-build">сборка 2026-09-19-50</span>
+    <span class="footer-build">сборка 2026-09-19-51</span>
   </div>
 </footer>
 
@@ -1945,13 +1929,16 @@ kickSnow();
       outgoing.classList.add(cls);
       setTimeout(() => outgoing.classList.remove(cls), 800);
     }
-    // Cumulative, per the kit: a passed bullet stays lit, so all three are on by the last
-    // card. It shows how far you have come, not which step you are on.
-    bullets.forEach((b, i) => b.classList.toggle('active', i <= idx));
+    // Выделяем именно текущий слайд: точки теперь работают и как навигация,
+    // и как понятный индикатор состояния.
+    bullets.forEach((b, i) => {
+      const active = i === idx;
+      b.classList.toggle('active', active);
+      if (active) b.setAttribute('aria-current', 'true');
+      else b.removeAttribute('aria-current');
+    });
     // drives how far the section's bottom edge has dissolved (see .seam-blur--tight)
     document.body.dataset.slide = idx;
-    prevBtn.classList.toggle('disabled', idx === 0);
-    nextBtn.classList.toggle('disabled', idx === n - 1);
     armRelease();
   }
 
@@ -1974,9 +1961,9 @@ kickSnow();
     setTimeout(() => { cooldown = false; }, 650);
   }
   function go(delta) {
-    const next = idx + delta;
-    if (next < 0 || next > n - 1) return false;
-    idx = next;
+    // Карусель замкнута в круг: ни одна из двух стрелок никогда не выглядит
+    // «сломанной» на крайнем слайде.
+    idx = (idx + delta + n) % n;
     render(delta > 0 ? 1 : -1);
     return true;
   }

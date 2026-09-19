@@ -33,6 +33,27 @@ def test_main_build_marker_and_metrica():
     assert "44147844" in text
 
 
+def test_main_navigation_and_carousel_controls_remain_working():
+    text = (LANDING / "index.html").read_text(encoding="utf-8")
+    assert '<a href="lichnye-finansy/">МАТЕРИАЛЫ</a>' in text
+    assert (LANDING / "lichnye-finansy/index.html").is_file()
+    assert 'id="prevArrow"' in text
+    assert 'id="nextArrow"' in text
+    assert "idx = (idx + delta + n) % n;" in text
+    assert "prevBtn.classList.toggle('disabled'" not in text
+    assert "nextBtn.classList.toggle('disabled'" not in text
+
+
+def test_main_section_transitions_are_gradient_only():
+    text = (LANDING / "index.html").read_text(encoding="utf-8")
+    transition_css = text.split("Один язык переходов:", 1)[1].split(
+        "Полноразмерные мокапы", 1
+    )[0]
+    assert "linear-gradient" in transition_css
+    assert "radial-gradient" not in transition_css
+    assert "--bubble-" not in transition_css
+
+
 def test_main_has_complete_search_and_social_metadata():
     text = (LANDING / "index.html").read_text(encoding="utf-8")
     for expected in (
