@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="build" content="2026-09-19-53">  <!-- метка сборки, видно в исходнике страницы -->
+<meta name="build" content="2026-09-19-55">  <!-- метка сборки, видно в исходнике страницы -->
 <title>Кубыш — сколько можно потратить сегодня до получки</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="apple-itunes-app" content="app-id=6778792103, app-argument=https://apps.apple.com/app/id6778792103">
@@ -170,7 +170,7 @@ nav.pill a{color:#000; text-decoration:none;}
 .btn-lime:hover{transform:scale(1.04);}
 
 .block2{
-  background:linear-gradient(180deg,#000 0%,#0d1250 45%,#1b1f8a 85%,#8082e3 100%);
+  background:linear-gradient(180deg,#000 0%,#0d1250 45%,#171b78 82%,#1b1f8a 100%);
   padding:96px 0 44px; overflow:hidden;
 }
 .mockup--hero{
@@ -1052,17 +1052,23 @@ body[data-slide="2"] .carousel-arrow.next{
   color:var(--lime);
 }
 
-/* Один язык переходов: чистые многоступенчатые градиенты без шаров,
-   облаков и резких стыков. Все три перехода собраны одной системой. */
-.grad-blue2,.block2 + .seam-wrap{display:none;}
-.grad-blue,.grad-pink1,.carousel-transition{
+/* Один язык переходов: первый синий переход является частью самой hero-секции.
+   Между синим и светлым фоном больше нет двух соседних HTML-блоков, способных дать шов. */
+.grad-blue2,.block2 + .seam-wrap,.grad-blue{display:none;}
+.block2{
+  --hero-transition:clamp(150px,14vw,246px);
+  padding:72px 0 calc(36px + var(--hero-transition));
+  background:linear-gradient(180deg,#000 0%,#0d1250 45%,#171b78 68%,#1b1f8a 78%,#4f55be 85%,#9296df 91%,#c7c9ef 96%,#f7f7fb 100%);
+}
+@supports (background:linear-gradient(in oklab,#000,#fff)){
+  .block2{
+    background:linear-gradient(in oklab,#000 0%,#0d1250 45%,#171b78 68%,#1b1f8a 78%,#4f55be 85%,#9296df 91%,#c7c9ef 96%,#f7f7fb 100%);
+  }
+}
+.grad-pink1,.carousel-transition{
   position:relative; z-index:0; overflow:hidden; isolation:isolate; margin-top:-2px; margin-bottom:-1px;
 }
-.grad-blue>.snow-layer,.grad-pink1>.snow-layer{display:none;}
-.grad-blue{
-  height:clamp(176px,15vw,268px);
-  background-image:linear-gradient(180deg,#8082e3 0%,#898ce4 10%,#989be7 22%,#acaeea 36%,#c0c2ef 52%,#d4d6f4 67%,#e6e7f8 82%,#f1f1fa 94%,#f7f7fb 100%) !important;
-}
+.grad-pink1>.snow-layer{display:none;}
 .grad-pink1{
   height:clamp(224px,19vw,332px);
   background-image:linear-gradient(180deg,#f7f7fb 0%,#f5f0f8 8%,#eee3f4 17%,#e2cff0 29%,#ccace7 42%,#a879da 55%,#7845c8 68%,#482393 79%,#251147 89%,#0d071b 96%,#000 100%) !important;
@@ -1075,10 +1081,10 @@ body[data-slide="2"] .carousel-arrow.next{
 }
 body[data-slide="1"] .carousel-transition{--carousel-edge:#7c3fe0;}
 body[data-slide="2"] .carousel-transition{--carousel-edge:#a9dbe6;}
-.grad-blue::before,.grad-pink1::before,.carousel-transition::before{
+.grad-pink1::before,.carousel-transition::before{
   display:none;
 }
-.grad-blue::after,.grad-pink1::after,.carousel-transition::after{
+.grad-pink1::after,.carousel-transition::after{
   display:none;
 }
 
@@ -1114,7 +1120,8 @@ body[data-slide="2"] .carousel-transition{--carousel-edge:#a9dbe6;}
   text-align:center; font-size:clamp(16px,1.2vw,20px);
 }
 @media(max-width:700px){
-  .grad-blue{height:154px}.grad-pink1{height:190px}.carousel-transition{height:168px}
+  .block2{--hero-transition:124px;padding:40px 0 calc(26px + var(--hero-transition))}
+  .grad-pink1{height:190px}.carousel-transition{height:168px}
   .final-cta{padding-left:20px;padding-right:20px}
   .final-cta h2{font-size:clamp(48px,15.2vw,72px);line-height:.9}
   .final-cta .btn-lime{min-width:min(100%,320px);padding:18px 26px;margin-top:30px}
@@ -1721,7 +1728,7 @@ body[data-slide="2"] .carousel-transition{--carousel-edge:#a9dbe6;}
     <a href="privacy/">Политика конфиденциальности</a>
     <a href="terms/">Пользовательское соглашение</a>
     <span>© 2026 Кубыш. Все права защищены</span>
-    <span class="footer-build">сборка 2026-09-19-53</span>
+    <span class="footer-build">сборка 2026-09-19-55</span>
   </div>
 </footer>
 
