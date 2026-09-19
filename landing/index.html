@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="build" content="2026-09-19-57">  <!-- метка сборки, видно в исходнике страницы -->
+<meta name="build" content="2026-09-19-58">  <!-- метка сборки, видно в исходнике страницы -->
 <title>Кубыш — сколько можно потратить сегодня до получки</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="apple-itunes-app" content="app-id=6778792103, app-argument=https://apps.apple.com/app/id6778792103">
@@ -1061,11 +1061,14 @@ body[data-slide="2"] .carousel-arrow.next{
   height:calc(var(--hero-transition) + 54px); pointer-events:none;
   background:linear-gradient(180deg,rgba(247,247,251,0) 0%,rgba(247,247,251,.06) 24%,rgba(247,247,251,.25) 48%,rgba(247,247,251,.62) 72%,#f7f7fb 100%);
 }
-.hero-phone-block::after{
-  content:""; position:absolute; left:40px; bottom:-1px; z-index:2;
-  width:min(52vw,915px,72vh); height:19%; pointer-events:none;
-  background:linear-gradient(180deg,rgba(42,47,159,0) 0%,rgba(42,47,159,.08) 20%,rgba(42,47,159,.3) 45%,rgba(42,47,159,.72) 72%,#2a2f9f 100%);
-  filter:blur(1.5px); transform:scaleX(1.006);
+.hero-phone-visual{
+  width:min(52vw,915px,72vh); flex:0 0 auto;
+  -webkit-mask-image:linear-gradient(180deg,#000 0%,#000 76%,rgba(0,0,0,.94) 82%,rgba(0,0,0,.76) 88%,rgba(0,0,0,.48) 93%,rgba(0,0,0,.2) 97%,transparent 100%);
+  mask-image:linear-gradient(180deg,#000 0%,#000 76%,rgba(0,0,0,.94) 82%,rgba(0,0,0,.76) 88%,rgba(0,0,0,.48) 93%,rgba(0,0,0,.2) 97%,transparent 100%);
+  -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
+}
+.hero-phone-visual .mockup--hero{
+  width:100%; height:auto; flex:none;
 }
 @supports (background:linear-gradient(in oklab,#000,#fff)){
   .block2{
@@ -1126,9 +1129,10 @@ body[data-slide="2"] .carousel-transition{--carousel-edge:#a9dbe6;}
   min-width:clamp(286px,24vw,410px); margin:44px auto 0; padding:22px 34px;
   text-align:center; font-size:clamp(16px,1.2vw,20px);
 }
+@media(max-width:900px){.hero-phone-visual{width:min(66vw,285px)}}
+@media(max-width:760px){.hero-phone-visual{width:44vw}}
 @media(max-width:700px){
   .block2{--hero-transition:124px;padding:40px 0 calc(26px + var(--hero-transition))}
-  .hero-phone-block::after{left:16px;width:44vw;height:21%;background:linear-gradient(180deg,rgba(31,36,132,0) 0%,rgba(31,36,132,.1) 20%,rgba(31,36,132,.36) 48%,rgba(31,36,132,.78) 76%,#1f2484 100%)}
   .grad-pink1{height:190px}.carousel-transition{height:168px}
   .final-cta{padding-left:20px;padding-right:20px}
   .final-cta h2{font-size:clamp(48px,15.2vw,72px);line-height:.9}
@@ -1423,7 +1427,9 @@ body[data-slide="2"] .carousel-transition{--carousel-edge:#a9dbe6;}
 <main>
 <section class="block2 snowzone" id="snowzone0">
   <div class="hero-phone-block wrap">
-    <img class="mockup mockup--hero" src="img/paycheck-device-v2.png" width="1120" height="1404" alt="Экран «Получка» Кубыша: сколько можно потратить до следующей получки и прогресс периода" decoding="async" fetchpriority="high">
+    <div class="hero-phone-visual">
+      <img class="mockup mockup--hero" src="img/paycheck-device-v2.png" width="1120" height="1404" alt="Экран «Получка» Кубыша: сколько можно потратить до следующей получки и прогресс периода" decoding="async" fetchpriority="high">
+    </div>
           
     <p class="hero-side-text" id="fillText">После каждой получки Кубыш автоматически строит финансовый план и каждый день показывает сколько можно потратить, чтобы все цели были достигнуты вовремя</p>
   </div>
@@ -1736,7 +1742,7 @@ body[data-slide="2"] .carousel-transition{--carousel-edge:#a9dbe6;}
     <a href="privacy/">Политика конфиденциальности</a>
     <a href="terms/">Пользовательское соглашение</a>
     <span>© 2026 Кубыш. Все права защищены</span>
-    <span class="footer-build">сборка 2026-09-19-57</span>
+    <span class="footer-build">сборка 2026-09-19-58</span>
   </div>
 </footer>
 
