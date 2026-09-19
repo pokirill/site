@@ -8,7 +8,7 @@ Total output lines: 1998
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="build" content="2026-09-19-51">  <!-- метка сборки, видно в исходнике страницы -->
+<meta name="build" content="2026-09-19-52">  <!-- метка сборки, видно в исходнике страницы -->
 <title>Кубыш — сколько можно потратить сегодня до получки</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="apple-itunes-app" content="app-id=6778792103, app-argument=https://apps.apple.com/app/id6778792103">
@@ -187,6 +187,10 @@ nav.pill a{color:#000; text-decoration:none;}
      то есть не влезал на экран целиком. На больших мониторах ограничение не
      срабатывает и размер остаётся прежним. */
   width:min(52vw,915px,72vh); flex:0 0 auto;
+  /* Растворяем только нижнюю кромку прямоугольного мокапа, чтобы телефон
+     естественно уходил в фон секции и не заканчивался жёстким срезом. */
+  -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 85%,rgba(0,0,0,.96) 89%,rgba(0,0,0,.76) 94%,rgba(0,0,0,.32) 98%,transparent 100%);
+  mask-image:linear-gradient(to bottom,#000 0%,#000 85%,rgba(0,0,0,.96) 89%,rgba(0,0,0,.76) 94%,rgba(0,0,0,.32) 98%,transparent 100%);
 }
 .hero-phone-block{
   position:relative; z-index:1; max-width:1728px; margin:0 auto; padding:0 40px;
@@ -1058,21 +1062,21 @@ body[data-slide="2"] .carousel-arrow.next{
    облаков и резких стыков. Все три перехода собраны одной системой. */
 .grad-blue2,.block2 + .seam-wrap{display:none;}
 .grad-blue,.grad-pink1,.carousel-transition{
-  position:relative; z-index:0; overflow:hidden; isolation:isolate; margin-top:-1px;
+  position:relative; z-index:0; overflow:hidden; isolation:isolate; margin-top:-2px; margin-bottom:-1px;
 }
 .grad-blue>.snow-layer,.grad-pink1>.snow-layer{display:none;}
 .grad-blue{
-  height:clamp(138px,12vw,210px);
-  background-image:linear-gradient(180deg,#777adb 0%,#a5a8e7 38%,#d9daf4 72%,#fff 100%) !important;
+  height:clamp(176px,15vw,268px);
+  background-image:linear-gradient(180deg,#8082e3 0%,#898ce4 10%,#989be7 22%,#acaeea 36%,#c0c2ef 52%,#d4d6f4 67%,#e6e7f8 82%,#f1f1fa 94%,#f7f7fb 100%) !important;
 }
 .grad-pink1{
-  height:clamp(170px,15vw,250px);
-  background-image:linear-gradient(180deg,#fff 0%,#f2e7f5 19%,#d5afea 39%,#7440d2 63%,#25113f 84%,#000 100%) !important;
+  height:clamp(224px,19vw,332px);
+  background-image:linear-gradient(180deg,#f7f7fb 0%,#f5f0f8 8%,#eee3f4 17%,#e2cff0 29%,#ccace7 42%,#a879da 55%,#7845c8 68%,#482393 79%,#251147 89%,#0d071b 96%,#000 100%) !important;
 }
 .carousel-transition{
   --carousel-edge:#2a2ef0;
-  height:clamp(148px,13vw,220px);
-  background:linear-gradient(180deg,var(--carousel-edge) 0%,color-mix(in srgb,var(--carousel-edge) 66%,#000) 28%,color-mix(in srgb,var(--carousel-edge) 28%,#000) 66%,#000 100%);
+  height:clamp(188px,16vw,282px);
+  background:linear-gradient(180deg,#000 0%,color-mix(in srgb,var(--carousel-edge) 12%,#000) 14%,color-mix(in srgb,var(--carousel-edge) 28%,#000) 31%,color-mix(in srgb,var(--carousel-edge) 44%,#000) 48%,color-mix(in srgb,var(--carousel-edge) 34%,#000) 64%,color-mix(in srgb,var(--carousel-edge) 17%,#000) 81%,#000 100%);
   transition:background .7s ease;
 }
 body[data-slide="1"] .carousel-transition{--carousel-edge:#7c3fe0;}
@@ -1116,7 +1120,7 @@ body[data-slide="2"] .carousel-transition{--carousel-edge:#a9dbe6;}
   text-align:center; font-size:clamp(16px,1.2vw,20px);
 }
 @media(max-width:700px){
-  .grad-blue{height:124px}.grad-pink1{height:148px}.carousel-transition{height:132px}
+  .grad-blue{height:154px}.grad-pink1{height:190px}.carousel-transition{height:168px}
   .final-cta{padding-left:20px;padding-right:20px}
   .final-cta h2{font-size:clamp(48px,15.2vw,72px);line-height:.9}
   .final-cta .btn-lime{min-width:min(100%,320px);padding:18px 26px;margin-top:30px}
@@ -1723,7 +1727,7 @@ body[data-slide="2"] .carousel-transition{--carousel-edge:#a9dbe6;}
     <a href="privacy/">Политика конфиденциальности</a>
     <a href="terms/">Пользовательское соглашение</a>
     <span>© 2026 Кубыш. Все права защищены</span>
-    <span class="footer-build">сборка 2026-09-19-51</span>
+    <span class="footer-build">сборка 2026-09-19-52</span>
   </div>
 </footer>
 
