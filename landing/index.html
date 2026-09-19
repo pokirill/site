@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="build" content="2026-09-19-55">  <!-- метка сборки, видно в исходнике страницы -->
+<meta name="build" content="2026-09-19-56">  <!-- метка сборки, видно в исходнике страницы -->
 <title>Кубыш — сколько можно потратить сегодня до получки</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="apple-itunes-app" content="app-id=6778792103, app-argument=https://apps.apple.com/app/id6778792103">
@@ -181,10 +181,6 @@ nav.pill a{color:#000; text-decoration:none;}
      то есть не влезал на экран целиком. На больших мониторах ограничение не
      срабатывает и размер остаётся прежним. */
   width:min(52vw,915px,72vh); flex:0 0 auto;
-  /* Растворяем только нижнюю кромку прямоугольного мокапа, чтобы телефон
-     естественно уходил в фон секции и не заканчивался жёстким срезом. */
-  -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 85%,rgba(0,0,0,.96) 89%,rgba(0,0,0,.76) 94%,rgba(0,0,0,.32) 98%,transparent 100%);
-  mask-image:linear-gradient(to bottom,#000 0%,#000 85%,rgba(0,0,0,.96) 89%,rgba(0,0,0,.76) 94%,rgba(0,0,0,.32) 98%,transparent 100%);
 }
 .hero-phone-block{
   position:relative; z-index:1; max-width:1728px; margin:0 auto; padding:0 40px;
@@ -1060,6 +1056,11 @@ body[data-slide="2"] .carousel-arrow.next{
   padding:72px 0 calc(36px + var(--hero-transition));
   background:linear-gradient(180deg,#000 0%,#0d1250 45%,#171b78 68%,#1b1f8a 78%,#4f55be 85%,#9296df 91%,#c7c9ef 96%,#f7f7fb 100%);
 }
+.block2::after{
+  content:""; position:absolute; left:0; right:0; bottom:0; z-index:3;
+  height:calc(var(--hero-transition) + 54px); pointer-events:none;
+  background:linear-gradient(180deg,rgba(247,247,251,0) 0%,rgba(247,247,251,.06) 24%,rgba(247,247,251,.25) 48%,rgba(247,247,251,.62) 72%,#f7f7fb 100%);
+}
 @supports (background:linear-gradient(in oklab,#000,#fff)){
   .block2{
     background:linear-gradient(in oklab,#000 0%,#0d1250 45%,#171b78 68%,#1b1f8a 78%,#4f55be 85%,#9296df 91%,#c7c9ef 96%,#f7f7fb 100%);
@@ -1728,7 +1729,7 @@ body[data-slide="2"] .carousel-transition{--carousel-edge:#a9dbe6;}
     <a href="privacy/">Политика конфиденциальности</a>
     <a href="terms/">Пользовательское соглашение</a>
     <span>© 2026 Кубыш. Все права защищены</span>
-    <span class="footer-build">сборка 2026-09-19-55</span>
+    <span class="footer-build">сборка 2026-09-19-56</span>
   </div>
 </footer>
 
