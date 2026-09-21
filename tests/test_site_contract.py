@@ -198,8 +198,24 @@ def test_ai_search_discovery_files_are_consistent():
 
 def test_generated_seo_pages_track_appstore_clicks():
     js = (LANDING / "assets/seo.js").read_text(encoding="utf-8")
+    assert "kubysh_cookie_consent_v2" in js
+    assert "if(consent()==='yes')startMetrika()" in js
+    assert "showConsent()" in js
+    assert "goal('appstore_click',params)" in js
     assert "seo_appstore_click" in js
     assert "44147844" in js
+    assert js.count("goal('seo_appstore_click',params)") == 1
+
+
+def test_seo_analytics_does_not_load_before_consent():
+    js = (LANDING / "assets/seo.js").read_text(encoding="utf-8")
+    assert "if(value==='yes')startMetrika();" in js
+    assert "if(consent()==='yes')startMetrika();" in js
+    assert js.count("startMetrika();") == 2
+    start_function = js.split("function startMetrika(){", 1)[1].split(
+        "function goal", 1
+    )[0]
+    assert "https://mc.yandex.ru/metrika/tag.js" in start_function
 
 
 def test_nginx_routes_hosts_explicitly():
