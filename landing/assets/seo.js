@@ -1,5 +1,5 @@
 (function(){
-  var METRIKA_ID=44147844;
+  var METRIKA_ID=112718911;
   var CONSENT_KEY='kubysh_cookie_consent_v2';
   var metrikaStarted=false;
 
