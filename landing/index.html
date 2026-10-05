@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="build" content="2026-10-05-01">  <!-- метка сборки, видно в исходнике страницы -->
+<meta name="build" content="2026-10-05-02">  <!-- метка сборки, видно в исходнике страницы -->
 <title>Кубыш — приложение для бюджета: сколько можно тратить до зарплаты</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="apple-itunes-app" content="app-id=6778792103, app-argument=https://apps.apple.com/app/id6778792103">
@@ -277,7 +277,7 @@ body[data-slide="1"] .seam-blur--tight{
   top:0; height:120px; opacity:.95;
   backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
 }
-body[data-slide="3"] .seam-blur--tight{
+body[data-slide="4"] .seam-blur--tight{
   top:0; height:240px; opacity:1;
   backdrop-filter:blur(38px); -webkit-backdrop-filter:blur(38px);
 }
@@ -414,11 +414,11 @@ body[data-slide="3"] .seam-blur--tight{
    section bottom of 813) — a taller band reached up into the last lines of the paragraph.
    The step-up between cards is carried by blur strength instead of band height. The arrows
    are z-index 6, above every slide, so they stay crisp either way. */
-body[data-slide="1"] .slide-fade,body[data-slide="2"] .slide-fade{
+body[data-slide="1"] .slide-fade,body[data-slide="2"] .slide-fade,body[data-slide="3"] .slide-fade{
   height:120px; opacity:.55;
   backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
 }
-body[data-slide="3"] .slide-fade{
+body[data-slide="4"] .slide-fade{
   height:185px; opacity:1;
   backdrop-filter:blur(42px); -webkit-backdrop-filter:blur(42px);
 }
@@ -465,8 +465,8 @@ body[data-slide="3"] .slide-fade{
 /* Card 3 fades into the next block, so its bottom third is pale by design and a white or
    lime arrow disappears into it. Same shape and size, ink taken from that card's own
    gradient stop (#123a4d) so it still belongs to the palette. */
-body[data-slide="3"] .carousel-arrow.prev{color:rgba(18,58,77,.72);}
-body[data-slide="3"] .carousel-arrow.next{color:#123a4d;}
+body[data-slide="4"] .carousel-arrow.prev{color:rgba(18,58,77,.72);}
+body[data-slide="4"] .carousel-arrow.next{color:#123a4d;}
 /* ---------- FAQ ---------- */
 .faq-section{background:#000; padding:78px 0;}
 .faq-section h2{
@@ -1041,10 +1041,10 @@ footer{background:#000; padding:26px 40px 24px;}
 .carousel-arrow.next{color:var(--lime);}
 .carousel-arrow:hover{transform:translateY(-2px) scale(1.04);}
 .carousel-arrow svg{width:clamp(82px,7vw,120px); height:auto;}
-body[data-slide="3"] .carousel-arrow.prev{
+body[data-slide="4"] .carousel-arrow.prev{
   color:rgba(255,255,255,.82);
 }
-body[data-slide="3"] .carousel-arrow.next{
+body[data-slide="4"] .carousel-arrow.next{
   color:var(--lime);
 }
 
@@ -1091,7 +1091,8 @@ body[data-slide="3"] .carousel-arrow.next{
 }
 body[data-slide="1"] .carousel-transition{--carousel-edge:#7c3fe0;}
 body[data-slide="2"] .carousel-transition{--carousel-edge:#1e8258;}
-body[data-slide="3"] .carousel-transition{--carousel-edge:#a9dbe6;}
+body[data-slide="3"] .carousel-transition{--carousel-edge:#1f6f8b;}
+body[data-slide="4"] .carousel-transition{--carousel-edge:#a9dbe6;}
 .grad-pink1::before,.carousel-transition::before{
   display:none;
 }
@@ -1116,7 +1117,8 @@ body[data-slide="3"] .carousel-transition{--carousel-edge:#a9dbe6;}
 .slide[data-idx="0"] .slide-phone .mockup{transform:rotateX(5deg) rotateY(-7deg) rotateZ(-7deg);}
 .slide[data-idx="1"] .slide-phone .mockup{transform:rotateX(6deg) rotateY(7deg) rotateZ(6deg);}
 .slide[data-idx="2"] .slide-phone .mockup{transform:rotateX(5deg) rotateY(6deg) rotateZ(5deg);}
-.slide[data-idx="3"] .slide-phone .mockup{transform:rotateX(4deg) rotateY(-5deg) rotateZ(-4deg);}
+.slide[data-idx="3"] .slide-phone .mockup{transform:rotateX(5deg) rotateY(-6deg) rotateZ(-5deg);}
+.slide[data-idx="4"] .slide-phone .mockup{transform:rotateX(4deg) rotateY(5deg) rotateZ(4deg);}
 @media(max-width:900px){
   .slide-phone{position:relative; width:min(54vw,230px); margin:24px auto 0; transform:none; perspective:900px;}
   .slide-phone::after{left:5%; right:-5%; bottom:5%; height:12%; filter:blur(18px);}
@@ -1124,6 +1126,7 @@ body[data-slide="3"] .carousel-transition{--carousel-edge:#a9dbe6;}
   .slide[data-idx="1"] .slide-phone .mockup{transform:rotateX(3deg) rotateY(4deg) rotateZ(4deg);}
   .slide[data-idx="2"] .slide-phone .mockup{transform:rotateX(2deg) rotateY(3deg) rotateZ(3deg);}
   .slide[data-idx="3"] .slide-phone .mockup{transform:rotateX(2deg) rotateY(-3deg) rotateZ(-3deg);}
+  .slide[data-idx="4"] .slide-phone .mockup{transform:rotateX(2deg) rotateY(3deg) rotateZ(3deg);}
 }
 
 /* Финальная конверсионная точка: центрированная композиция и заметная кнопка. */
@@ -1277,6 +1280,7 @@ body[data-slide="3"] .carousel-transition{--carousel-edge:#a9dbe6;}
     "Ответ «могу ли я себе это позволить»",
     "Цели и подушка безопасности с прогнозными датами",
     "Внесение трат скриншотом из банка",
+    "Подбор вкладов и накопительных счетов под сроки целей",
     "Распознавание на устройстве"
    ],
    "offers": {
@@ -1549,9 +1553,9 @@ body[data-slide="3"] .carousel-transition{--carousel-edge:#a9dbe6;}
       <div class="benefit-top"><span class="benefit-num">01</span></div>
       <img class="benefit-icon" src="data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjM3MiIgaGVpZ2h0PSIyNDIiIHZpZXdCb3g9IjAgMCAzNzIgMjQyIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBpZD0iRXllIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTM3MiAxMjFDMzcyIDEyMSAyODguNzI1IDI0MiAxODYgMjQyQzgzLjI3NTQgMjQyIDAgMTIxIDAgMTIxQzAgMTIxIDgzLjI3NTQgMCAxODYgMEMyODguNzI1IDAgMzcyIDEyMSAzNzIgMTIxWk0yNzAuODkyIDEyMUMyNzAuODkyIDE2OS42MiAyMzIuODg1IDIwOS4wMzYgMTg2IDIwOS4wMzZDMTM5LjExNSAyMDkuMDM2IDEwMS4xMDggMTY5LjYyIDEwMS4xMDggMTIxQzEwMS4xMDggNzIuMzc5NiAxMzkuMTE1IDMyLjk2NDMgMTg2IDMyLjk2NDNDMjMyLjg4NSAzMi45NjQzIDI3MC44OTIgNzIuMzc5NiAyNzAuODkyIDEyMVpNMTg2IDE3MS40NDdDMjEyLjg2NyAxNzEuNDQ3IDIzNC42NDYgMTQ4Ljg2MSAyMzQuNjQ2IDEyMUMyMzQuNjQ2IDkzLjEzOTIgMjEyLjg2NyA3MC41NTMgMTg2IDcwLjU1M0MxNTkuMTMzIDcwLjU1MyAxMzcuMzU0IDkzLjEzOTIgMTM3LjM1NCAxMjFDMTM3LjM1NCAxNDguODYxIDE1OS4xMzMgMTcxLjQ0NyAxODYgMTcxLjQ0N1oiIGZpbGw9IiNEQjQwOEUiLz4KPC9zdmc+Cg==" alt="">
       <div class="benefit-text">
-        <h3>Не понимаю, сколько денег на счёте действительно можно потратить</h3>
+        <h3>Тратите больше, чем планировали, и к концу месяца денег нет</h3>
         
-        <p>Кубыш заранее вычитает обязательные платежи, планы и цели из общей суммы. Вы видите не весь баланс, а безопасный остаток на сегодня — без расчётов в голове</p>
+        <p>Кубыш вычитает обязательные платежи и взносы в цели и показывает бюджет на день. Видно, на сколько дней хватит денег и уходите ли вы в плюс или в минус к концу периода</p>
       </div>
 <img class="benefit-icon-closed" src="data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjE0MS44MTMiIGhlaWdodD0iMTkzLjU2OCIgdmlld0JveD0iMCAwIDE0MS44MTMgMTkzLjU2OCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggaWQ9IlN1YnRyYWN0IiBkPSJNMCAwQzc4Ljk4NDkgNS42MTExMyAxNDEuODEzIDk2Ljc4NDIgMTQxLjgxMyA5Ni43ODQyQzE0MS44MTMgOTYuNzg0MiA3OC45ODQ5IDE4Ny45NTcgMCAxOTMuNTY4VjE2Ni45NjZDMzQuMDkyNCAxNjMuMDY1IDYwLjYwOTQgMTMzLjEzMyA2MC42MDk0IDk2Ljc4NDJDNjAuNjA5NCA2MC40MzU3IDM0LjA5MjUgMzAuNTAyMSAwIDI2LjYwMTZWMFpNMCA1Ny4wODJDMTcuOTU0NCA2MC43MzMzIDMxLjQ5OSA3Ny4xMTk1IDMxLjQ5OSA5Ni43ODQyQzMxLjQ5OSAxMTYuNDQ5IDE3Ljk1NDMgMTMyLjgzNCAwIDEzNi40ODVWNTcuMDgyWiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+Cg==" alt="">
     </div>
@@ -1559,9 +1563,9 @@ body[data-slide="3"] .carousel-transition{--carousel-edge:#a9dbe6;}
       <div class="benefit-top"><span class="benefit-num">02</span></div>
       <img class="benefit-icon" src="data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjMxOSIgaGVpZ2h0PSIyOTciIHZpZXdCb3g9IjAgMCAzMTkgMjk3IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBpZD0iVmVjdG9yIiBkPSJNMjgxLjkwNyAxNzQuNDg4QzI4MS45MDcgMTcxLjUzNCAyODAuNzM1IDE2OC43MDEgMjc4LjY0OCAxNjYuNjEyQzI3Ni41NjEgMTY0LjUyMyAyNzMuNzMgMTYzLjM1IDI3MC43NzkgMTYzLjM1SDIyNi4yNjdDMjIzLjMxNiAxNjMuMzUgMjIwLjQ4NiAxNjQuNTIzIDIxOC4zOTkgMTY2LjYxMkMyMTYuMzEyIDE2OC43MDEgMjE1LjE0IDE3MS41MzQgMjE1LjE0IDE3NC40ODhWMjc0LjcyNUgxOTIuODg0VjMzLjQxMjVDMTkyLjg4NCAyMi42MDE3IDE5Mi44NTQgMTUuNTkyNSAxOTIuMTcyIDEwLjQ1NDRDMTkxLjUxOSA1LjYyODE1IDE5MC40NjUgNC4xMTM0NSAxODkuNjIgMy4yNjdDMTg4Ljc3NCAyLjQyMDU1IDE4Ny4yNiAxLjM2NjIgMTgyLjQzOCAwLjcxMjgwMUMxNzcuMjkgMC4wMjk3MDE0IDE3MC4zMDEgMCAxNTkuNSAwQzE0OC42OTkgMCAxNDEuNjk1IDAuMDI5NzAxNCAxMzYuNTYyIDAuNzEyODAxQzEzMS43NCAxLjM2NjIgMTMwLjIyNiAyLjQyMDU1IDEyOS4zOCAzLjI2N0MxMjguNTM1IDQuMTEzNDUgMTI3LjQ4MSA1LjYyODE1IDEyNi44MjggMTAuNDU0NEMxMjYuMTQ2IDE1LjYwNzQgMTI2LjExNiAyMi42MDE3IDEyNi4xMTYgMzMuNDEyNVYyNzQuNzI1SDEwMy44NlYxMDAuMjM4QzEwMy44NiA5Ny4yODM3IDEwMi42ODggOTQuNDUwOCAxMDAuNjAxIDkyLjM2MjFDOTguNTE0MyA5MC4yNzM0IDk1LjY4MzkgODkuMSA5Mi43MzI2IDg5LjFINDguMjIwOUM0NS4yNjk2IDg5LjEgNDIuNDM5MiA5MC4yNzM0IDQwLjM1MjMgOTIuMzYyMUMzOC4yNjU0IDk0LjQ1MDggMzcuMDkzIDk3LjI4MzcgMzcuMDkzIDEwMC4yMzhWMjc0LjcyNUgxMS4xMjc5QzguMTc2NiAyNzQuNzI1IDUuMzQ2MTggMjc1Ljg5OCAzLjI1OTI5IDI3Ny45ODdDMS4xNzI0IDI4MC4wNzYgMCAyODIuOTA5IDAgMjg1Ljg2M0MwIDI4OC44MTYgMS4xNzI0IDI5MS42NDkgMy4yNTkyOSAyOTMuNzM4QzUuMzQ2MTggMjk1LjgyNyA4LjE3NjYgMjk3IDExLjEyNzkgMjk3SDMwNy44NzJDMzEwLjgyMyAyOTcgMzEzLjY1NCAyOTUuODI3IDMxNS43NDEgMjkzLjczOEMzMTcuODI4IDI5MS42NDkgMzE5IDI4OC44MTYgMzE5IDI4NS44NjNDMzE5IDI4Mi45MDkgMzE3LjgyOCAyODAuMDc2IDMxNS43NDEgMjc3Ljk4N0MzMTMuNjU0IDI3NS44OTggMzEwLjgyMyAyNzQuNzI1IDMwNy44NzIgMjc0LjcyNUgyODEuOTA3VjE3NC40ODhaIiBmaWxsPSIjRkQ4NDk2Ii8+Cjwvc3ZnPgo=" alt="">
       <div class="benefit-text">
-        <h3>Я откладываю на цель, но нужная дата всё время отдаляется</h3>
+        <h3>Откладываете на цель, но дата всё время отдаляется</h3>
         
-        <p>Кубыш показывает реальный темп накопления и дату достижения цели. Если текущего взноса не хватает, вы узнаете об этом заранее и сможете скорректировать план</p>
+        <p>Для каждой цели Кубыш считает сумму в месяц и дату, когда накопите. Если взноса не хватает, вы узнаете об этом заранее, а не в день покупки</p>
       </div>
 <img class="benefit-icon-closed" src="data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjE0NyIgaGVpZ2h0PSIyMjguNTgyIiB2aWV3Qm94PSIwIDAgMTQ3IDIyOC41ODIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGlkPSJTdWJ0cmFjdCIgZD0iTTI0LjI0MzIgMEMzMi41NTYzIDAgMzcuOTM1IDAuMDIzMTA2MiA0MS44OTc1IDAuNTQ4ODI4QzQ1LjYwODcgMS4wNTE3MSA0Ni43NzM5IDEuODYzMTkgNDcuNDI0OCAyLjUxNDY1QzQ4LjA3NTcgMy4xNjYxMiA0OC44ODYyIDQuMzMyNTkgNDkuMzg4NyA4LjA0Njg4QzQ5LjkxMzkgMTIuMDAxMyA0OS45MzY1IDE3LjM5NTcgNDkuOTM2NSAyNS43MTU4VjIxMS40MzhINjcuMDY1NFYxMzQuMjkyQzY3LjA2NTQgMTMyLjAxOSA2Ny45NjgxIDEyOS44MzggNjkuNTc0MiAxMjguMjNDNzEuMTgwMyAxMjYuNjIzIDczLjM1ODYgMTI1LjcyIDc1LjYyOTkgMTI1LjcySDEwOS44ODhDMTEyLjE1OSAxMjUuNzIgMTE0LjMzNyAxMjYuNjIzIDExNS45NDMgMTI4LjIzQzExNy41NDkgMTI5LjgzOCAxMTguNDUyIDEzMi4wMTkgMTE4LjQ1MiAxMzQuMjkyVjIxMS40MzhIMTM4LjQzNkMxNDAuNzA3IDIxMS40MzggMTQyLjg4NSAyMTIuMzQxIDE0NC40OTEgMjEzLjk0OEMxNDYuMDk3IDIxNS41NTYgMTQ3IDIxNy43MzYgMTQ3IDIyMC4wMUMxNDcgMjIyLjI4MyAxNDYuMDk3IDIyNC40NjQgMTQ0LjQ5MSAyMjYuMDcxQzE0Mi44ODUgMjI3LjY3OSAxNDAuNzA3IDIyOC41ODIgMTM4LjQzNiAyMjguNTgySDBWNC4xOTQzNEMwLjM1NDM2NiAzLjMxNzQgMC43MjkxMDQgMi44NDgzMyAxLjA2MjUgMi41MTQ2NUMxLjcxMzM5IDEuODYzMjQgMi44NzgyIDEuMDUxNjggNi41ODg4NyAwLjU0ODgyOEMxMC41Mzk5IDAuMDIzMDk3NSAxNS45MzAxIDUuMjU4NDVlLTA3IDI0LjI0MzIgMFoiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo=" alt="">
     </div>
@@ -1569,9 +1573,9 @@ body[data-slide="3"] .carousel-transition{--carousel-edge:#a9dbe6;}
       <div class="benefit-top"><span class="benefit-num">03</span></div>
       <img class="benefit-icon" src="data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjMwMS4wNTYiIGhlaWdodD0iMzAyIiB2aWV3Qm94PSIwIDAgMzAxLjA1NiAzMDIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxnIGlkPSJHcm91cCA2MDgiPgo8Y2lyY2xlIGlkPSJFbGxpcHNlIDE0NiIgY3g9Ijc1LjUwMDIiIGN5PSI3NS41IiByPSI3NS41IiBmaWxsPSIjOEQ1Q0ZGIi8+CjxjaXJjbGUgaWQ9IkVsbGlwc2UgMTQ4IiBjeD0iNzUuNTAwMiIgY3k9IjIyNi41IiByPSI3NS41IiBmaWxsPSIjOEQ1Q0ZGIi8+CjxlbGxpcHNlIGlkPSJFbGxpcHNlIDE0NyIgY3g9IjIyNi4wMjgiIGN5PSI3NS41IiByeD0iNzUuMDI4MSIgcnk9Ijc1LjUiIGZpbGw9IiM4RDVDRkYiLz4KPGVsbGlwc2UgaWQ9IkVsbGlwc2UgMTQ5IiBjeD0iMjI2LjAyOCIgY3k9IjIyNi41IiByeD0iNzUuMDI4MSIgcnk9Ijc1LjUiIGZpbGw9IiM4RDVDRkYiLz4KPC9nPgo8L3N2Zz4K" alt="">
       <div class="benefit-text">
-        <h3>Несколько целей конкурируют за одни и те же деньги</h3>
+        <h3>Тревожно перед покупкой: а хватит ли на остальное?</h3>
         
-        <p>Задайте суммы, сроки и приоритеты — Кубыш рассчитает взнос на каждую цель и покажет, какие планы совместимы с вашим бюджетом</p>
+        <p>Введите сумму, и Кубыш до покупки покажет, хватит ли денег и откуда их взять. Утром и вечером приходит короткий план на день, без таблиц и пересчётов в голове</p>
       </div>
 <img class="benefit-icon-closed" src="data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjYzLjU4MDEiIGhlaWdodD0iMjM0IiB2aWV3Qm94PSIwIDAgNjMuNTgwMSAyMzQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGlkPSJTdWJ0cmFjdCIgZD0iTTUuNDQ1MzEgMTE3QzM3LjU1MiAxMTcgNjMuNTgwMSAxNDMuMTkxIDYzLjU4MDEgMTc1LjVDNjMuNTgwMSAyMDcuODA5IDM3LjU1MiAyMzQgNS40NDUzMSAyMzRDMy42MDkwMyAyMzQgMS43OTI3OCAyMzMuOTEzIDAgMjMzLjc0NVYxMTcuMjU0QzEuNzkyNzUgMTE3LjA4NiAzLjYwOTA2IDExNyA1LjQ0NTMxIDExN1pNNS40NDUzMSAwQzM3LjU1MiAwIDYzLjU4MDEgMjYuMTkxMyA2My41ODAxIDU4LjVDNjMuNTgwMSA5MC44MDg3IDM3LjU1MiAxMTcgNS40NDUzMSAxMTdDMy42MDkwMyAxMTcgMS43OTI3OCAxMTYuOTEzIDAgMTE2Ljc0NVYwLjI1MzkwNkMxLjc5Mjc1IDAuMDg2MzIwNSAzLjYwOTA2IDIuOTEyMjZlLTA3IDUuNDQ1MzEgMFoiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo=" alt="">
     </div>
@@ -1579,9 +1583,9 @@ body[data-slide="3"] .carousel-transition{--carousel-edge:#a9dbe6;}
       <div class="benefit-top"><span class="benefit-num">04</span></div>
       <img class="benefit-icon" src="data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjMyNSIgaGVpZ2h0PSIyNTEiIHZpZXdCb3g9IjAgMCAzMjUgMjUxIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBpZD0iVmVjdG9yIiBkPSJNOTguNTc5NSA4MS4wNzQ5TDE2MS42NDggMTIuNUwyMjQuNzE2IDgxLjA3NDlNMTYxLjY0OCAxMi41VjE3NC41MzhNMjQ4LjU4IDExMi4yODFMMzEyLjUgMTc1LjM5MUwyNDguNTggMjM4LjVNMzEyLjUgMTc1LjM5MUgxNjMuMzUyTTc2LjQyMDUgMTEyLjI4MUwxMi41IDE3NS4zOTFMNzYuNDIwNSAyMzguNU0xMi41IDE3NS4zOTFIMTYxLjY0OCIgc3Ryb2tlPSIjOThEREZEIiBzdHJva2Utd2lkdGg9IjI1IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+Cg==" alt="">
       <div class="benefit-text">
-        <h3>Одна незапланированная покупка ломает весь план</h3>
+        <h3>Накопления просто лежат и не приносят дохода</h3>
         
-        <p>Добавьте фактическую трату — Кубыш пересчитает свободный остаток, накопления и сроки целей. Сразу видно, что изменилось и сколько теперь можно потратить</p>
+        <p>Кубыш подбирает вклады и накопительные счета под сроки ваших целей и показывает, сколько они принесут в месяц. Деньги на цели работают, пока вы копите</p>
       </div>
 <img class="benefit-icon-closed" src="data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjE0Mi4xNTciIGhlaWdodD0iMjE2LjUyIiB2aWV3Qm94PSIwIDAgMTQyLjE1NyAyMTYuNTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGlkPSJTdWJ0cmFjdCIgZD0iTTEuODIwMzEgMEM1LjMxNjY0IDAuMDAwMTY5ODkzIDguNjUzNjQgMS40NjQ3MSAxMS4wMjA1IDQuMDM4MDlMNjQuNDY2OCA2Mi4xNTE0QzY5LjEzOTMgNjcuMjMyNiA2OC44MDg0IDc1LjE0MDQgNjMuNzI3NSA3OS44MTM1QzU4LjY0NjQgODQuNDg2MiA1MC43Mzg2IDg0LjE1NSA0Ni4wNjU0IDc5LjA3NDJMMTQuMzIwMyA0NC41NTY2VjEzOC4wMzlIOTkuMjA1MUw2Ni43MDcgMTA1Ljk1M0M2MS43OTQ0IDEwMS4xMDMgNjEuNzQzNiA5My4xODggNjYuNTkzOCA4OC4yNzU0QzcxLjQ0NDEgODMuMzYzIDc5LjM1ODkgODMuMzEyOSA4NC4yNzE1IDg4LjE2MzFMMTM4LjQzOSAxNDEuNjQ0QzE0MC44MTggMTQzLjk5MiAxNDIuMTU3IDE0Ny4xOTYgMTQyLjE1NyAxNTAuNTM5QzE0Mi4xNTcgMTUzLjg4MiAxNDAuODE4IDE1Ny4wODUgMTM4LjQzOSAxNTkuNDM0TDg0LjI3MTUgMjEyLjkxNUM3OS4zNTkgMjE3Ljc2NSA3MS40NDQxIDIxNy43MTQgNjYuNTkzOCAyMTIuODAyQzYxLjc0MzcgMjA3Ljg4OSA2MS43OTQ2IDE5OS45NzUgNjYuNzA3IDE5NS4xMjVMOTkuMjA1MSAxNjMuMDM5SDMuMjY0NjVDMy4wMjIyNyAxNjMuMDM5IDIuNzgwOTcgMTYzLjAzIDIuNTQxOTkgMTYzLjAxN0MyLjMwMzM0IDE2My4wMyAyLjA2MjM3IDE2My4wMzkgMS44MjAzMSAxNjMuMDM5SDBWMC4xMzI4MTJDMC41OTg4MjYgMC4wNDQ3MDQzIDEuMjA3MzEgMCAxLjgyMDMxIDBaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K" alt="">
     </div>
@@ -1652,6 +1656,7 @@ body[data-slide="3"] .carousel-transition{--carousel-edge:#a9dbe6;}
       <button type="button" class="bullet" data-idx="1" aria-label="Слайд 2"></button>
       <button type="button" class="bullet" data-idx="2" aria-label="Слайд 3"></button>
       <button type="button" class="bullet" data-idx="3" aria-label="Слайд 4"></button>
+      <button type="button" class="bullet" data-idx="4" aria-label="Слайд 5"></button>
     </div>
     <div class="carousel-arrows">
       <button type="button" class="carousel-arrow prev" id="prevArrow" aria-label="Предыдущий слайд">
@@ -1669,7 +1674,7 @@ body[data-slide="3"] .carousel-transition{--carousel-edge:#a9dbe6;}
         </div>
         <div class="slide-fade"></div>
         <div class="slide-phone">
-          <img class="mockup" src="img/plan-1-7.webp" width="852" height="1791" alt="План периода в Кубыше: сколько на жизнь до следующей получки и сколько в накопления" loading="lazy" decoding="async">
+          <img class="mockup" src="img/plan-1-7.webp" width="852" height="1791" alt="План периода в Кубыше: сколько на жизнь до следующей получки и сколько в накопления" decoding="async">
         </div>
       </div>
     </div>
@@ -1681,7 +1686,7 @@ body[data-slide="3"] .carousel-transition{--carousel-edge:#a9dbe6;}
         </div>
         <div class="slide-fade"></div>
         <div class="slide-phone">
-          <img class="mockup" src="img/screenshot-1-7.webp" width="852" height="1791" alt="Внесение трат скриншотом из банковского приложения в Кубыше" loading="lazy" decoding="async">
+          <img class="mockup" src="img/screenshot-1-7.webp" width="852" height="1791" alt="Внесение трат скриншотом из банковского приложения в Кубыше" decoding="async">
         </div>
       </div>
     </div>
@@ -1693,11 +1698,11 @@ body[data-slide="3"] .carousel-transition{--carousel-edge:#a9dbe6;}
         </div>
         <div class="slide-fade"></div>
         <div class="slide-phone">
-          <img class="mockup" src="img/afford-1-7.webp" width="852" height="1791" alt="Проверка покупки в Кубыше: хватит ли денег и из каких средств" loading="lazy" decoding="async">
+          <img class="mockup" src="img/afford-1-7.webp" width="852" height="1791" alt="Проверка покупки в Кубыше: хватит ли денег и из каких средств" decoding="async">
         </div>
       </div>
     </div>
-    <div class="slide" data-idx="3" style="background:linear-gradient(180deg,#000 0%,#000 44%,#123a4d 84%,#a9dbe6 100%)">
+    <div class="slide" data-idx="3" style="background:radial-gradient(closest-side at 68% 40%, rgba(60,150,200,.4), rgba(60,150,200,0) 72%), linear-gradient(180deg,#000 0%,#000 38%,#0e3b4a 76%,#1f6f8b 100%)">
       <div class="slide-inner">
         <div class="slide-text">
           <h2>Когда накопишь<br>на цель</h2>
@@ -1705,7 +1710,19 @@ body[data-slide="3"] .carousel-transition{--carousel-edge:#a9dbe6;}
         </div>
         <div class="slide-fade"></div>
         <div class="slide-phone">
-          <img class="mockup" src="img/goals-1-7.webp" width="852" height="1791" alt="Цели в Кубыше: сумма в месяц и дата, когда накопишь" loading="lazy" decoding="async">
+          <img class="mockup" src="img/goals-1-7.webp" width="852" height="1791" alt="Цели в Кубыше: сумма в месяц и дата, когда накопишь" decoding="async">
+        </div>
+      </div>
+    </div>
+    <div class="slide" data-idx="4" style="background:linear-gradient(180deg,#000 0%,#000 44%,#123a4d 84%,#a9dbe6 100%)">
+      <div class="slide-inner">
+        <div class="slide-text">
+          <h2>Накопления<br>приносят доход</h2>
+          <p><span>Кубыш подбирает вклады и накопительные счета под сроки ваших целей</span><span>И показывает, сколько они принесут в месяц, пока вы копите</span></p>
+        </div>
+        <div class="slide-fade"></div>
+        <div class="slide-phone">
+          <img class="mockup" src="img/deposits-1-7.webp" width="852" height="1791" alt="Подбор вкладов и счетов в Кубыше под сроки целей и доход в месяц" decoding="async">
         </div>
       </div>
     </div>
@@ -1827,7 +1844,7 @@ body[data-slide="3"] .carousel-transition{--carousel-edge:#a9dbe6;}
     <a href="privacy/">Политика конфиденциальности</a>
     <a href="terms/">Пользовательское соглашение</a>
     <span>© 2026 Кубыш. Все права защищены</span>
-    <span class="footer-build">сборка 2026-10-05-01</span>
+    <span class="footer-build">сборка 2026-10-05-02</span>
   </div>
 </footer>
 
