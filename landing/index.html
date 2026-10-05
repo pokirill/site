@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="build" content="2026-10-05-03">  <!-- метка сборки, видно в исходнике страницы -->
+<meta name="build" content="2026-10-05-04">  <!-- метка сборки, видно в исходнике страницы -->
 <title>Кубыш — приложение для бюджета: сколько можно тратить до зарплаты</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="apple-itunes-app" content="app-id=6778792103, app-argument=https://apps.apple.com/app/id6778792103">
@@ -1102,7 +1102,7 @@ body[data-slide="4"] .carousel-transition{--carousel-edge:#a9dbe6;}
 
 /* Полноразмерные мокапы сохраняют исходные пропорции. Направление меняется от
    слайда к слайду, как в ранних визуалах, но без деформации экрана. */
-.slide-phone{width:min(36vw,610px,43vh); perspective:1500px; transform:translateY(-50%);}
+.slide-phone{width:min(36vw,610px,43vh); transform:translateY(-50%);}
 .slide-phone::after{
   content:""; position:absolute; left:8%; right:-2%; bottom:4%; height:13%; z-index:-1;
   border-radius:50%; background:rgba(0,0,0,.42); filter:blur(24px);
@@ -1114,19 +1114,19 @@ body[data-slide="4"] .carousel-transition{--carousel-edge:#a9dbe6;}
   filter:drop-shadow(18px 30px 30px rgba(0,0,0,.38));
   transition:transform .8s cubic-bezier(.2,.62,.3,1);
 }
-.slide[data-idx="0"] .slide-phone .mockup{transform:rotateX(5deg) rotateY(-7deg) rotateZ(-7deg);}
-.slide[data-idx="1"] .slide-phone .mockup{transform:rotateX(6deg) rotateY(7deg) rotateZ(6deg);}
-.slide[data-idx="2"] .slide-phone .mockup{transform:rotateX(5deg) rotateY(6deg) rotateZ(5deg);}
-.slide[data-idx="3"] .slide-phone .mockup{transform:rotateX(5deg) rotateY(-6deg) rotateZ(-5deg);}
-.slide[data-idx="4"] .slide-phone .mockup{transform:rotateX(4deg) rotateY(5deg) rotateZ(4deg);}
+.slide[data-idx="0"] .slide-phone .mockup{transform:rotate(-7deg);}
+.slide[data-idx="1"] .slide-phone .mockup{transform:rotate(6deg);}
+.slide[data-idx="2"] .slide-phone .mockup{transform:rotate(5deg);}
+.slide[data-idx="3"] .slide-phone .mockup{transform:rotate(-5deg);}
+.slide[data-idx="4"] .slide-phone .mockup{transform:rotate(4deg);}
 @media(max-width:900px){
-  .slide-phone{position:relative; width:min(54vw,230px); margin:24px auto 0; transform:none; perspective:900px;}
+  .slide-phone{position:relative; width:min(54vw,230px); margin:24px auto 0; transform:none;}
   .slide-phone::after{left:5%; right:-5%; bottom:5%; height:12%; filter:blur(18px);}
-  .slide[data-idx="0"] .slide-phone .mockup{transform:rotateX(3deg) rotateY(-4deg) rotateZ(-4deg);}
-  .slide[data-idx="1"] .slide-phone .mockup{transform:rotateX(3deg) rotateY(4deg) rotateZ(4deg);}
-  .slide[data-idx="2"] .slide-phone .mockup{transform:rotateX(2deg) rotateY(3deg) rotateZ(3deg);}
-  .slide[data-idx="3"] .slide-phone .mockup{transform:rotateX(2deg) rotateY(-3deg) rotateZ(-3deg);}
-  .slide[data-idx="4"] .slide-phone .mockup{transform:rotateX(2deg) rotateY(3deg) rotateZ(3deg);}
+  .slide[data-idx="0"] .slide-phone .mockup{transform:rotate(-4deg);}
+  .slide[data-idx="1"] .slide-phone .mockup{transform:rotate(4deg);}
+  .slide[data-idx="2"] .slide-phone .mockup{transform:rotate(3deg);}
+  .slide[data-idx="3"] .slide-phone .mockup{transform:rotate(-3deg);}
+  .slide[data-idx="4"] .slide-phone .mockup{transform:rotate(3deg);}
 }
 
 /* Финальная конверсионная точка: центрированная композиция и заметная кнопка. */
@@ -1253,6 +1253,8 @@ body[data-slide="4"] .carousel-transition{--carousel-edge:#a9dbe6;}
   .kb-sec{padding:52px 0;}
   .kb-grid,.kb-safe{grid-template-columns:1fr;}
 }
+.kb-accent{margin:22px 0 0; font-family:var(--display); font-weight:500; font-size:clamp(24px,2.6vw,40px); line-height:1.15; letter-spacing:-.02em; color:#0a0a0a;}
+.kb-accent span{background:linear-gradient(transparent 58%, #cef16c 58%, #cef16c 92%, transparent 92%); padding:0 .08em;}
 </style>
 <script type="application/ld+json">
 {
@@ -1591,7 +1593,8 @@ body[data-slide="4"] .carousel-transition{--carousel-edge:#a9dbe6;}
 <section class="kb-sec kb-light" id="problem">
   <div class="wrap">
     <h2>Зарабатываю больше, а переживать не перестал</h2>
-    <p class="kb-lead">Тревога из-за денег появляется не от нехватки, а от неизвестности: сколько можно потратить сегодня, хватит ли до зарплаты, когда получится позволить себе то, что хочется. Банк и трекеры показывают, куда деньги ушли. Кубыш отвечает, что будет дальше.</p>
+    <p class="kb-lead">Тревога из-за денег появляется не от нехватки, а от неизвестности: сколько можно потратить сегодня, хватит ли до зарплаты, когда получится позволить себе то, что хочется. Банк и трекеры показывают, куда деньги ушли.</p>
+    <p class="kb-accent"><span>Кубыш отвечает, что будет дальше</span></p>
   </div>
 </section>
 
@@ -1944,7 +1947,7 @@ body[data-slide="4"] .carousel-transition{--carousel-edge:#a9dbe6;}
     <a href="privacy/">Политика конфиденциальности</a>
     <a href="terms/">Пользовательское соглашение</a>
     <span>© 2026 Кубыш. Все права защищены</span>
-    <span class="footer-build">сборка 2026-10-05-03</span>
+    <span class="footer-build">сборка 2026-10-05-04</span>
   </div>
 </footer>
 
