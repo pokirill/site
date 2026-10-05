@@ -55,6 +55,8 @@
   });
 
   document.addEventListener('click',function(e){
+    var dl=e.target.closest&&e.target.closest('a.js-download');
+    if(dl){goal('template_download',{page:location.pathname});return;}
     var link=e.target.closest&&e.target.closest('a.js-appstore');
     if(!link)return;
     var params={page:location.pathname};

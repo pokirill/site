@@ -106,7 +106,7 @@ def test_seo_cluster_has_unique_canonicals_and_sitemap_entries():
     sitemap = (LANDING / "sitemap.xml").read_text(encoding="utf-8")
     required = (
         "/kontrol-finansov/",
-        "/uchet-rashodov-i-dohodov/",
+        "/tablica-dohodov-i-rashodov/",
         "/planirovanie-byudzheta/",
         "/kak-raspredelit-zarplatu/",
         "/kak-ekonomit-dengi/",
@@ -296,3 +296,18 @@ def test_pay_site_scripts_are_never_inline():
         text = page.read_text(encoding="utf-8")
         for tag in re.findall(r"<script\b[^>]*>", text):
             assert "src=" in tag, f"inline script in {page}"
+
+
+def test_merged_seo_pages_redirect_to_strong_pages():
+    conf = (ROOT / "nginx" / "default.conf").read_text(encoding="utf-8")
+    sitemap = (LANDING / "sitemap.xml").read_text(encoding="utf-8")
+    for old, new in (("uchet-rashodov-i-dohodov", "tablica-dohodov-i-rashodov"),):
+        assert f"^/{old}/?$ {{ return 301 https://kubysh.com/{new}/; }}" in conf
+        assert f"/{old}/" not in sitemap
+        assert not (LANDING / old).exists()
+
+
+def test_budget_template_is_downloadable():
+    assert (LANDING / "files" / "tablica-dohodov-i-rashodov-kubysh.xlsx").stat().st_size > 5000
+    page = (LANDING / "tablica-dohodov-i-rashodov" / "index.html").read_text(encoding="utf-8")
+    assert 'href="/files/tablica-dohodov-i-rashodov-kubysh.xlsx"' in page and "js-download" in page
