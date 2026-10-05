@@ -20,9 +20,7 @@ def test_required_files_exist():
         "img/kirill-popov.jpg",
         "lichnye-finansy/index.html",
         "o-proekte/index.html",
-        "kontrol-finansov/index.html",
-        "kalkulyator-nakopleniy/index.html",
-        "kalkulyator-finansovoy-podushki/index.html",
+        "byudzhet-na-mesyats/index.html",
     ):
         assert (LANDING / path).is_file(), path
 
@@ -105,19 +103,11 @@ def test_all_landing_pages_reference_existing_local_assets():
 def test_seo_cluster_has_unique_canonicals_and_sitemap_entries():
     sitemap = (LANDING / "sitemap.xml").read_text(encoding="utf-8")
     required = (
-        "/kontrol-finansov/",
         "/tablica-dohodov-i-rashodov/",
-        "/planirovanie-byudzheta/",
         "/kak-raspredelit-zarplatu/",
-        "/kak-ekonomit-dengi/",
         "/kak-kopit-dengi/",
-        "/kalkulyator-nakopleniy/",
-        "/kalkulyator-finansovoy-podushki/",
         "/kak-nakopit-na-kvartiru/",
         "/kak-nakopit-na-mashinu/",
-        "/kak-nakopit-na-otpusk/",
-        "/kak-nakopit-na-telefon/",
-        "/kak-nakopit-na-svadbu/",
         "/prilozhenie-dlya-kontrolya-rashodov/",
         "/finansovyy-stress/",
         "/byudzhet-na-mesyats/",
@@ -301,7 +291,7 @@ def test_pay_site_scripts_are_never_inline():
 def test_merged_seo_pages_redirect_to_strong_pages():
     conf = (ROOT / "nginx" / "default.conf").read_text(encoding="utf-8")
     sitemap = (LANDING / "sitemap.xml").read_text(encoding="utf-8")
-    for old, new in (("uchet-rashodov-i-dohodov", "tablica-dohodov-i-rashodov"),):
+    for old, new in (("uchet-rashodov-i-dohodov", "tablica-dohodov-i-rashodov"), ("planirovanie-byudzheta", "byudzhet-na-mesyats"), ("planirovshchik-byudzheta", "byudzhet-na-mesyats"), ("kontrol-finansov", "byudzhet-na-mesyats"), ("finansovye-celi", "kak-kopit-dengi"), ("kak-nakopit-na-otpusk", "kak-kopit-dengi"), ("kak-nakopit-na-svadbu", "kak-kopit-dengi"), ("kak-nakopit-na-telefon", "kak-kopit-dengi"), ("kalkulyator-finansovoy-podushki", "finansovaya-podushka"), ("kalkulyator-nakopleniy", "prilozhenie-kopilka"), ("analiz-rashodov", "kuda-uhodyat-dengi"), ("kak-ekonomit-dengi", "kuda-uhodyat-dengi"),):
         assert f"^/{old}/?$ {{ return 301 https://kubysh.com/{new}/; }}" in conf
         assert f"/{old}/" not in sitemap
         assert not (LANDING / old).exists()

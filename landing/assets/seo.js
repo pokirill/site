@@ -68,6 +68,11 @@
   function money(v){return Math.max(0,Math.ceil(v)).toLocaleString('ru-RU')+' ₽'}
   function savings(){var o=document.getElementById('savings-output');if(!o)return;var target=n('target'),start=n('start'),months=Math.max(1,n('months'));o.value='Откладывать примерно '+money((target-start)/months)+' в месяц';o.textContent=o.value}
   function cushion(){var o=document.getElementById('cushion-output');if(!o)return;var spend=n('essential'),months=Math.max(1,n('cushion-months'));o.value='Ориентир: '+money(spend*months);o.textContent=o.value}
+  function budget(){var o=document.getElementById('budget-output');if(!o)return;var free=n('b-income')-n('b-mandatory')-n('b-goals'),days=Math.max(1,n('b-days'));o.value=free<=0?'Обязательные платежи и цели больше дохода: пересоберите план':'На жизнь '+money(free)+', это '+money(free/days)+' в день';o.textContent=o.value}
+  function rule(){var o=document.getElementById('rule-output');if(!o)return;var i=n('r-income');o.value='Нужды '+money(i*.5)+' · желания '+money(i*.3)+' · накопления '+money(i*.2);o.textContent=o.value}
+  ['b-income','b-mandatory','b-goals','b-days'].forEach(function(id){var e=document.getElementById(id);if(e)e.addEventListener('input',budget)});
+  ['r-income'].forEach(function(id){var e=document.getElementById(id);if(e)e.addEventListener('input',rule)});
+  budget();rule();
   ['target','start','months'].forEach(function(id){var e=document.getElementById(id);if(e)e.addEventListener('input',savings)});
   ['essential','cushion-months'].forEach(function(id){var e=document.getElementById(id);if(e)e.addEventListener('input',cushion)});
 })();
