@@ -34,7 +34,10 @@ def test_main_build_marker_and_metrica():
 
 def test_main_navigation_and_carousel_controls_remain_working():
     text = (LANDING / "index.html").read_text(encoding="utf-8")
-    assert '<a href="lichnye-finansy/">МАТЕРИАЛЫ</a>' in text
+    # Меню в шапке убрано 06.10.2026: навигация в блоке «Полезные материалы» и в подвале
+    assert 'id="materials"' in text and 'href="lichnye-finansy/"' in text
+    for slug in ("byudzhet-na-mesyats", "tablica-dohodov-i-rashodov", "pravilo-50-30-20", "kak-kopit-dengi"):
+        assert f'href="{slug}/"' in text and (LANDING / slug / "index.html").is_file()
     assert (LANDING / "lichnye-finansy/index.html").is_file()
     assert 'id="prevArrow"' in text
     assert 'id="nextArrow"' in text
