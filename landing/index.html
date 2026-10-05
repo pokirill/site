@@ -2,11 +2,11 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="build" content="2026-10-05-02">  <!-- метка сборки, видно в исходнике страницы -->
+<meta name="build" content="2026-10-05-03">  <!-- метка сборки, видно в исходнике страницы -->
 <title>Кубыш — приложение для бюджета: сколько можно тратить до зарплаты</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="apple-itunes-app" content="app-id=6778792103, app-argument=https://apps.apple.com/app/id6778792103">
-<meta name="description" content="Приложение для iPhone: Кубыш сам строит план до следующей зарплаты и каждый день показывает, сколько можно потратить и на сколько дней хватит денег. Траты скриншотом из банка, без подключения счёта.">
+<meta name="description" content="Приложение для iPhone: Кубыш сам строит план до следующей зарплаты и каждый день показывает, сколько можно потратить и на сколько дней хватит денег. Траты скриншотом из банка, без подключения счета.">
 <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
 <meta name="theme-color" content="#000000">
 <meta property="og:type" content="website">
@@ -37,7 +37,7 @@
     var q = location.search;
     // Метка ?from=privacy нужна только чтобы обойти застрявший в браузере
     // редирект с kubysh.com на kubysh.ru: адреса с меткой в его кэше нет,
-    // поэтому переход идёт на сервер, а не по старой записи. Сразу стираем.
+    // поэтому переход идет на сервер, а не по старой записи. Сразу стираем.
     if (/[?&]from=privacy\b/.test(q)) {
       q = q.replace(/[?&]from=privacy\b/, '').replace(/^&/, '?');
       if (q === '?') q = '';
@@ -52,7 +52,7 @@
 <link rel="preload" href="fonts/InterTight-cyrillic-500.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/InterTight-latin-500.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/Inter-400.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="img/paycheck-device-v2.webp" as="image" fetchpriority="high">
+<link rel="preload" href="img/paycheck-1-6-4.webp" as="image" fetchpriority="high">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
@@ -179,7 +179,7 @@ nav.pill a{color:#000; text-decoration:none;}
      начинались и заканчивались на одном уровне: мокап крупнее, текст мельче. */
   /* 60vh — потолок по высоте экрана. На макбуке (900px) мокап был 938px в высоту,
      то есть не влезал на экран целиком. На больших мониторах ограничение не
-     срабатывает и размер остаётся прежним. */
+     срабатывает и размер остается прежним. */
   width:min(52vw,915px,72vh); flex:0 0 auto;
 }
 .hero-phone-block{
@@ -237,7 +237,7 @@ nav.pill a{color:#000; text-decoration:none;}
 }
 /* У экспортированного градиента последняя строка пикселей светло-серая (#e0e0e0) —
    на белом фоне секции ниже она читается как линия-разделитель через всю страницу.
-   Накрываем её белой полоской: градиент в этом месте и так уже белый. */
+   Накрываем ее белой полоской: градиент в этом месте и так уже белый. */
 .grad-blue::after{
   content:''; position:absolute; left:0; right:0; bottom:0; height:3px; background:#fff;
 }
@@ -376,10 +376,10 @@ body[data-slide="4"] .seam-blur--tight{
 
   /* Ширина заголовка считается от фактического левого края мокапа. Раньше здесь
      стояли 101.5vw (след отрицательного right:-1.5%) и прежняя ширина телефона
-     70vh — после уменьшения мокапа формула устарела, и жёсткие переносы <br>
+     70vh — после уменьшения мокапа формула устарела, и жесткие переносы <br>
      ложились не по смыслу. Теперь мокап стоит right:4% и уже, отсюда 96vw и 56vh. */
   max-width:calc(96vw - min(32vw,560px,36vh) - 90px);
-  /* Если строка всё же переносится сама — распределяем строки ровно, а не
+  /* Если строка все же переносится сама — распределяем строки ровно, а не
      оставляем висящее слово в конце. */
   text-wrap:balance;
 }
@@ -431,7 +431,7 @@ body[data-slide="4"] .slide-fade{
 .slide-phone .mockup{width:100%;}
 .slide-phone{
   /* Было right:-1.5% — мокап намеренно свисал за правый край. После уменьшения
-     размера этот приём перестал читаться и телефон стал выглядеть приклеенным
+     размера этот прием перестал читаться и телефон стал выглядеть приклеенным
      к правой стенке, поэтому отступ положительный и соразмерен левому полю. */
   position:absolute; right:6%; top:50%; transform:translateY(-50%) rotate(7deg); z-index:3;
   transform-origin:center;
@@ -509,8 +509,8 @@ body[data-slide="4"] .carousel-arrow.next{color:#123a4d;}
 .faq-a p{padding-bottom:26px; color:var(--lime); font-size:min(1.72vw,30px); line-height:1.18; max-width:73%;}
 .faq-a p a{color:#fff; text-decoration:underline; text-underline-offset:3px;}
 /* Honeypot увозим за пределы экрана, а НЕ display:none: часть ботов пропускает
-   поля, скрытые через display, а уехавшее за край остаётся для них «настоящим».
-   position:absolute вынимает его из флекс-потока, поэтому на вёрстку не влияет. */
+   поля, скрытые через display, а уехавшее за край остается для них «настоящим».
+   position:absolute вынимает его из флекс-потока, поэтому на верстку не влияет. */
 
 /* ---------- Final CTA + footer ---------- */
 /* The scallop is 1288x613 but only its top ~40% carries the circles — the rest is flat
@@ -627,7 +627,7 @@ footer{background:#000; padding:26px 40px 24px;}
   .chip-cluster--right{margin-right:0; justify-content:flex-start;}
   .chip{font-size:10.5px; padding:6px 11px; border-radius:15px; --rot:0deg;}
   /* Семь плашек на телефоне занимают 250px по высоте и уезжают за верх экрана,
-     да ещё под плашку меню. Оставляем четыре самые короткие — эффект тот же,
+     да еще под плашку меню. Оставляем четыре самые короткие — эффект тот же,
      а читать можно. */
   .chip-cluster--left .chip:nth-child(3),
   .chip-cluster--left .chip:nth-child(4),
@@ -698,7 +698,7 @@ footer{background:#000; padding:26px 40px 24px;}
   .carousel-arrows{left:22px; right:22px; width:auto; bottom:26px;}
   .carousel-arrow svg{width:54px;}
 
-  /* Блок 2 остаётся в одну строку и на телефоне: по умолчанию flex-wrap уносил текст
+  /* Блок 2 остается в одну строку и на телефоне: по умолчанию flex-wrap уносил текст
      под мокап, а он должен стоять рядом, как на десктопе. */
   /* На телефоне мокап сверху, текст под ним — так попросил владелец.
      Вариант «в одну строку, как на десктопе» пробовали: телефон ужимался
@@ -723,40 +723,40 @@ footer{background:#000; padding:26px 40px 24px;}
 @media (min-width:961px){
   /* Заголовок делит первый экран с кадром, поэтому кегль мельче макетных 160px:
      на 56% ширины «Сколько можно тратить сегодня» иначе рассыпается на четыре строки. */
-  /* Кегль задаём через --h1fs, а не через font-size: от этой же переменной считается
+  /* Кегль задаем через --h1fs, а не через font-size: от этой же переменной считается
      якорь плашек болей (.chip-field), иначе они отрываются от букв заголовка. */
   /* Крупнее по просьбе основателя. От --h1fs считается и якорь плашек,
-     поэтому кегль задаём только через неё, а не через font-size. */
+     поэтому кегль задаем только через нее, а не через font-size. */
   /* Кадр приложения на первом экране: текст слева, телефон справа.
      Плашки болей остаются абсолютными над заголовком, поэтому трогать
      .chip-field не нужно — меняется только внутренняя раскладка. */
   .hero-headline{
     /* Возврат к макету: одна колонка, заголовок во всю ширину, кадра приложения
-       на первом экране НЕТ — телефон живёт в блоке ниже. */
+       на первом экране НЕТ — телефон живет в блоке ниже. */
     display:block; text-align:left; padding:clamp(140px,15vh,170px) 40px 0;
   }
   .hero-copy{max-width:none;}
   /* лесенка первой строки: в макете строки заголовка начинаются с разным отступом
      (там это делали пробелами &nbsp;), text-indent сдвигает ровно первую строку */
-  /* 🚨 Итог трёх заходов (Кирилл, 25.08): «они не должны выпирать вообще, строки идут
+  /* 🚨 Итог трех заходов (Кирилл, 25.08): «они не должны выпирать вообще, строки идут
      ровно друг под другом». Никаких лесенок: и `text-indent` (сдвигает ПЕРВУЮ строку),
      и сдвиг второй строки давали ощущение кривизны — у одной строки левый край
      выпирал относительно другой. Обе строки от одного левого края. */
-  /* Оптическая компенсация, а не отступ: замер краёв дал «Сколько» на 3–4px левее
+  /* Оптическая компенсация, а не отступ: замер краев дал «Сколько» на 3–4px левее
      «тратить» — это боковой свес круглой «С». Технически строки уже выровнены, но
      глаз видит выступ, о котором и было замечание. text-indent сдвигает ровно
      первую строку, поэтому лечится одной величиной в em и не зависит от кегля. */
   /* Итог: основатель выбрал РОВНОЕ выравнивание («прошлая версия была ровнее»), а не
-     лесенку. Остаётся только оптическая компенсация: у круглой «С» боковой свес, и без
-     неё первая строка кажется левее второй. 0.012em ≈ 2px при кегле 160 — ровно свес,
+     лесенку. Остается только оптическая компенсация: у круглой «С» боковой свес, и без
+     нее первая строка кажется левее второй. 0.012em ≈ 2px при кегле 160 — ровно свес,
      и теперь он ложится ТОЛЬКО на первую строку (наследование у второй снято ниже). */
   /* Заголовок по центру (просьба основателя 25.08): подзаголовок и кнопки уже
      центрированы, и левый заголовок над ними читался как рассинхрон. Отступ первой
-     строки обнулён — при центрировании он сдвигал бы строку от центра. */
+     строки обнулен — при центрировании он сдвигал бы строку от центра. */
   .hero-headline h1{text-indent:0; text-align:center;}
   /* 🚨 `text-indent` НАСЛЕДУЕТСЯ, а вторая строка — inline-block, то есть свой
      блочный контекст: без обнуления она применяла отступ первой строки к себе,
-     и обе строки уезжали вправо вместе. Поймано замером краёв, не глазами. */
+     и обе строки уезжали вправо вместе. Поймано замером краев, не глазами. */
   .h1-line2{display:inline-block; margin-left:0; text-indent:0;}
   /* прежнее выравнивание влево снято: заголовок центрируется выше */
   .hero-sub{
@@ -783,7 +783,7 @@ footer{background:#000; padding:26px 40px 24px;}
   .hero-sub{line-height:1.3;}
 }
 /* Узкие экраны: «тратить сегодня» — самая длинная строка заголовка, на 375-430px
-   при 12.5vw она встаёт вплотную к краю. Проверить headless тут нельзя (минимум 500px),
+   при 12.5vw она встает вплотную к краю. Проверить headless тут нельзя (минимум 500px),
    поэтому оставляем запас по кеглю осознанно. */
 @media (max-width:480px){
   header.top{--h1fs:clamp(32px,10.6vw,52px);}
@@ -803,14 +803,14 @@ footer{background:#000; padding:26px 40px 24px;}
 }
 .btn-ghost:hover{color:#fff; border-color:rgba(255,255,255,.55);}
 /* Доказательство перед финальным призывом */
-/* ---- правки 25.08: разлёт плашек и диалог про Android ---- */
+/* ---- правки 25.08: разлет плашек и диалог про Android ---- */
 .chip{transform:translateY(var(--dy,0px)) rotate(var(--rot));}
 @media (max-width:960px){
   /* Кадра в первом экране больше нет, а шапка занимала ровно экран — под кнопками
      оставалась пустая чернота на пол-экрана. Делаем шапку по высоте содержимого:
      сразу за кнопками начинается блок с телефоном. */
   header.top{min-height:0; padding-bottom:clamp(28px,7vh,64px);}
-  /* на телефоне восемь плашек занимают пол-экрана — оставляем костяк из четырёх */
+  /* на телефоне восемь плашек занимают пол-экрана — оставляем костяк из четырех */
   .chip--extra{display:none;}
   .chip{transform:rotate(var(--rot));}
 }
@@ -844,7 +844,7 @@ footer{background:#000; padding:26px 40px 24px;}
 }
 .android-dialog__x:hover{color:#fff;}
 @media (prefers-reduced-motion: reduce){ .android-dialog__card{animation:none;} }
-/* ---- Мобильная версия, правки 25.08 по приёмке основателя на телефоне ----
+/* ---- Мобильная версия, правки 25.08 по приемке основателя на телефоне ----
    Пять дефектов, и все от одной причины: блоки, спроектированные под широкий экран,
    на 375–430px переносились по-своему. Поэтому здесь не подкрутка кегля, а явная
    раскладка для узких экранов. */
@@ -887,21 +887,21 @@ footer{background:#000; padding:26px 40px 24px;}
    Пустота — это три декоративные градиентные прослойки. На телефоне каждая занимала
    по 360–430px, то есть почти экран, и человек листал пустой градиент между смысловыми
    блоками. Уменьшаем их и поджимаем вертикальные отступы секций; сами градиенты
-   остаются — они держат переходы между чёрными и белыми блоками. */
+   остаются — они держат переходы между черными и белыми блоками. */
 /* Итерация 26.08 (Кирилл прислал три скрина: синяя полоса, розовая полоса и полоса под
    каруселью — каждая занимает почти экран пустого градиента, «пустота снижает доходимость»).
    Отступов секций уже не хватает: на 500px три полосы = 1150px из 5146px страницы (22%),
    на 1280px — 2670px из 8934px (30%). Поэтому режем сами полосы.
-   Почему это безопасно, в отличие от прошлой попытки: background-size у всех трёх задан
+   Почему это безопасно, в отличие от прошлой попытки: background-size у всех трех задан
    в ПРОЦЕНТАХ от блока, то есть картинка не обрезается, а масштабируется целиком —
-   крайние пиксели (верх и низ) остаются те же, что и были, и стыки с чёрными/белыми
+   крайние пиксели (верх и низ) остаются те же, что и были, и стыки с черными/белыми
    секциями не меняют цвет. Меняется только крутизна градиента. Проверено попиксельно
    на 500px и 1280px: цвета на всех шести стыках совпадают со старой сборкой.
-   Полосу под каруселью (.grad-blue2) режем меньше: у неё margin-top:-260px завязан
+   Полосу под каруселью (.grad-blue2) режем меньше: у нее margin-top:-260px завязан
    на FEATHER_MAX в JS, и высота не должна опускаться близко к 260px. */
-/* Переход блок 2 -> блок 3 сокращён вдвое (просьба 31.08.2026). Полоса
+/* Переход блок 2 -> блок 3 сокращен вдвое (просьба 31.08.2026). Полоса
    декоративная: background-size задан в процентах, поэтому картинка целиком
-   масштабируется, а не обрезается - крайние пиксели те же, стыки с чёрным и
+   масштабируется, а не обрезается - крайние пиксели те же, стыки с черным и
    белым блоками не меняют цвет. Проверено попиксельно на 500 и 1280. */
 .grad-blue{height:clamp(95px,18vw,310px);}
 .grad-pink1{height:clamp(210px,42vw,720px);}
@@ -944,8 +944,8 @@ footer{background:#000; padding:26px 40px 24px;}
 .cookie-bar--in{transform:translateY(0); opacity:1;}
 @media (prefers-reduced-motion:reduce){ .cookie-bar{transition:none;} }
 
-/* ---- Визуальная приёмка 17.09.2026 ---- */
-/* Главный смысл всегда поверх декоративных вопросов. Навигация остаётся выше обоих слоёв. */
+/* ---- Визуальная приемка 17.09.2026 ---- */
+/* Главный смысл всегда поверх декоративных вопросов. Навигация остается выше обоих слоев. */
 .hero-headline{z-index:4;}
 
 /* Подзаголовок читается как единая мысль, а не как узкая колонка с одиноким словом. */
@@ -1008,7 +1008,7 @@ footer{background:#000; padding:26px 40px 24px;}
 .benefit-text h3{font-size:clamp(22px,1.65vw,30px); line-height:1.08; margin-bottom:16px;}
 .benefit-text p{font-size:15px; line-height:1.5; max-width:56ch;}
 
-/* Четыре понятные пиктограммы: кошелёк, цель к дате, несколько целей и распределение получки. */
+/* Четыре понятные пиктограммы: кошелек, цель к дате, несколько целей и распределение получки. */
 .benefit-card .benefit-icon{display:none;}
 .benefit-card::before{
   content:""; grid-column:1; grid-row:1; width:100%; height:138px;
@@ -1177,7 +1177,7 @@ body[data-slide="4"] .carousel-transition{--carousel-edge:#a9dbe6;}
 }
 
 /* Карточки появляются каскадом, когда раздел входит в экран. Без JavaScript контент
-   остаётся видимым; на устройствах с отключённой анимацией переходы не запускаются. */
+   остается видимым; на устройствах с отключенной анимацией переходы не запускаются. */
 .benefits--animate .benefit-card{
   opacity:0; transform:translateY(44px) scale(.985);
   transition:opacity .72s ease, transform .82s cubic-bezier(.2,.72,.25,1),
@@ -1227,6 +1227,32 @@ body[data-slide="4"] .carousel-transition{--carousel-edge:#a9dbe6;}
   .final-qr span{max-width:190px; font-size:14px; line-height:1.3; color:rgba(255,255,255,.88);}
 }
 @media(max-width:900px){ .final-cta-note{margin:16px auto 0; text-align:center; width:auto;} }
+
+/* 05.10.2026 v3: новые блоки (проблема, как работает, истории, безопасность) */
+.hero-headline h1{font-size:clamp(40px,6.2vw,112px); line-height:.92;}
+.hero-cta-wrap{flex-wrap:wrap; justify-content:center;}
+.hero-note{flex-basis:100%; width:100%; margin:12px 0 0; font-size:13px; text-align:center; color:rgba(255,255,255,.62);}
+.kb-sec{padding:80px 0;}
+.kb-light{background:#fff; color:#0a0a0a;}
+.kb-dark{background:#000; color:#fff;}
+.kb-sec h2{font-family:var(--display); font-weight:500; font-size:clamp(32px,5vw,84px); line-height:.98; letter-spacing:-.03em; margin:0 0 28px; max-width:20ch;}
+.kb-lead{font-size:clamp(17px,1.6vw,24px); line-height:1.45; max-width:62ch; color:#3d3d3d; margin:0;}
+.kb-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin:36px 0 0; padding:0; list-style:none;}
+.kb-card{border-radius:28px; padding:28px; background:#f2f2f6;}
+.kb-dark .kb-card{background:#141414; border:1px solid rgba(255,255,255,.08);}
+.kb-card h3{font-family:var(--display); font-weight:500; font-size:clamp(20px,1.7vw,26px); line-height:1.15; margin:0 0 10px;}
+.kb-card p{margin:0; font-size:16px; line-height:1.5; color:#555;}
+.kb-dark .kb-card p{color:rgba(255,255,255,.72);}
+.kb-num{display:inline-flex; width:40px; height:40px; border-radius:50%; background:var(--lime); color:#0a0a0a; align-items:center; justify-content:center; font-weight:600; margin-bottom:18px;}
+.kb-tag{display:inline-block; margin-bottom:14px; font-size:13px; letter-spacing:.06em; text-transform:uppercase; color:var(--lime);}
+.kb-safe{list-style:none; padding:0; margin:36px 0 0; display:grid; grid-template-columns:repeat(2,1fr); gap:16px;}
+.kb-safe li{position:relative; padding:22px 24px 22px 60px; border-radius:22px; background:#141414; border:1px solid rgba(255,255,255,.08); font-size:17px; line-height:1.45;}
+.kb-safe li::before{content:""; position:absolute; left:24px; top:24px; width:20px; height:20px; border-radius:50%; background:var(--lime);}
+@media(max-width:900px){
+  .hero-headline h1{font-size:clamp(34px,9.6vw,54px);}
+  .kb-sec{padding:52px 0;}
+  .kb-grid,.kb-safe{grid-template-columns:1fr;}
+}
 </style>
 <script type="application/ld+json">
 {
@@ -1273,10 +1299,10 @@ body[data-slide="4"] .carousel-transition{--carousel-edge:#a9dbe6;}
    "publisher": {
     "@id": "https://kubysh.com/#org"
    },
-   "description": "Кубыш держит живой финансовый план между получками: считает, сколько можно потратить сегодня, пересчитывает план после каждой траты и отвечает, можно ли позволить себе покупку. Не подключается к банковским счетам — траты вносятся скриншотом, фото чека или вручную.",
+   "description": "Кубыш — приложение для iPhone, которое строит личный бюджет от получки до получки: каждый день показывает, сколько можно спокойно потратить, на сколько дней хватит денег и когда вы накопите на каждую цель. Траты вносятся скриншотом из банка, под сроки целей подбираются вклады и накопительные счета.",
    "featureList": [
     "План между получками",
-    "Пересчёт после каждой траты",
+    "Пересчет после каждой траты",
     "Ответ «могу ли я себе это позволить»",
     "Цели и подушка безопасности с прогнозными датами",
     "Внесение трат скриншотом из банка",
@@ -1300,18 +1326,34 @@ body[data-slide="4"] .carousel-transition{--carousel-edge:#a9dbe6;}
    "mainEntity": [
     {
      "@type": "Question",
-     "name": "Чем Кубыш отличается от Дзен-мани и CoinKeeper?",
+     "name": "Что такое Кубыш?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "Zen-Money и CoinKeeper — это учёт того, что уже произошло: вы фиксируете траты и смотрите отчёты постфактум. Кубыш вместо этого держит живой план до следующей получки и каждый день честно говорит, сколько ещё можно потратить, чтобы всё запланированное — от аренды до отпуска — случилось вовремя. Подробнее о разнице подходов — в разборе Кубыш и Дзен-мани."
+      "text": "Кубыш — приложение для iPhone, которое строит личный бюджет от получки до получки. Каждый день оно показывает, сколько можно спокойно потратить, на сколько дней хватит денег и когда вы накопите на каждую цель. Траты вносятся скриншотом из банка, подключать банк не нужно. Под сроки целей Кубыш подбирает выгодные вклады и накопительные счета."
      }
     },
     {
      "@type": "Question",
-     "name": "Кому подойдёт Кубыш?",
+     "name": "Зачем нужен Кубыш?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "Тем, кто получает зарплату, с авансом и премиями или без них, и пользуется iPhone. Кубыш строит план от одной получки до следующей и распределяет накопления между целями: видно, сколько уже готово на отпуск, машину или подушку, а сколько ещё осталось. Как посчитать размер резерва — в гайде про финансовую подушку."
+      "text": "Чтобы меньше переживать из-за денег: знать, сколько можно потратить сегодня, хватит ли до получки и когда накопите на цели. Без таблиц, ручной бухгалтерии и подключения банка."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Чем Кубыш отличается от Дзен-мани и CoinKeeper?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Zen-Money и CoinKeeper — это учет того, что уже произошло: вы фиксируете траты и смотрите отчеты постфактум. Кубыш вместо этого держит живой план до следующей получки и каждый день честно говорит, сколько еще можно потратить, чтобы все запланированное — от аренды до отпуска — случилось вовремя. Подробнее о разнице подходов — в разборе Кубыш и Дзен-мани."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Кому подойдет Кубыш?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Тем, кто получает зарплату, с авансом и премиями или без них, и пользуется iPhone. Кубыш строит план от одной получки до следующей и распределяет накопления между целями: видно, сколько уже готово на отпуск, машину или подушку, а сколько еще осталось. Как посчитать размер резерва — в гайде про финансовую подушку."
      }
     },
     {
@@ -1319,12 +1361,12 @@ body[data-slide="4"] .carousel-transition{--carousel-edge:#a9dbe6;}
      "name": "Сколько стоит Кубыш?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "Первый период до получки бесплатный, за это время видно, подходит ли вам такой план. Дальше подписка: цена указана на странице приложения в App Store, и оформлять её или нет, решаете вы."
+      "text": "Первый период до получки бесплатный, за это время видно, подходит ли вам такой план. Дальше подписка: цена указана на странице приложения в App Store, и оформлять ее или нет, решаете вы."
      }
     },
     {
      "@type": "Question",
-     "name": "Подойдёт ли при нерегулярном доходе?",
+     "name": "Подойдет ли при нерегулярном доходе?",
      "acceptedAnswer": {
       "@type": "Answer",
       "text": "Честно: хуже, чем при зарплате. План строится от даты и суммы следующей получки. Если деньги приходят в разные дни и разными суммами, как у фрилансеров, прогноз будет неточным. Аванс, премии и разовые поступления при зарплате Кубыш учитывает."
@@ -1343,7 +1385,7 @@ body[data-slide="4"] .carousel-transition{--carousel-edge:#a9dbe6;}
      "name": "Как Кубыш рассчитывает бюджет?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "От дохода в периоде отнимаются обязательные платежи и запланированные категории расходов, откладывается небольшой кошелёк на спонтанные покупки — а из того, что остаётся, считается честный бюджет на каждый день до следующей получки. Формула и пример расчёта — на странице сколько можно тратить в день."
+      "text": "От дохода в периоде отнимаются обязательные платежи и запланированные категории расходов, откладывается небольшой кошелек на спонтанные покупки — а из того, что остается, считается честный бюджет на каждый день до следующей получки. Формула и пример расчета — на странице сколько можно тратить в день."
      }
     },
     {
@@ -1351,7 +1393,7 @@ body[data-slide="4"] .carousel-transition{--carousel-edge:#a9dbe6;}
      "name": "Как работает финансовый план?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "После онбординга Кубыш строит план на весь период между получками: обязательные платежи, категории расходов, вклад в цели и подушку. После каждой внесённой траты пересчитываются бюджет на день, запас в днях до получки и темп периода, поэтому прогноз отражает реальность, а не то, что вы задумали в начале месяца."
+      "text": "После онбординга Кубыш строит план на весь период между получками: обязательные платежи, категории расходов, вклад в цели и подушку. После каждой внесенной траты пересчитываются бюджет на день, запас в днях до получки и темп периода, поэтому прогноз отражает реальность, а не то, что вы задумали в начале месяца."
      }
     },
     {
@@ -1359,7 +1401,7 @@ body[data-slide="4"] .carousel-transition{--carousel-edge:#a9dbe6;}
      "name": "Когда появится версия для Android?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "Пока Кубыш есть только для iPhone. Если ждёте Android, напишите нам в телеграм-канале: так мы поймём, сколько вас."
+      "text": "Пока Кубыш есть только для iPhone. Если ждете Android, напишите нам в телеграм-канале: так мы поймем, сколько вас."
      }
     },
     {
@@ -1367,7 +1409,7 @@ body[data-slide="4"] .carousel-transition{--carousel-edge:#a9dbe6;}
      "name": "Нужно ли вносить каждую трату вручную?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "Нет. Можно загрузить скриншот из банковского приложения или сфотографировать чек — Кубыш сам распознает сумму и дату. Ручной ввод остаётся на случай, когда так быстрее."
+      "text": "Нет. Можно загрузить скриншот из банковского приложения или сфотографировать чек — Кубыш сам распознает сумму и дату. Ручной ввод остается на случай, когда так быстрее."
      }
     },
     {
@@ -1392,8 +1434,8 @@ body[data-slide="4"] .carousel-transition{--carousel-edge:#a9dbe6;}
 }
 </script>
 <script>
-/* Аналитика kubysh.com. METRIKA_ID пустой => счётчик не грузится и ошибок нет.
-   Впиши номер счётчика Яндекс.Метрики — и заработает и он, и цели ниже. */
+/* Аналитика kubysh.com. METRIKA_ID пустой => счетчик не грузится и ошибок нет.
+   Впиши номер счетчика Яндекс.Метрики — и заработает и он, и цели ниже. */
 (function(){
   var METRIKA_ID = "112705935"; // Яндекс.Метрика Кубыш
 
@@ -1449,7 +1491,7 @@ body[data-slide="4"] .carousel-transition{--carousel-edge:#a9dbe6;}
     /* Кириллу нужно видеть, откуда конверсия выше — из верхней кнопки или из нижней.
        Поэтому на каждый клик отправляем ДВЕ цели: общую (сколько всего ушло в стор)
        и с позицией (appstore_click_hero / appstore_click_final). У самой ссылки при этом
-       свой Apple-параметр ct=, чтобы те же две точки различались и в отчётах App Store,
+       свой Apple-параметр ct=, чтобы те же две точки различались и в отчетах App Store,
        когда у нас появится provider token. */
     var pos = a.getAttribute("data-pos");
     if (href.indexOf("t.me/") > -1) { goal("tg_click"); if (pos) goal("tg_click_" + pos); }
@@ -1474,21 +1516,22 @@ body[data-slide="4"] .carousel-transition{--carousel-edge:#a9dbe6;}
       <div class="chip chip--extra" style="--rot:-8deg; --dy:-8px; max-width:165px; --d:250ms; --drop:-418px; z-index:10;">Открываете Excel, чтобы пересчитать одну покупку?</div>
       <div class="chip" style="--rot:9deg;  --dy:10px;  max-width:200px; --d:560ms; --drop:-340px; z-index:15;">Не понимаете, как покупка повлияет на остальные цели?</div>
       <div class="chip chip--extra" style="--rot:-13deg; --dy:-6px; max-width:175px; --d:340ms; --drop:-386px; z-index:11;">Откладываете покупки, хотя деньги вроде есть?</div>
-      <div class="chip chip--extra" style="--rot:6deg;  --dy:14px; max-width:170px; --d:480ms; --drop:-330px; z-index:9;">В конце месяца непонятно, куда всё ушло?</div>
+      <div class="chip chip--extra" style="--rot:6deg;  --dy:14px; max-width:170px; --d:480ms; --drop:-330px; z-index:9;">В конце месяца непонятно, куда все ушло?</div>
     </div>
     <div class="chip-cluster chip-cluster--right">
       <div class="chip" style="--rot:8deg;  --dy:0px;  max-width:155px; --d:200ms; --drop:-362px; z-index:14;">Проверяете на глаз, хватит ли денег?</div>
-      <div class="chip chip--extra" style="--rot:-7deg; --dy:10px;  max-width:195px; --d:640ms; --drop:-386px; z-index:12;">После получки снова решаете, как её распределить?</div>
+      <div class="chip chip--extra" style="--rot:-7deg; --dy:10px;  max-width:195px; --d:640ms; --drop:-386px; z-index:12;">После получки снова решаете, как ее распределить?</div>
     </div>
   </div>
   <div class="hero-headline">
    <div class="hero-copy">
-    <h1>Хватит ли денег<br><span class="h1-line2">до получки?</span></h1>
-    <p class="hero-sub">Кубыш строит план от получки до получки и каждый день показывает, сколько можно спокойно потратить<span class="hero-for">Для тех, кто получает зарплату и пользуется iPhone</span></p>
+    <h1>Тратьте спокойно:<br><span class="h1-line2">хватит и&nbsp;до&nbsp;получки, и&nbsp;на&nbsp;цели</span></h1>
+    <p class="hero-sub">Кубыш строит план с каждой получки, каждый день показывает, сколько можно потратить, и ведет к целям<span class="hero-for">Для тех, кто получает зарплату и пользуется iPhone</span></p>
     <div class="hero-cta-wrap">
       <a href="https://apps.apple.com/us/app/%D0%BA%D1%83%D0%B1%D1%8B%D1%88-%D0%BB%D0%B8%D1%87%D0%BD%D1%8B%D0%B5-%D1%84%D0%B8%D0%BD%D0%B0%D0%BD%D1%81%D1%8B-%D0%B1%D1%8E%D0%B4%D0%B6%D0%B5%D1%82/id6778792103?ppid=ad248954-9df5-4e1e-9f9e-236a70021ad9" class="btn-appstore" data-appstore data-pos="hero" target="_blank" rel="noopener" aria-label="Скачать в App Store">
         <img src="data:image/svg+xml;base64,PHN2ZyBpZD0ibGl2ZXR5cGUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjExOS42NjQwNyIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDExOS42NjQwNyA0MCI+CiAgPHRpdGxlPkRvd25sb2FkX29uX3RoZV9BcHBfU3RvcmVfQmFkZ2VfUlVfUkdCX2Jsa18xMDAzMTc8L3RpdGxlPgogIDxnPgogICAgPGc+CiAgICAgIDxnPgogICAgICAgIDxwYXRoIGQ9Ik0xMTAuMTM0NzcsMEg5LjUzNDY4Yy0uMzY2NywwLS43MjksMC0xLjA5NDczLjAwMi0uMzA2MTUuMDAyLS42MDk4Ni4wMDc4MS0uOTE4OTUuMDEyN0ExMy4yMTQ3NiwxMy4yMTQ3NiwwLDAsMCw1LjUxNzEuMTkxNDFhNi42NjUwOSw2LjY2NTA5LDAsMCwwLTEuOTAwODguNjI3QTYuNDM3NzksNi40Mzc3OSwwLDAsMCwxLjk5NzU3LDEuOTk3MDcsNi4yNTg0NCw2LjI1ODQ0LDAsMCwwLC44MTkzNSwzLjYxODE2YTYuNjAxMTksNi42MDExOSwwLDAsMC0uNjI1LDEuOTAzMzIsMTIuOTkzLDEyLjk5MywwLDAsMC0uMTc5MiwyLjAwMkMuMDA1ODcsNy44MzAwOC4wMDQ4OSw4LjEzNzcsMCw4LjQ0NDM0VjMxLjU1ODZjLjAwNDg5LjMxMDUuMDA1ODcuNjExMy4wMTUxNS45MjE5YTEyLjk5MjMyLDEyLjk5MjMyLDAsMCwwLC4xNzkyLDIuMDAxOSw2LjU4NzU2LDYuNTg3NTYsMCwwLDAsLjYyNSwxLjkwNDNBNi4yMDc3OCw2LjIwNzc4LDAsMCwwLDEuOTk3NTcsMzguMDAxYTYuMjc0NDUsNi4yNzQ0NSwwLDAsMCwxLjYxODY1LDEuMTc4Nyw2LjcwMDgyLDYuNzAwODIsMCwwLDAsMS45MDA4OC42MzA4LDEzLjQ1NTE0LDEzLjQ1NTE0LDAsMCwwLDIuMDAzOS4xNzY4Yy4zMDkwOS4wMDY4LjYxMjguMDEwNy45MTg5NS4wMTA3QzguODA1NjcsNDAsOS4xNjgsNDAsOS41MzQ2OCw0MEgxMTAuMTM0NzdjLjM1OTQsMCwuNzI0NiwwLDEuMDg0LS4wMDIuMzA0NywwLC42MTcyLS4wMDM5LjkyMTktLjAxMDdhMTMuMjc5LDEzLjI3OSwwLDAsMCwyLS4xNzY4LDYuODA0MzIsNi44MDQzMiwwLDAsMCwxLjkwODItLjYzMDgsNi4yNzc0Miw2LjI3NzQyLDAsMCwwLDEuNjE3Mi0xLjE3ODcsNi4zOTQ4Miw2LjM5NDgyLDAsMCwwLDEuMTgxNi0xLjYxNDMsNi42MDQxMyw2LjYwNDEzLDAsMCwwLC42MTkxLTEuOTA0MywxMy41MDY0MywxMy41MDY0MywwLDAsMCwuMTg1Ni0yLjAwMTljLjAwMzktLjMxMDYuMDAzOS0uNjExNC4wMDM5LS45MjE5LjAwNzgtLjM2MzMuMDA3OC0uNzI0Ni4wMDc4LTEuMDkzOFY5LjUzNjEzYzAtLjM2NjIxLDAtLjcyOTQ5LS4wMDc4LTEuMDkxNzksMC0uMzA2NjQsMC0uNjE0MjYtLjAwMzktLjkyMDlhMTMuNTA3MSwxMy41MDcxLDAsMCwwLS4xODU2LTIuMDAyLDYuNjE3Nyw2LjYxNzcsMCwwLDAtLjYxOTEtMS45MDMzMiw2LjQ2NjE5LDYuNDY2MTksMCwwLDAtMi43OTg4LTIuNzk5OCw2Ljc2NzU0LDYuNzY3NTQsMCwwLDAtMS45MDgyLS42MjcsMTMuMDQzOTQsMTMuMDQzOTQsMCwwLDAtMi0uMTc2NzZjLS4zMDQ3LS4wMDQ4OC0uNjE3Mi0uMDEwNzQtLjkyMTktLjAxMjY5LS4zNTk0LS4wMDItLjcyNDYtLjAwMi0xLjA4NC0uMDAyWiIgc3R5bGU9ImZpbGw6ICNhNmE2YTYiLz4KICAgICAgICA8cGF0aCBkPSJNOC40NDQ4MywzOS4xMjVjLS4zMDQ2OCwwLS42MDItLjAwMzktLjkwNDI5LS4wMTA3YTEyLjY4NzE0LDEyLjY4NzE0LDAsMCwxLTEuODY5MTQtLjE2MzEsNS44ODM4MSw1Ljg4MzgxLDAsMCwxLTEuNjU2NzQtLjU0NzksNS40MDU3Myw1LjQwNTczLDAsMCwxLTEuMzk3LTEuMDE2Niw1LjMyMDgyLDUuMzIwODIsMCwwLDEtMS4wMjA1MS0xLjM5NjUsNS43MjE4Niw1LjcyMTg2LDAsMCwxLS41NDMtMS42NTcyLDEyLjQxMzUxLDEyLjQxMzUxLDAsMCwxLS4xNjY1LTEuODc1Yy0uMDA2MzQtLjIxMDktLjAxNDY0LS45MTMxLS4wMTQ2NC0uOTEzMVY4LjQ0NDM0Uy44ODE4NSw3Ljc1MjkzLjg4NzcsNy41NDk4YTEyLjM3MDM5LDEyLjM3MDM5LDAsMCwxLC4xNjU1My0xLjg3MjA3LDUuNzU1NSw1Ljc1NTUsMCwwLDEsLjU0MzQ2LTEuNjYyMUE1LjM3MzQ5LDUuMzczNDksMCwwLDEsMi42MTE4MywyLjYxNzY4LDUuNTY1NDMsNS41NjU0MywwLDAsMSw0LjAxNDE3LDEuNTk1MjFhNS44MjMwOSw1LjgyMzA5LDAsMCwxLDEuNjUzMzItLjU0Mzk0QTEyLjU4NTg5LDEyLjU4NTg5LDAsMCwxLDcuNTQzLjg4NzIxTDguNDQ1MzIuODc1SDExMS4yMTM4N2wuOTEzMS4wMTI3YTEyLjM4NDkzLDEyLjM4NDkzLDAsMCwxLDEuODU4NC4xNjI1OSw1LjkzODMzLDUuOTM4MzMsMCwwLDEsMS42NzA5LjU0Nzg1LDUuNTkzNzQsNS41OTM3NCwwLDAsMSwyLjQxNSwyLjQxOTkzLDUuNzYyNjcsNS43NjI2NywwLDAsMSwuNTM1MiwxLjY0ODkyLDEyLjk5NSwxMi45OTUsMCwwLDEsLjE3MzgsMS44ODcyMWMuMDAyOS4yODMyLjAwMjkuNTg3NC4wMDI5Ljg5MDE0LjAwNzkuMzc1LjAwNzkuNzMxOTMuMDA3OSwxLjA5MTc5VjMwLjQ2NDhjMCwuMzYzMywwLC43MTc4LS4wMDc5LDEuMDc1MiwwLC4zMjUyLDAsLjYyMzEtLjAwMzkuOTI5N2ExMi43MzEyNiwxMi43MzEyNiwwLDAsMS0uMTcwOSwxLjg1MzUsNS43MzksNS43MzksMCwwLDEtLjU0LDEuNjcsNS40ODAyOSw1LjQ4MDI5LDAsMCwxLTEuMDE1NiwxLjM4NTcsNS40MTI5LDUuNDEyOSwwLDAsMS0xLjM5OTQsMS4wMjI1LDUuODYxNjgsNS44NjE2OCwwLDAsMS0xLjY2OC41NDk4LDEyLjU0MjE4LDEyLjU0MjE4LDAsMCwxLTEuODY5Mi4xNjMxYy0uMjkyOS4wMDY4LS41OTk2LjAxMDctLjg5NzQuMDEwN2wtMS4wODQuMDAyWiIvPgogICAgICA8L2c+CiAgICAgIDxnIGlkPSJfR3JvdXBfIiBkYXRhLW5hbWU9IiZsdDtHcm91cCZndDsiPgogICAgICAgIDxnIGlkPSJfR3JvdXBfMiIgZGF0YS1uYW1lPSImbHQ7R3JvdXAmZ3Q7Ij4KICAgICAgICAgIDxnIGlkPSJfR3JvdXBfMyIgZGF0YS1uYW1lPSImbHQ7R3JvdXAmZ3Q7Ij4KICAgICAgICAgICAgPHBhdGggaWQ9Il9QYXRoXyIgZGF0YS1uYW1lPSImbHQ7UGF0aCZndDsiIGQ9Ik0yNC43Njg4OCwyMC4zMDA2OGE0Ljk0ODgxLDQuOTQ4ODEsMCwwLDEsMi4zNTY1Ni00LjE1MjA2LDUuMDY1NjYsNS4wNjU2NiwwLDAsMC0zLjk5MTE2LTIuMTU3NjhjLTEuNjc5MjQtLjE3NjI2LTMuMzA3MTksMS4wMDQ4My00LjE2MjksMS4wMDQ4My0uODcyMjcsMC0yLjE4OTc3LS45ODczMy0zLjYwODUtLjk1ODE0YTUuMzE1MjksNS4zMTUyOSwwLDAsMC00LjQ3MjkyLDIuNzI3ODdjLTEuOTM0LDMuMzQ4NDItLjQ5MTQxLDguMjY5NDcsMS4zNjEyLDEwLjk3NjA4LjkyNjksMS4zMjUzNSwyLjAxMDE4LDIuODA1OCwzLjQyNzYzLDIuNzUzMywxLjM4NzA2LS4wNTc1MywxLjkwNTEtLjg4NDQ4LDMuNTc5NC0uODg0NDgsMS42NTg3NiwwLDIuMTQ0NzkuODg0NDgsMy41OTEuODUxMSwxLjQ4ODM4LS4wMjQxNiwyLjQyNjEzLTEuMzMxMjQsMy4zMjA1MS0yLjY2OTE0YTEwLjk2MiwxMC45NjIsMCwwLDAsMS41MTg0Mi0zLjA5MjUxQTQuNzgyMDUsNC43ODIwNSwwLDAsMSwyNC43Njg4OCwyMC4zMDA2OFoiIHN0eWxlPSJmaWxsOiAjZmZmIi8+CiAgICAgICAgICAgIDxwYXRoIGlkPSJfUGF0aF8yIiBkYXRhLW5hbWU9IiZsdDtQYXRoJmd0OyIgZD0iTTIyLjAzNzI1LDEyLjIxMDg5YTQuODcyNDgsNC44NzI0OCwwLDAsMCwxLjExNDUyLTMuNDkwNjIsNC45NTc0Niw0Ljk1NzQ2LDAsMCwwLTMuMjA3NTgsMS42NTk2MSw0LjYzNjM0LDQuNjM2MzQsMCwwLDAtMS4xNDM3MSwzLjM2MTM5QTQuMDk5MDUsNC4wOTkwNSwwLDAsMCwyMi4wMzcyNSwxMi4yMTA4OVoiIHN0eWxlPSJmaWxsOiAjZmZmIi8+CiAgICAgICAgICA8L2c+CiAgICAgICAgPC9nPgogICAgICAgIDxnPgogICAgICAgICAgPHBhdGggZD0iTTQyLjMwMjI3LDI3LjEzOTY1aC00LjczMzRsLTEuMTM2NzIsMy4zNTY0NUgzNC40MjcyN2w0LjQ4MzQtMTIuNDE4aDIuMDgzbDQuNDgzNCwxMi40MThINDMuNDM4Wk0zOC4wNTkxLDI1LjU5MDgyaDMuNzUybC0xLjg0OTYxLTUuNDQ3MjdoLS4wNTE3NloiIHN0eWxlPSJmaWxsOiAjZmZmIi8+CiAgICAgICAgICA8cGF0aCBkPSJNNTUuMTU5NjksMjUuOTY5NzNjMCwyLjgxMzQ4LTEuNTA1ODYsNC42MjEwOS0zLjc3ODMyLDQuNjIxMDlhMy4wNjkzLDMuMDY5MywwLDAsMS0yLjg0ODYzLTEuNTg0aC0uMDQzdjQuNDg0MzhoLTEuODU4NFYyMS40NDIzOEg0OC40MzAydjEuNTA1ODZoLjAzNDE4YTMuMjExNjIsMy4yMTE2MiwwLDAsMSwyLjg4MjgxLTEuNjAwNTlDNTMuNjQ1LDIxLjM0NzY2LDU1LjE1OTY5LDIzLjE2NDA2LDU1LjE1OTY5LDI1Ljk2OTczWm0tMS45MTAxNiwwYzAtMS44MzMtLjk0NzI3LTMuMDM4MDktMi4zOTI1OC0zLjAzODA5LTEuNDE5OTIsMC0yLjM3NSwxLjIzMDQ3LTIuMzc1LDMuMDM4MDksMCwxLjgyNDIyLjk1NTA4LDMuMDQ1OSwyLjM3NSwzLjA0NTlDNTIuMzAyMjcsMjkuMDE1NjMsNTMuMjQ5NTMsMjcuODE5MzQsNTMuMjQ5NTMsMjUuOTY5NzNaIiBzdHlsZT0iZmlsbDogI2ZmZiIvPgogICAgICAgICAgPHBhdGggZD0iTTY1LjEyNDUzLDI1Ljk2OTczYzAsMi44MTM0OC0xLjUwNTg2LDQuNjIxMDktMy43NzgzMiw0LjYyMTA5YTMuMDY5MywzLjA2OTMsMCwwLDEtMi44NDg2My0xLjU4NGgtLjA0M3Y0LjQ4NDM4aC0xLjg1ODRWMjEuNDQyMzhINTguMzk1djEuNTA1ODZoLjAzNDE4QTMuMjExNjIsMy4yMTE2MiwwLDAsMSw2MS4zMTIsMjEuMzQ3NjZDNjMuNjA5ODgsMjEuMzQ3NjYsNjUuMTI0NTMsMjMuMTY0MDYsNjUuMTI0NTMsMjUuOTY5NzNabS0xLjkxMDE2LDBjMC0xLjgzMy0uOTQ3MjctMy4wMzgwOS0yLjM5MjU4LTMuMDM4MDktMS40MTk5MiwwLTIuMzc1LDEuMjMwNDctMi4zNzUsMy4wMzgwOSwwLDEuODI0MjIuOTU1MDgsMy4wNDU5LDIuMzc1LDMuMDQ1OUM2Mi4yNjcxMSwyOS4wMTU2Myw2My4yMTQzOCwyNy44MTkzNCw2My4yMTQzOCwyNS45Njk3M1oiIHN0eWxlPSJmaWxsOiAjZmZmIi8+CiAgICAgICAgICA8cGF0aCBkPSJNNzEuNzEwNDcsMjcuMDM2MTNjLjEzNzcsMS4yMzE0NSwxLjMzNCwyLjA0LDIuOTY4NzUsMi4wNCwxLjU2NjQxLDAsMi42OTMzNi0uODA4NTksMi42OTMzNi0xLjkxODk1LDAtLjk2Mzg3LS42Nzk2OS0xLjU0MS0yLjI4OTA2LTEuOTM2NTJsLTEuNjA5MzctLjM4NzdjLTIuMjgwMjctLjU1MDc4LTMuMzM4ODctMS42MTcxOS0zLjMzODg3LTMuMzQ3NjYsMC0yLjE0MjU4LDEuODY3MTktMy42MTQyNiw0LjUxODU1LTMuNjE0MjYsMi42MjQsMCw0LjQyMjg1LDEuNDcxNjgsNC40ODM0LDMuNjE0MjZoLTEuODc2Yy0uMTEyMy0xLjIzOTI2LTEuMTM2NzItMS45ODczLTIuNjMzNzktMS45ODczcy0yLjUyMTQ4Ljc1Njg0LTIuNTIxNDgsMS44NTg0YzAsLjg3NzkzLjY1NDMsMS4zOTQ1MywyLjI1NDg4LDEuNzlsMS4zNjgxNi4zMzU5NGMyLjU0Nzg1LjYwMjU0LDMuNjA2NDUsMS42MjYsMy42MDY0NSwzLjQ0MjM4LDAsMi4zMjMyNC0xLjg1MDU5LDMuNzc4MzItNC43OTM5NSwzLjc3ODMyLTIuNzUzOTEsMC00LjYxMzI4LTEuNDIwOS00LjczMzQtMy42NjdaIiBzdHlsZT0iZmlsbDogI2ZmZiIvPgogICAgICAgICAgPHBhdGggZD0iTTgzLjM0NjIxLDE5LjI5OTh2Mi4xNDI1OGgxLjcyMTY4djEuNDcxNjhIODMuMzQ2MjF2NC45OTEyMWMwLC43NzUzOS4zNDQ3MywxLjEzNjcyLDEuMTAxNTYsMS4xMzY3MmE1LjgwNzUyLDUuODA3NTIsMCwwLDAsLjYxMTMzLS4wNDN2MS40NjI4OWE1LjEwMzUxLDUuMTAzNTEsMCwwLDEtMS4wMzIyMy4wODU5NGMtMS44MzMsMC0yLjU0Nzg1LS42ODg0OC0yLjU0Nzg1LTIuNDQ0MzRWMjIuOTE0MDZIODAuMTYyNjJWMjEuNDQyMzhIODEuNDc5VjE5LjI5OThaIiBzdHlsZT0iZmlsbDogI2ZmZiIvPgogICAgICAgICAgPHBhdGggZD0iTTg2LjA2NSwyNS45Njk3M2MwLTIuODQ4NjMsMS42Nzc3My00LjYzODY3LDQuMjkzOTUtNC42Mzg2NywyLjYyNSwwLDQuMjk0OTIsMS43OSw0LjI5NDkyLDQuNjM4NjcsMCwyLjg1NjQ1LTEuNjYxMTMsNC42Mzg2Ny00LjI5NDkyLDQuNjM4NjdDODcuNzI2MDksMzAuNjA4NCw4Ni4wNjUsMjguODI2MTcsODYuMDY1LDI1Ljk2OTczWm02LjY5NTMxLDBjMC0xLjk1NDEtLjg5NTUxLTMuMTA3NDItMi40MDEzNy0zLjEwNzQycy0yLjQwMDM5LDEuMTYyMTEtMi40MDAzOSwzLjEwNzQyYzAsMS45NjE5MS44OTQ1MywzLjEwNjQ1LDIuNDAwMzksMy4xMDY0NVM5Mi43NjAyNywyNy45MzE2NCw5Mi43NjAyNywyNS45Njk3M1oiIHN0eWxlPSJmaWxsOiAjZmZmIi8+CiAgICAgICAgICA8cGF0aCBkPSJNOTYuMTg2MDYsMjEuNDQyMzhoMS43NzI0NnYxLjU0MWguMDQzYTIuMTU5NCwyLjE1OTQsMCwwLDEsMi4xNzc3My0xLjYzNTc0LDIuODY2MTYsMi44NjYxNiwwLDAsMSwuNjM2NzIuMDY5MzR2MS43MzgyOGEyLjU5Nzk0LDIuNTk3OTQsMCwwLDAtLjgzNS0uMTEyMywxLjg3MjY0LDEuODcyNjQsMCwwLDAtMS45MzY1MiwyLjA4M3Y1LjM3MDEyaC0xLjg1ODRaIiBzdHlsZT0iZmlsbDogI2ZmZiIvPgogICAgICAgICAgPHBhdGggZD0iTTEwOS4zODQzLDI3LjgzNjkxYy0uMjUsMS42NDM1NS0xLjg1MDU5LDIuNzcxNDgtMy44OTg0NCwyLjc3MTQ4LTIuNjMzNzksMC00LjI2ODU1LTEuNzY0NjUtNC4yNjg1NS00LjU5NTcsMC0yLjgzOTg0LDEuNjQzNTUtNC42ODE2NCw0LjE5MDQzLTQuNjgxNjQsMi41MDQ4OCwwLDQuMDgwMDgsMS43MjA3LDQuMDgwMDgsNC40NjU4MnYuNjM2NzJoLTYuMzk0NTN2LjExMjNhMi4zNTgsMi4zNTgsMCwwLDAsMi40MzU1NSwyLjU2NDQ1LDIuMDQ4MzQsMi4wNDgzNCwwLDAsMCwyLjA5MDgyLTEuMjczNDRabS02LjI4MjIzLTIuNzAyMTVoNC41MjYzN2EyLjE3NzMsMi4xNzczLDAsMCwwLTIuMjIwNy0yLjI5Nzg1QTIuMjkyLDIuMjkyLDAsMCwwLDEwMy4xMDIwNywyNS4xMzQ3N1oiIHN0eWxlPSJmaWxsOiAjZmZmIi8+CiAgICAgICAgPC9nPgogICAgICA8L2c+CiAgICA8L2c+CiAgICA8ZyBpZD0iX0dyb3VwXzQiIGRhdGEtbmFtZT0iJmx0O0dyb3VwJmd0OyI+CiAgICAgIDxnPgogICAgICAgIDxwYXRoIGQ9Ik0zNi43MzgzLDExLjI1MzQyaC43OTc4NWExLjAwMjEsMS4wMDIxLDAsMCwwLDEuMTI1LS45NTExN2MwLS41NTAyOS0uNDE0MDYtLjkwNTc2LTEuMTE2MjEtLjkwNTc2YTEuMDYzNTcsMS4wNjM1NywwLDAsMC0xLjIwNDEuOTM0NTdoLS44NzZhMS44NzA1NywxLjg3MDU3LDAsMCwxLDIuMTA4NC0xLjc0NTEyYzEuMTc0OCwwLDIuMDAyLjY1NzcxLDIuMDAyLDEuNjA0NDlhMS4zODYsMS4zODYsMCwwLDEtMS4wODQsMS4zNjQ3NXYuMDcwMzFhMS4zODk4LDEuMzg5OCwwLDAsMSwxLjMyNzE1LDEuNDQyODcsMS45OTMyLDEuOTkzMiwwLDAsMS0yLjIyODUyLDEuNzczOTMsMS45ODMzNSwxLjk4MzM1LDAsMCwxLTIuMjQxMjEtMS43NjU2MmguODg5NjVjLjA1MzcxLjU3MDguNTc4MTMuOTM5LDEuMzUxNTYuOTM5czEuMjc4MzItLjQxMzU3LDEuMjc4MzItLjk5NjU4YzAtLjU5MTMxLS40NzU1OS0uOTU1NTctMS4zMDY2NC0uOTU1NTdIMzYuNzM4M1oiIHN0eWxlPSJmaWxsOiAjZmZmIi8+CiAgICAgICAgPHBhdGggZD0iTTQwLjgyOTEyLDEzLjQyNDMyYzAtLjgxMDU1LjYwNDQ5LTEuMjc3ODMsMS42NzQ4LTEuMzQ0MjRsMS4yMTk3My0uMDcwMzF2LS4zODg2N2MwLS40NzU1OS0uMzEzNDgtLjc0NDE0LS45MjE4Ny0uNzQ0MTQtLjQ5NjA5LDAtLjgzODg3LjE4MjEzLS45Mzg0OC41MDA0OWgtLjg2MDM1Yy4wOTA4Mi0uNzczNDQuODE5MzQtMS4yNjk1MywxLjg0MDgyLTEuMjY5NTMsMS4xMjg5MSwwLDEuNzY1NjMuNTYyLDEuNzY1NjMsMS41MTMxOHYzLjA3NjY2aC0uODU2NDV2LS42MzI4MWgtLjA3MDMxYTEuNTE1LDEuNTE1LDAsMCwxLTEuMzUyNTQuNzA3QTEuMzYwMjYsMS4zNjAyNiwwLDAsMSw0MC44MjkxMiwxMy40MjQzMlptMi44OTQ1My0uMzg0Nzd2LS4zNzY0Nkw0Mi42MjQsMTIuNzMzNGMtLjYyMDEyLjA0MTUtLjkwMTM3LjI1MjQ0LS45MDEzNy42NDk0MSwwLC40MDUyNy4zNTE1Ni42NDExMS44MzUuNjQxMTFBMS4wNjE1LDEuMDYxNSwwLDAsMCw0My43MjM2NSwxMy4wMzk1NVoiIHN0eWxlPSJmaWxsOiAjZmZmIi8+CiAgICAgICAgPHBhdGggZD0iTTQ2Ljk2Nzc5LDEwLjk0Mjg3djMuNzU0ODhoLS44ODg2N1YxMC4xOTQ4Mkg0OS4wNDR2Ljc0OFoiIHN0eWxlPSJmaWxsOiAjZmZmIi8+CiAgICAgICAgPHBhdGggZD0iTTU0LjQyOTcxLDEyLjQ0NDM0YzAsMS40MzA2Ni0uNzIzNjMsMi4zMjc2NC0xLjg2MDM1LDIuMzI3NjRhMS40Njc3OCwxLjQ2Nzc4LDAsMCwxLTEuMzg1NzQtLjc1NjM1SDUxLjExMzN2Mi4xNzkyaC0uODg4Njd2LTZoLjg1NTQ3VjEwLjkzOWguMDY2NDFhMS41NjQzNywxLjU2NDM3LDAsMCwxLDEuNDE0MDYtLjgxODg1QzUzLjcwNjA3LDEwLjEyMDEyLDU0LjQyOTcxLDExLjAxMzE4LDU0LjQyOTcxLDEyLjQ0NDM0Wm0tLjkxNDA2LDBjMC0uOTUxMTctLjQ1MDItMS41MjU4OC0xLjIwMzEyLTEuNTI1ODgtLjc0OCwwLTEuMjE1ODIuNTg2OTEtMS4yMTU4MiwxLjUyOTc5LDAsLjkzODQ4LjQ2Nzc3LDEuNTI1ODgsMS4yMTE5MSwxLjUyNTg4QzUzLjA2NTQ1LDEzLjk3NDEyLDUzLjUxNTY1LDEzLjM5OTQxLDUzLjUxNTY1LDEyLjQ0NDM0WiIgc3R5bGU9ImZpbGw6ICNmZmYiLz4KICAgICAgICA8cGF0aCBkPSJNNTUuNjEzMywxNi4zMTA1NXYtLjc2NTE0YTIuMSwyLjEsMCwwLDAsLjI5LjAxNjYuNzcwMzQuNzcwMzQsMCwwLDAsLjgxNDQ1LS42Mjg0MmwuMDY2NDEtLjIxOTI0LTEuNjI5ODgtNC41MTk1M2guOTY3NzdMNTcuMjUxLDEzLjc3MTQ4aC4wNzAzMWwxLjEyNS0zLjU3NjY2aC45NDIzOEw1Ny43MSwxNC44ODM3OWMtLjM4NDc3LDEuMDk1Ny0uODEwNTUsMS40NDcyNy0xLjcyODUyLDEuNDQ3MjdDNTUuOTA3MjUsMTYuMzMxMDUsNTUuNjk2MzEsMTYuMzIyNzUsNTUuNjEzMywxNi4zMTA1NVoiIHN0eWxlPSJmaWxsOiAjZmZmIi8+CiAgICAgICAgPHBhdGggZD0iTTYwLjA4MTA3LDEzLjQxOTkyaC44ODQ3N2MuMDg2OTEuMzk3LjQ1OS42MDQuOTc5NDkuNjA0LjU5MTgsMCwuOTU1MDgtLjI2MDc0Ljk1NTA4LS42NjYsMC0uNDM0MDgtLjMyNjE3LS42NDExMS0uOTU1MDgtLjY0MTExSDYxLjI3MTV2LS42OTA0M2guNjYyMTFjLjUzNzExLDAsLjgxMDU1LS4yMDY1NC44MTA1NS0uNTgzLDAtLjMzMDU3LS4yNjQ2NS0uNTgzLS44MTA1NS0uNTgzLS40OTcwNywwLS44NjAzNS4yMTA5NC0uOTE4LjU2NjQxSDYwLjE1OTJhMS41NzgsMS41NzgsMCwwLDEsMS43NzQ0MS0xLjMxODg1YzEuMDcwMzEsMCwxLjY4MjYyLjQ4Mzg5LDEuNjgyNjIsMS4yNDQ2M2EuOTI1MTQuOTI1MTQsMCwwLDEtLjcxMDk0LjkyMTg4di4wNzAzMWExLjAxMDE1LDEuMDEwMTUsMCwwLDEsLjg4MDg2LDEuMDEzMThjMCwuODU2LS43Mjg1MiwxLjQyMjM2LTEuODQwODIsMS40MjIzNkM2MC45NjE5MywxNC43ODAyNyw2MC4xNjMxMSwxNC4zMjk1OSw2MC4wODEwNywxMy40MTk5MloiIHN0eWxlPSJmaWxsOiAjZmZmIi8+CiAgICAgICAgPHBhdGggZD0iTTY1LjA2NTk0LDE0LjY5Nzc1VjEwLjE5NDgyaC44ODA4NlYxMy4yOTJoLjA3MDMxbDIuMDc1Mi0zLjA5NzE3aC44ODA4NnY0LjUwMjkzaC0uODgwODZWMTEuNTg0SDY4LjAyNTlsLTIuMDc5MSwzLjExMzc3WiIgc3R5bGU9ImZpbGw6ICNmZmYiLz4KICAgICAgICA8cGF0aCBkPSJNNzMuODI1NywxMC45NDI4N2gtMS40MTh2My43NTQ4OGgtLjg4OTY1VjEwLjk0Mjg3aC0xLjQxOHYtLjc0OEg3My44MjU3WiIgc3R5bGU9ImZpbGw6ICNmZmYiLz4KICAgICAgICA8cGF0aCBkPSJNNzguNjEyODEsMTMuNDgxOTNhMS44Mjk5LDEuODI5OSwwLDAsMS0xLjk1MjE1LDEuMzAyNzMsMi4wNDUzMSwyLjA0NTMxLDAsMCwxLTIuMDgwMDgtMi4zMjQyMiwyLjA3Njg1LDIuMDc2ODUsMCwwLDEsMi4wNzYxNy0yLjM1MjU0YzEuMjUyOTMsMCwyLjAwOTc3Ljg1NiwyLjAwOTc3LDIuMjdWMTIuNjg4SDc1LjQ4Njg0di4wNDk4YTEuMTg5MTQsMS4xODkxNCwwLDAsMCwxLjE5OTIyLDEuMjksMS4wNzg3MiwxLjA3ODcyLDAsMCwwLDEuMDcwMzEtLjU0NTlabS0zLjEyNi0xLjQ1MTE3aDIuMjczNDRhMS4wODYyNSwxLjA4NjI1LDAsMCwwLTEuMTA3NDItMS4xNjY1QTEuMTUwNDUsMS4xNTA0NSwwLDAsMCw3NS40ODY4NCwxMi4wMzA3NloiIHN0eWxlPSJmaWxsOiAjZmZmIi8+CiAgICAgICAgPHBhdGggZD0iTTgyLjM4MDM5LDEwLjE5NDgyaDIuMDMwMjdjLjg4MDg2LDAsMS4zOTc0Ni40NDYyOSwxLjM5NzQ2LDEuMTQ1YS45Njc1NS45Njc1NSwwLDAsMS0uNzYwNzQuOTUxMTd2LjA3MDMxYTEuMDI3NzcsMS4wMjc3NywwLDAsMSwuOTYyODksMS4wMzgwOWMwLC43ODU2NC0uNTkwODIsMS4yOTgzNC0xLjU3OTEsMS4yOTgzNEg4Mi4zODAzOVptLjg4MDg2LjY4MjEzdjEuMTY2aC44ODA4NmMuNTM3MTEsMCwuNzkzOTUtLjIwNjU0Ljc5Mzk1LS41ODc0LDAtLjM1MTA3LS4yMjM2My0uNTc4NjEtLjY5NTMxLS41Nzg2MVptMCwxLjgxOTM0djEuMzE5MzRIODQuMzE1Yy41MjUzOSwwLC44MDY2NC0uMjMxOTMuODA2NjQtLjY1NzcxLDAtLjQ1MDY4LS4zMTgzNi0uNjYxNjItLjkxOC0uNjYxNjJaIiBzdHlsZT0iZmlsbDogI2ZmZiIvPgogICAgICA8L2c+CiAgICA8L2c+CiAgPC9nPgo8L3N2Zz4K" alt="Скачать в App Store" width="200" height="67">
       </a>
+      <p class="hero-note">Первый период до получки бесплатно</p>
     </div>
    </div>
   </div>
@@ -1498,10 +1541,10 @@ body[data-slide="4"] .carousel-transition{--carousel-edge:#a9dbe6;}
 <section class="block2 snowzone" id="snowzone0">
   <div class="hero-phone-block wrap">
     <div class="hero-phone-visual">
-      <img class="mockup mockup--hero" src="img/paycheck-device-v2.webp" width="1120" height="1404" alt="Экран «Получка» Кубыша: сколько можно потратить до следующей получки и прогресс периода" decoding="async" fetchpriority="high">
+      <img class="mockup mockup--hero" src="img/paycheck-1-6-4.webp" width="1120" height="1404" alt="Экран «Получка» Кубыша: сколько можно потратить до следующей получки и прогресс периода" decoding="async" fetchpriority="high">
     </div>
           
-    <p class="hero-side-text" id="fillText">Меньше переживаний из-за денег. После каждой получки Кубыш сам строит план и каждый день показывает, сколько можно потратить сегодня, на сколько дней хватит денег и успеваете ли вы к целям</p>
+    <p class="hero-side-text" id="fillText">Кубыш — приложение для iPhone, которое строит личный бюджет от получки до получки и каждый день показывает, сколько можно спокойно потратить и когда вы накопите на цели</p>
   </div>
 </section>
 
@@ -1545,6 +1588,13 @@ body[data-slide="4"] .carousel-transition{--carousel-edge:#a9dbe6;}
 <div class="snow" style="left:88.5%; top:79.0%; width:6.35%; aspect-ratio:1; opacity:0.8"></div>
 </div></div>
 
+<section class="kb-sec kb-light" id="problem">
+  <div class="wrap">
+    <h2>Зарабатываю больше, а переживать не перестал</h2>
+    <p class="kb-lead">Тревога из-за денег появляется не от нехватки, а от неизвестности: сколько можно потратить сегодня, хватит ли до зарплаты, когда получится позволить себе то, что хочется. Банк и трекеры показывают, куда деньги ушли. Кубыш отвечает, что будет дальше.</p>
+  </div>
+</section>
+
 <section class="benefits">
   <div class="wrap">
     <h2>Зачем мне это?</h2>
@@ -1563,7 +1613,7 @@ body[data-slide="4"] .carousel-transition{--carousel-edge:#a9dbe6;}
       <div class="benefit-top"><span class="benefit-num">02</span></div>
       <img class="benefit-icon" src="data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjMxOSIgaGVpZ2h0PSIyOTciIHZpZXdCb3g9IjAgMCAzMTkgMjk3IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBpZD0iVmVjdG9yIiBkPSJNMjgxLjkwNyAxNzQuNDg4QzI4MS45MDcgMTcxLjUzNCAyODAuNzM1IDE2OC43MDEgMjc4LjY0OCAxNjYuNjEyQzI3Ni41NjEgMTY0LjUyMyAyNzMuNzMgMTYzLjM1IDI3MC43NzkgMTYzLjM1SDIyNi4yNjdDMjIzLjMxNiAxNjMuMzUgMjIwLjQ4NiAxNjQuNTIzIDIxOC4zOTkgMTY2LjYxMkMyMTYuMzEyIDE2OC43MDEgMjE1LjE0IDE3MS41MzQgMjE1LjE0IDE3NC40ODhWMjc0LjcyNUgxOTIuODg0VjMzLjQxMjVDMTkyLjg4NCAyMi42MDE3IDE5Mi44NTQgMTUuNTkyNSAxOTIuMTcyIDEwLjQ1NDRDMTkxLjUxOSA1LjYyODE1IDE5MC40NjUgNC4xMTM0NSAxODkuNjIgMy4yNjdDMTg4Ljc3NCAyLjQyMDU1IDE4Ny4yNiAxLjM2NjIgMTgyLjQzOCAwLjcxMjgwMUMxNzcuMjkgMC4wMjk3MDE0IDE3MC4zMDEgMCAxNTkuNSAwQzE0OC42OTkgMCAxNDEuNjk1IDAuMDI5NzAxNCAxMzYuNTYyIDAuNzEyODAxQzEzMS43NCAxLjM2NjIgMTMwLjIyNiAyLjQyMDU1IDEyOS4zOCAzLjI2N0MxMjguNTM1IDQuMTEzNDUgMTI3LjQ4MSA1LjYyODE1IDEyNi44MjggMTAuNDU0NEMxMjYuMTQ2IDE1LjYwNzQgMTI2LjExNiAyMi42MDE3IDEyNi4xMTYgMzMuNDEyNVYyNzQuNzI1SDEwMy44NlYxMDAuMjM4QzEwMy44NiA5Ny4yODM3IDEwMi42ODggOTQuNDUwOCAxMDAuNjAxIDkyLjM2MjFDOTguNTE0MyA5MC4yNzM0IDk1LjY4MzkgODkuMSA5Mi43MzI2IDg5LjFINDguMjIwOUM0NS4yNjk2IDg5LjEgNDIuNDM5MiA5MC4yNzM0IDQwLjM1MjMgOTIuMzYyMUMzOC4yNjU0IDk0LjQ1MDggMzcuMDkzIDk3LjI4MzcgMzcuMDkzIDEwMC4yMzhWMjc0LjcyNUgxMS4xMjc5QzguMTc2NiAyNzQuNzI1IDUuMzQ2MTggMjc1Ljg5OCAzLjI1OTI5IDI3Ny45ODdDMS4xNzI0IDI4MC4wNzYgMCAyODIuOTA5IDAgMjg1Ljg2M0MwIDI4OC44MTYgMS4xNzI0IDI5MS42NDkgMy4yNTkyOSAyOTMuNzM4QzUuMzQ2MTggMjk1LjgyNyA4LjE3NjYgMjk3IDExLjEyNzkgMjk3SDMwNy44NzJDMzEwLjgyMyAyOTcgMzEzLjY1NCAyOTUuODI3IDMxNS43NDEgMjkzLjczOEMzMTcuODI4IDI5MS42NDkgMzE5IDI4OC44MTYgMzE5IDI4NS44NjNDMzE5IDI4Mi45MDkgMzE3LjgyOCAyODAuMDc2IDMxNS43NDEgMjc3Ljk4N0MzMTMuNjU0IDI3NS44OTggMzEwLjgyMyAyNzQuNzI1IDMwNy44NzIgMjc0LjcyNUgyODEuOTA3VjE3NC40ODhaIiBmaWxsPSIjRkQ4NDk2Ii8+Cjwvc3ZnPgo=" alt="">
       <div class="benefit-text">
-        <h3>Откладываете на цель, но дата всё время отдаляется</h3>
+        <h3>Откладываете на цель, но дата все время отдаляется</h3>
         
         <p>Для каждой цели Кубыш считает сумму в месяц и дату, когда накопите. Если взноса не хватает, вы узнаете об этом заранее, а не в день покупки</p>
       </div>
@@ -1575,7 +1625,7 @@ body[data-slide="4"] .carousel-transition{--carousel-edge:#a9dbe6;}
       <div class="benefit-text">
         <h3>Тревожно перед покупкой: а хватит ли на остальное?</h3>
         
-        <p>Введите сумму, и Кубыш до покупки покажет, хватит ли денег и откуда их взять. Утром и вечером приходит короткий план на день, без таблиц и пересчётов в голове</p>
+        <p>Введите сумму, и Кубыш до покупки покажет, хватит ли денег и откуда их взять. Утром и вечером приходит короткий план на день, без таблиц и пересчетов в голове</p>
       </div>
 <img class="benefit-icon-closed" src="data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjYzLjU4MDEiIGhlaWdodD0iMjM0IiB2aWV3Qm94PSIwIDAgNjMuNTgwMSAyMzQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGlkPSJTdWJ0cmFjdCIgZD0iTTUuNDQ1MzEgMTE3QzM3LjU1MiAxMTcgNjMuNTgwMSAxNDMuMTkxIDYzLjU4MDEgMTc1LjVDNjMuNTgwMSAyMDcuODA5IDM3LjU1MiAyMzQgNS40NDUzMSAyMzRDMy42MDkwMyAyMzQgMS43OTI3OCAyMzMuOTEzIDAgMjMzLjc0NVYxMTcuMjU0QzEuNzkyNzUgMTE3LjA4NiAzLjYwOTA2IDExNyA1LjQ0NTMxIDExN1pNNS40NDUzMSAwQzM3LjU1MiAwIDYzLjU4MDEgMjYuMTkxMyA2My41ODAxIDU4LjVDNjMuNTgwMSA5MC44MDg3IDM3LjU1MiAxMTcgNS40NDUzMSAxMTdDMy42MDkwMyAxMTcgMS43OTI3OCAxMTYuOTEzIDAgMTE2Ljc0NVYwLjI1MzkwNkMxLjc5Mjc1IDAuMDg2MzIwNSAzLjYwOTA2IDIuOTEyMjZlLTA3IDUuNDQ1MzEgMFoiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo=" alt="">
     </div>
@@ -1595,13 +1645,25 @@ body[data-slide="4"] .carousel-transition{--carousel-edge:#a9dbe6;}
       <div class="benefit-text">
         <h3>Не держите все транзакции и счета в голове.</h3>
         
-        <p>Даже если деньги лежат на одном счёте под высокий процент, Кубыш распределяет, какая часть уже относится к подушке, отпуску, машине или другим целям. Не нужно ничего запоминать или пересчитывать вручную.</p>
+        <p>Даже если деньги лежат на одном счете под высокий процент, Кубыш распределяет, какая часть уже относится к подушке, отпуску, машине или другим целям. Не нужно ничего запоминать или пересчитывать вручную.</p>
       </div>
       <img class="benefit-icon-closed" src="data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjExNC4yMjIiIGhlaWdodD0iMjI5Ljk5OSIgdmlld0JveD0iMCAwIDExNC4yMjIgMjI5Ljk5OSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggaWQ9IlN1YnRyYWN0IiBkPSJNOC41MDY4NCA0Ljc5MTk3ZS0wNUMyMS4wOTY0IDAuMDI1ODM0NCAzMS4yODE0IDEwLjI1MjQgMzEuMjU1OSAyMi44NDE4TDMxLjE0MzYgNzcuMTEyNEw4MS40MTExIDQ5LjYzNThDOTIuMTU1OSA0My43NjI3IDEwNS42MjggNDcuNzExNSAxMTEuNTAxIDU4LjQ1NjFDMTE3LjM3NCA2OS4yMDA4IDExMy40MjUgODIuNjcyNCAxMDIuNjgxIDg4LjU0NTlMNTQuNjY0MSAxMTQuNzkyTDk4LjY5MzQgMTQxLjM4NUMxMDkuOTUzIDE0OC4xODYgMTEzLjU2OCAxNjIuODI3IDEwNi43NjggMTc0LjA4N0M5OS45NjY3IDE4NS4zNDcgODUuMzI1MyAxODguOTYyIDc0LjA2NTQgMTgyLjE2MUwzMC45ODI0IDE1Ni4xNEwzMC44Nzg5IDIwNy4yNTFDMzAuODUyOCAyMTkuODQgMjAuNjI1NSAyMzAuMDI1IDguMDM2MTMgMjI5Ljk5OUM2LjU4MDM4IDIyOS45OTYgNS4xNTY2NyAyMjkuODU2IDMuNzc3MzQgMjI5LjU5MlYxLjYyMjEySDBDMi42Mjk4NyAwLjU3MDMyMiA1LjUwMDg4IC0wLjAwNjA1MTU5IDguNTA2ODQgNC43OTE5N2UtMDVaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K" alt="">
     </div>
     </div>
   </div>
 </section>
+
+<section class="kb-sec kb-light" id="how">
+  <div class="wrap">
+    <h2>План за 2 минуты, дальше Кубыш ведет сам</h2>
+    <ol class="kb-grid kb-steps">
+      <li class="kb-card"><span class="kb-num">1</span><h3>Укажите получку и обязательные платежи</h3><p>Аванс и зарплата в свои даты, аренда, кредиты, подписки.</p></li>
+      <li class="kb-card"><span class="kb-num">2</span><h3>Добавьте цели</h3><p>Подушка, отпуск, телефон, машина. Кубыш посчитает сумму в месяц и дату для каждой.</p></li>
+      <li class="kb-card"><span class="kb-num">3</span><h3>Каждый день смотрите бюджет</h3><p>Траты вносите скриншотом из банка, утром и вечером приходит короткий план.</p></li>
+    </ol>
+  </div>
+</section>
+
 
 <div class="grad-pink1 snowzone" id="snowzone2" style="background-image:url(data:image/webp;base64,UklGRqRNAABXRUJQVlA4IJhNAABQ1gOdASoABeQHPjEYikQiIYgCTBABglpbv//7de9cdaAvEcTrGLo3//+T/4vVftb9/87rfnlHuMdDnHt+km4I///s8UwvLB/9+trRQXfmd3/9p3jv87///9/b51S//9Yv//vA///R/8/++qfwD//+kT4B//+M/4B//5fcAoCfE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8T4nxPifE+J8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)"><div class="snow-layer">
 <div class="snow" style="left:69.59%; top:27.03%; width:6.35%; aspect-ratio:1; opacity:0.6"></div>
@@ -1670,7 +1732,7 @@ body[data-slide="4"] .carousel-transition{--carousel-edge:#a9dbe6;}
       <div class="slide-inner">
         <div class="slide-text">
           <h2>План с получки<br>за 2 минуты</h2>
-          <p><span>После получки Кубыш раскладывает деньги: обязательные платежи, жизнь до следующей получки и взносы в цели</span><span>Сразу видно, сколько уйдёт на жизнь и сколько в накопления</span></p>
+          <p><span>После получки Кубыш раскладывает деньги: обязательные платежи, жизнь до следующей получки и взносы в цели</span><span>Сразу видно, сколько уйдет на жизнь и сколько в накопления</span></p>
         </div>
         <div class="slide-fade"></div>
         <div class="slide-phone">
@@ -1682,7 +1744,7 @@ body[data-slide="4"] .carousel-transition{--carousel-edge:#a9dbe6;}
       <div class="slide-inner">
         <div class="slide-text">
           <h2>Траты одним<br>скриншотом</h2>
-          <p><span>Скриншот из любого банка, и Кубыш сам разложит траты по категориям</span><span>Бюджет на завтра пересчитается сразу. Без доступа к счёту и паролей</span></p>
+          <p><span>Скриншот из любого банка, и Кубыш сам разложит траты по категориям</span><span>Бюджет на завтра пересчитается сразу. Без доступа к счету и паролей</span></p>
         </div>
         <div class="slide-fade"></div>
         <div class="slide-phone">
@@ -1694,7 +1756,7 @@ body[data-slide="4"] .carousel-transition{--carousel-edge:#a9dbe6;}
       <div class="slide-inner">
         <div class="slide-text">
           <h2>Можно ли<br>это купить?</h2>
-          <p><span>Перед покупкой видно, хватит ли денег и откуда их взять</span><span>Без пересчётов в голове и тревоги в конце месяца</span></p>
+          <p><span>Перед покупкой видно, хватит ли денег и откуда их взять</span><span>Без пересчетов в голове и тревоги в конце месяца</span></p>
         </div>
         <div class="slide-fade"></div>
         <div class="slide-phone">
@@ -1706,7 +1768,7 @@ body[data-slide="4"] .carousel-transition{--carousel-edge:#a9dbe6;}
       <div class="slide-inner">
         <div class="slide-text">
           <h2>Когда накопишь<br>на цель</h2>
-          <p><span>Для каждой цели Кубыш считает сумму в месяц и дату, когда накопишь</span><span>Все накопления на одном счёте, внутри они распределены между подушкой и целями</span></p>
+          <p><span>Для каждой цели Кубыш считает сумму в месяц и дату, когда накопишь</span><span>Все накопления на одном счете, внутри они распределены между подушкой и целями</span></p>
         </div>
         <div class="slide-fade"></div>
         <div class="slide-phone">
@@ -1733,81 +1795,119 @@ body[data-slide="4"] .carousel-transition{--carousel-edge:#a9dbe6;}
 
 <div class="carousel-transition" aria-hidden="true"></div>
 
+<section class="kb-sec kb-dark" id="stories">
+  <div class="wrap">
+    <h2>В одной из историй вы себя узнаете</h2>
+    <div class="kb-grid">
+      <article class="kb-card"><span class="kb-tag">Дожить до зарплаты</span><h3>Макс</h3><p>До получки денег не хватает, есть кредит и подписки. Кубыш вычитает их заранее и показывает, сколько можно тратить в день, чтобы не занимать до зарплаты.</p></article>
+      <article class="kb-card"><span class="kb-tag">Накопить</span><h3>Ксюша</h3><p>Зарплаты хватает, а накопить не выходит, крупное кажется недоступным. Кубыш с каждой получки откладывает сумму на цели и показывает дату, когда отпуск станет реальным.</p></article>
+      <article class="kb-card"><span class="kb-tag">Приумножить</span><h3>Антон</h3><p>До зарплаты хватает, он копит на квартиру и подушку и не хочет, чтобы деньги просто лежали. Кубыш держит цели со сроками и подбирает выгодные вклады и накопительные счета под эти сроки.</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="kb-sec kb-dark" id="safety">
+  <div class="wrap">
+    <h2>Нам не нужен доступ к вашим деньгам</h2>
+    <ul class="kb-safe">
+      <li>Подключать банк не нужно, доступа к счетам у Кубыша нет</li>
+      <li>Вся математика считается на телефоне</li>
+      <li>Языковая модель не считает деньги, она только объясняет готовый ответ</li>
+      <li>Приложение не двигает деньги и ничего не списывает без вашего согласия</li>
+    </ul>
+  </div>
+</section>
+
+
 <section class="faq-section" id="faq">
   <div class="wrap">
     <h2>Заранее отвечаем на ваши вопросы</h2>
     <div class="faq-list"><div class="faq-item" data-idx="0">
       <button class="faq-q">
-        <span>Чем Кубыш отличается от Дзен-мани и CoinKeeper?</span>
+        <span>Что такое Кубыш?</span>
         <span class="faq-icon"><span></span><span></span></span>
       </button>
-      <div class="faq-a"><p>Zen-Money и CoinKeeper — это учёт того, что уже произошло: вы фиксируете траты и смотрите отчёты постфактум. Кубыш вместо этого держит живой план до следующей получки и каждый день честно говорит, сколько ещё можно потратить, чтобы всё запланированное — от аренды до отпуска — случилось вовремя. Подробнее о разнице подходов — в разборе <a href="alternativa-dzen-mani/">Кубыш и Дзен-мани</a>.</p></div>
+      <div class="faq-a"><p>Кубыш — приложение для iPhone, которое строит личный бюджет от получки до получки. Каждый день оно показывает, сколько можно спокойно потратить, на сколько дней хватит денег и когда вы накопите на каждую цель. Траты вносятся скриншотом из банка, подключать банк не нужно. Под сроки целей Кубыш подбирает выгодные вклады и накопительные счета.</p></div>
     </div>
 <div class="faq-item" data-idx="1">
       <button class="faq-q">
-        <span>Кому подойдёт Кубыш?</span>
+        <span>Зачем нужен Кубыш?</span>
         <span class="faq-icon"><span></span><span></span></span>
       </button>
-      <div class="faq-a"><p>Тем, кто получает зарплату, с авансом и премиями или без них, и пользуется iPhone. Кубыш строит план от одной получки до следующей и распределяет накопления между целями: видно, сколько уже готово на отпуск, машину или подушку, а сколько ещё осталось. Как посчитать размер резерва — в гайде <a href="finansovaya-podushka/">про финансовую подушку</a>.</p></div>
+      <div class="faq-a"><p>Чтобы меньше переживать из-за денег: знать, сколько можно потратить сегодня, хватит ли до получки и когда накопите на цели. Без таблиц, ручной бухгалтерии и подключения банка.</p></div>
     </div>
 <div class="faq-item" data-idx="2">
+      <button class="faq-q">
+        <span>Чем Кубыш отличается от Дзен-мани и CoinKeeper?</span>
+        <span class="faq-icon"><span></span><span></span></span>
+      </button>
+      <div class="faq-a"><p>Zen-Money и CoinKeeper — это учет того, что уже произошло: вы фиксируете траты и смотрите отчеты постфактум. Кубыш вместо этого держит живой план до следующей получки и каждый день честно говорит, сколько еще можно потратить, чтобы все запланированное — от аренды до отпуска — случилось вовремя. Подробнее о разнице подходов — в разборе <a href="alternativa-dzen-mani/">Кубыш и Дзен-мани</a>.</p></div>
+    </div>
+<div class="faq-item" data-idx="3">
+      <button class="faq-q">
+        <span>Кому подойдет Кубыш?</span>
+        <span class="faq-icon"><span></span><span></span></span>
+      </button>
+      <div class="faq-a"><p>Тем, кто получает зарплату, с авансом и премиями или без них, и пользуется iPhone. Кубыш строит план от одной получки до следующей и распределяет накопления между целями: видно, сколько уже готово на отпуск, машину или подушку, а сколько еще осталось. Как посчитать размер резерва — в гайде <a href="finansovaya-podushka/">про финансовую подушку</a>.</p></div>
+    </div>
+<div class="faq-item" data-idx="4">
       <button class="faq-q">
         <span>Сколько стоит Кубыш?</span>
         <span class="faq-icon"><span></span><span></span></span>
       </button>
-      <div class="faq-a"><p>Первый период до получки бесплатный, за это время видно, подходит ли вам такой план. Дальше подписка: цена указана на странице приложения в App Store, и оформлять её или нет, решаете вы.</p></div>
+      <div class="faq-a"><p>Первый период до получки бесплатный, за это время видно, подходит ли вам такой план. Дальше подписка: цена указана на странице приложения в App Store, и оформлять ее или нет, решаете вы.</p></div>
     </div>
-<div class="faq-item" data-idx="3">
+<div class="faq-item" data-idx="5">
       <button class="faq-q">
-        <span>Подойдёт ли при нерегулярном доходе?</span>
+        <span>Подойдет ли при нерегулярном доходе?</span>
         <span class="faq-icon"><span></span><span></span></span>
       </button>
       <div class="faq-a"><p>Честно: хуже, чем при зарплате. План строится от даты и суммы следующей получки. Если деньги приходят в разные дни и разными суммами, как у фрилансеров, прогноз будет неточным. Аванс, премии и разовые поступления при зарплате Кубыш учитывает.</p></div>
     </div>
-<div class="faq-item" data-idx="4">
+<div class="faq-item" data-idx="6">
       <button class="faq-q">
         <span>Нужно ли подключать банк?</span>
         <span class="faq-icon"><span></span><span></span></span>
       </button>
       <div class="faq-a"><p>Нет. Достаточно скриншота из банка, фото чека с кассы самообслуживания или простого ручного ввода — Кубыш сам распознает сумму и дату. Банковские данные и пароли Кубышу не нужны вообще.</p></div>
     </div>
-<div class="faq-item" data-idx="5">
+<div class="faq-item" data-idx="7">
       <button class="faq-q">
         <span>Как Кубыш рассчитывает бюджет?</span>
         <span class="faq-icon"><span></span><span></span></span>
       </button>
-      <div class="faq-a"><p>От дохода в периоде отнимаются обязательные платежи и запланированные категории расходов, откладывается небольшой кошелёк на спонтанные покупки — а из того, что остаётся, считается честный бюджет на каждый день до следующей получки. Формула и пример расчёта — на странице <a href="skolko-mozhno-tratit/">сколько можно тратить в день</a>.</p></div>
+      <div class="faq-a"><p>От дохода в периоде отнимаются обязательные платежи и запланированные категории расходов, откладывается небольшой кошелек на спонтанные покупки — а из того, что остается, считается честный бюджет на каждый день до следующей получки. Формула и пример расчета — на странице <a href="skolko-mozhno-tratit/">сколько можно тратить в день</a>.</p></div>
     </div>
-<div class="faq-item" data-idx="6">
+<div class="faq-item" data-idx="8">
       <button class="faq-q">
         <span>Как работает финансовый план?</span>
         <span class="faq-icon"><span></span><span></span></span>
       </button>
-      <div class="faq-a"><p>После онбординга Кубыш строит план на весь период между получками: обязательные платежи, категории расходов, вклад в цели и подушку. После каждой внесённой траты пересчитываются бюджет на день, запас в днях до получки и темп периода, поэтому прогноз отражает реальность, а не то, что вы задумали в начале месяца.</p></div>
+      <div class="faq-a"><p>После онбординга Кубыш строит план на весь период между получками: обязательные платежи, категории расходов, вклад в цели и подушку. После каждой внесенной траты пересчитываются бюджет на день, запас в днях до получки и темп периода, поэтому прогноз отражает реальность, а не то, что вы задумали в начале месяца.</p></div>
     </div>
-<div class="faq-item" data-idx="7">
+<div class="faq-item" data-idx="9">
       <button class="faq-q">
         <span>Когда появится версия для Android?</span>
         <span class="faq-icon"><span></span><span></span></span>
       </button>
-      <div class="faq-a"><p>Пока Кубыш есть только для iPhone. Если ждёте Android, <a href="https://t.me/kubyshka_user" data-goal="android_wait" target="_blank" rel="noopener">напишите нам в телеграм-канале</a>: так мы поймём, сколько вас.</p>
+      <div class="faq-a"><p>Пока Кубыш есть только для iPhone. Если ждете Android, <a href="https://t.me/kubyshka_user" data-goal="android_wait" target="_blank" rel="noopener">напишите нам в телеграм-канале</a>: так мы поймем, сколько вас.</p>
 </div>
     </div>
-<div class="faq-item" data-idx="8">
+<div class="faq-item" data-idx="10">
       <button class="faq-q">
         <span>Нужно ли вносить каждую трату вручную?</span>
         <span class="faq-icon"><span></span><span></span></span>
       </button>
-      <div class="faq-a"><p>Нет. Можно загрузить скриншот из банковского приложения или сфотографировать чек — Кубыш сам распознает сумму и дату. Ручной ввод остаётся на случай, когда так быстрее.</p></div>
+      <div class="faq-a"><p>Нет. Можно загрузить скриншот из банковского приложения или сфотографировать чек — Кубыш сам распознает сумму и дату. Ручной ввод остается на случай, когда так быстрее.</p></div>
     </div>
-<div class="faq-item" data-idx="9">
+<div class="faq-item" data-idx="11">
       <button class="faq-q">
         <span>Что будет, если я потрачу больше, чем запланировал?</span>
         <span class="faq-icon"><span></span><span></span></span>
       </button>
       <div class="faq-a"><p>Ничего не сломается. Кубыш пересчитает остаток периода и заранее покажет, какие цели сдвинутся по срокам и где появился риск, — чтобы решение принимали вы, а не календарь.</p></div>
     </div>
-<div class="faq-item" data-idx="10">
+<div class="faq-item" data-idx="12">
       <button class="faq-q">
         <span>Что происходит с моими данными?</span>
         <span class="faq-icon"><span></span><span></span></span>
@@ -1844,7 +1944,7 @@ body[data-slide="4"] .carousel-transition{--carousel-edge:#a9dbe6;}
     <a href="privacy/">Политика конфиденциальности</a>
     <a href="terms/">Пользовательское соглашение</a>
     <span>© 2026 Кубыш. Все права защищены</span>
-    <span class="footer-build">сборка 2026-10-05-02</span>
+    <span class="footer-build">сборка 2026-10-05-03</span>
   </div>
 </footer>
 
