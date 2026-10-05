@@ -277,7 +277,7 @@ body[data-slide="1"] .seam-blur--tight{
   top:0; height:120px; opacity:.95;
   backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
 }
-body[data-slide="2"] .seam-blur--tight{
+body[data-slide="3"] .seam-blur--tight{
   top:0; height:240px; opacity:1;
   backdrop-filter:blur(38px); -webkit-backdrop-filter:blur(38px);
 }
@@ -414,11 +414,11 @@ body[data-slide="2"] .seam-blur--tight{
    section bottom of 813) — a taller band reached up into the last lines of the paragraph.
    The step-up between cards is carried by blur strength instead of band height. The arrows
    are z-index 6, above every slide, so they stay crisp either way. */
-body[data-slide="1"] .slide-fade{
+body[data-slide="1"] .slide-fade,body[data-slide="2"] .slide-fade{
   height:120px; opacity:.55;
   backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
 }
-body[data-slide="2"] .slide-fade{
+body[data-slide="3"] .slide-fade{
   height:185px; opacity:1;
   backdrop-filter:blur(42px); -webkit-backdrop-filter:blur(42px);
 }
@@ -465,8 +465,8 @@ body[data-slide="2"] .slide-fade{
 /* Card 3 fades into the next block, so its bottom third is pale by design and a white or
    lime arrow disappears into it. Same shape and size, ink taken from that card's own
    gradient stop (#123a4d) so it still belongs to the palette. */
-body[data-slide="2"] .carousel-arrow.prev{color:rgba(18,58,77,.72);}
-body[data-slide="2"] .carousel-arrow.next{color:#123a4d;}
+body[data-slide="3"] .carousel-arrow.prev{color:rgba(18,58,77,.72);}
+body[data-slide="3"] .carousel-arrow.next{color:#123a4d;}
 /* ---------- FAQ ---------- */
 .faq-section{background:#000; padding:78px 0;}
 .faq-section h2{
@@ -1041,10 +1041,10 @@ footer{background:#000; padding:26px 40px 24px;}
 .carousel-arrow.next{color:var(--lime);}
 .carousel-arrow:hover{transform:translateY(-2px) scale(1.04);}
 .carousel-arrow svg{width:clamp(82px,7vw,120px); height:auto;}
-body[data-slide="2"] .carousel-arrow.prev{
+body[data-slide="3"] .carousel-arrow.prev{
   color:rgba(255,255,255,.82);
 }
-body[data-slide="2"] .carousel-arrow.next{
+body[data-slide="3"] .carousel-arrow.next{
   color:var(--lime);
 }
 
@@ -1090,7 +1090,8 @@ body[data-slide="2"] .carousel-arrow.next{
   transition:background .7s ease;
 }
 body[data-slide="1"] .carousel-transition{--carousel-edge:#7c3fe0;}
-body[data-slide="2"] .carousel-transition{--carousel-edge:#a9dbe6;}
+body[data-slide="2"] .carousel-transition{--carousel-edge:#1e8258;}
+body[data-slide="3"] .carousel-transition{--carousel-edge:#a9dbe6;}
 .grad-pink1::before,.carousel-transition::before{
   display:none;
 }
@@ -1114,13 +1115,15 @@ body[data-slide="2"] .carousel-transition{--carousel-edge:#a9dbe6;}
 }
 .slide[data-idx="0"] .slide-phone .mockup{transform:rotateX(5deg) rotateY(-7deg) rotateZ(-7deg);}
 .slide[data-idx="1"] .slide-phone .mockup{transform:rotateX(6deg) rotateY(7deg) rotateZ(6deg);}
-.slide[data-idx="2"] .slide-phone .mockup{transform:rotateX(4deg) rotateY(-5deg) rotateZ(-4deg);}
+.slide[data-idx="2"] .slide-phone .mockup{transform:rotateX(5deg) rotateY(6deg) rotateZ(5deg);}
+.slide[data-idx="3"] .slide-phone .mockup{transform:rotateX(4deg) rotateY(-5deg) rotateZ(-4deg);}
 @media(max-width:900px){
   .slide-phone{position:relative; width:min(54vw,230px); margin:24px auto 0; transform:none; perspective:900px;}
   .slide-phone::after{left:5%; right:-5%; bottom:5%; height:12%; filter:blur(18px);}
   .slide[data-idx="0"] .slide-phone .mockup{transform:rotateX(3deg) rotateY(-4deg) rotateZ(-4deg);}
   .slide[data-idx="1"] .slide-phone .mockup{transform:rotateX(3deg) rotateY(4deg) rotateZ(4deg);}
-  .slide[data-idx="2"] .slide-phone .mockup{transform:rotateX(2deg) rotateY(-3deg) rotateZ(-3deg);}
+  .slide[data-idx="2"] .slide-phone .mockup{transform:rotateX(2deg) rotateY(3deg) rotateZ(3deg);}
+  .slide[data-idx="3"] .slide-phone .mockup{transform:rotateX(2deg) rotateY(-3deg) rotateZ(-3deg);}
 }
 
 /* Финальная конверсионная точка: центрированная композиция и заметная кнопка. */
@@ -1494,7 +1497,7 @@ body[data-slide="2"] .carousel-transition{--carousel-edge:#a9dbe6;}
       <img class="mockup mockup--hero" src="img/paycheck-device-v2.webp" width="1120" height="1404" alt="Экран «Получка» Кубыша: сколько можно потратить до следующей получки и прогресс периода" decoding="async" fetchpriority="high">
     </div>
           
-    <p class="hero-side-text" id="fillText">После каждой получки Кубыш сам строит план и каждый день показывает, сколько можно потратить сегодня, на сколько дней хватит денег и успеваете ли вы к целям</p>
+    <p class="hero-side-text" id="fillText">Меньше переживаний из-за денег. После каждой получки Кубыш сам строит план и каждый день показывает, сколько можно потратить сегодня, на сколько дней хватит денег и успеваете ли вы к целям</p>
   </div>
 </section>
 
@@ -1648,6 +1651,7 @@ body[data-slide="2"] .carousel-transition{--carousel-edge:#a9dbe6;}
       <button type="button" class="bullet active" data-idx="0" aria-label="Слайд 1" aria-current="true"></button>
       <button type="button" class="bullet" data-idx="1" aria-label="Слайд 2"></button>
       <button type="button" class="bullet" data-idx="2" aria-label="Слайд 3"></button>
+      <button type="button" class="bullet" data-idx="3" aria-label="Слайд 4"></button>
     </div>
     <div class="carousel-arrows">
       <button type="button" class="carousel-arrow prev" id="prevArrow" aria-label="Предыдущий слайд">
@@ -1660,39 +1664,48 @@ body[data-slide="2"] .carousel-transition{--carousel-edge:#a9dbe6;}
     <div class="slide active" data-idx="0" style="background:radial-gradient(closest-side at 68% 40%, rgba(130,81,244,.5), rgba(130,81,244,0) 72%), linear-gradient(180deg,#000 0%,#000 38%,#141ec4 76%,#2a2ef0 100%)">
       <div class="slide-inner">
         <div class="slide-text">
-          <h2>Все финансы<br>— в одной картине</h2>
-          <p><span>Доходы, обязательные платежи, расходы, накопления и цели собраны в одном месте</span><span>Сразу видно, как устроен личный бюджет и сколько можно спокойно потратить</span></p>
+          <h2>План с получки<br>за 2 минуты</h2>
+          <p><span>После получки Кубыш раскладывает деньги: обязательные платежи, жизнь до следующей получки и взносы в цели</span><span>Сразу видно, сколько уйдёт на жизнь и сколько в накопления</span></p>
         </div>
         <div class="slide-fade"></div>
         <div class="slide-phone">
-          <img class="mockup" src="img/overview-device-front-v4.webp" width="852" height="1847" alt="Финансовая картина в Кубыше: доходы, расходы, обязательства, подушка и цели" loading="lazy" decoding="async">
-          
+          <img class="mockup" src="img/plan-1-7.webp" width="852" height="1791" alt="План периода в Кубыше: сколько на жизнь до следующей получки и сколько в накопления" loading="lazy" decoding="async">
         </div>
       </div>
     </div>
-<div class="slide" data-idx="1" style="background:radial-gradient(closest-side at 68% 40%, rgba(130,81,244,.5), rgba(130,81,244,0) 72%), linear-gradient(180deg,#000 0%,#000 38%,#4a1fb0 76%,#7c3fe0 100%)">
+    <div class="slide" data-idx="1" style="background:radial-gradient(closest-side at 68% 40%, rgba(130,81,244,.5), rgba(130,81,244,0) 72%), linear-gradient(180deg,#000 0%,#000 38%,#4a1fb0 76%,#7c3fe0 100%)">
       <div class="slide-inner">
         <div class="slide-text">
-          <h2>План не рухнет из-за<br>одной ошибки</h2>
-          <p><span>Если после получки удалось отложить меньше или пришлось взять деньги из накоплений</span><span>Кубыш пересчитает прогноз и заранее покажет, что изменилось</span></p>
+          <h2>Траты одним<br>скриншотом</h2>
+          <p><span>Скриншот из любого банка, и Кубыш сам разложит траты по категориям</span><span>Бюджет на завтра пересчитается сразу. Без доступа к счёту и паролей</span></p>
         </div>
         <div class="slide-fade"></div>
         <div class="slide-phone">
-          <img class="mockup" src="img/insight-device-front-v4.webp" width="853" height="1844" alt="Инсайт Кубыша: сравнение доходов и расходов за текущий период" loading="lazy" decoding="async">
-          
+          <img class="mockup" src="img/screenshot-1-7.webp" width="852" height="1791" alt="Внесение трат скриншотом из банковского приложения в Кубыше" loading="lazy" decoding="async">
         </div>
       </div>
     </div>
-<div class="slide" data-idx="2" style="background:linear-gradient(180deg,#000 0%,#000 44%,#123a4d 84%,#a9dbe6 100%)">
+    <div class="slide" data-idx="2" style="background:radial-gradient(closest-side at 68% 40%, rgba(46,170,110,.42), rgba(46,170,110,0) 72%), linear-gradient(180deg,#000 0%,#000 38%,#0b5a3c 76%,#1e8258 100%)">
       <div class="slide-inner">
         <div class="slide-text">
-          <h2>Все накопления<br>на одном счёте<br>Каждая цель под контролем</h2>
-          <p><span>Кубыш распределяет общую сумму накоплений между подушкой и целями</span><span>Всегда видно, сколько уже накоплено и сколько ещё осталось</span></p>
+          <h2>Можно ли<br>это купить?</h2>
+          <p><span>Перед покупкой видно, хватит ли денег и откуда их взять</span><span>Без пересчётов в голове и тревоги в конце месяца</span></p>
         </div>
         <div class="slide-fade"></div>
         <div class="slide-phone">
-          <img class="mockup" src="img/goals-device-front-v4.webp" width="852" height="1846" alt="Экран цели Кубыша: подушка безопасности, накопленная сумма и план пополнения" loading="lazy" decoding="async">
-          
+          <img class="mockup" src="img/afford-1-7.webp" width="852" height="1791" alt="Проверка покупки в Кубыше: хватит ли денег и из каких средств" loading="lazy" decoding="async">
+        </div>
+      </div>
+    </div>
+    <div class="slide" data-idx="3" style="background:linear-gradient(180deg,#000 0%,#000 44%,#123a4d 84%,#a9dbe6 100%)">
+      <div class="slide-inner">
+        <div class="slide-text">
+          <h2>Когда накопишь<br>на цель</h2>
+          <p><span>Для каждой цели Кубыш считает сумму в месяц и дату, когда накопишь</span><span>Все накопления на одном счёте, внутри они распределены между подушкой и целями</span></p>
+        </div>
+        <div class="slide-fade"></div>
+        <div class="slide-phone">
+          <img class="mockup" src="img/goals-1-7.webp" width="852" height="1791" alt="Цели в Кубыше: сумма в месяц и дата, когда накопишь" loading="lazy" decoding="async">
         </div>
       </div>
     </div>
