@@ -30,7 +30,7 @@ def test_required_files_exist():
 def test_main_build_marker_and_metrica():
     text = (LANDING / "index.html").read_text(encoding="utf-8")
     assert 'meta name="build" content="' in text
-    assert "112718911" in text
+    assert "112705935" in text
     assert "44147844" not in text
 
 
@@ -204,7 +204,7 @@ def test_generated_seo_pages_track_appstore_clicks():
     assert "showConsent()" in js
     assert "goal('appstore_click',params)" in js
     assert "seo_appstore_click" in js
-    assert "112718911" in js
+    assert "112705935" in js
     assert "44147844" not in js
     assert js.count("goal('seo_appstore_click',params)") == 1
 

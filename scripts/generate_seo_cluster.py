@@ -62,7 +62,7 @@ ABOUT_CSS = r"""
 """.strip()
 
 JS = r"""(function(){
-  var METRIKA_ID=112718911;
+  var METRIKA_ID=112705935;
   var CONSENT_KEY='kubysh_cookie_consent_v2';
   var metrikaStarted=false;
 
