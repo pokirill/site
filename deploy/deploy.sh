@@ -24,6 +24,6 @@ check() {
   printf '%s %s%s\n' "$code" "$host" "$path"
   [ "$code" = 200 ] || fail=1
 }
-for p in / /sitemap.xml /robots.txt /privacy/ /terms/ /kontrol-finansov/; do check kubysh.com "$p"; done
+for p in / /sitemap.xml /robots.txt /privacy/ /terms/ /byudzhet-na-mesyats/ /tablica-dohodov-i-rashodov/; do check kubysh.com "$p"; done
 for p in / /account/ /offer/ /recurrent/ /privacy/ /pay/success/ /pay/fail/; do check pay.kubysh.com "$p"; done
 exit $fail
