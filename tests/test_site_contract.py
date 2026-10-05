@@ -178,7 +178,7 @@ def test_about_page_connects_creator_product_and_publications():
         '"founder": {"@id": "https://kubysh.com/o-proekte/#kirill-popov"}',
         'https://habr.com/ru/users/popov_kirill_a/',
         'https://vc.ru/id6066630',
-        'https://apps.apple.com/app/id6778792103',
+        'id6778792103?ppid=',
         '/img/kirill-popov.jpg',
     ):
         assert expected in text
