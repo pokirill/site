@@ -304,3 +304,14 @@ def test_budget_template_is_downloadable():
     assert (LANDING / "files" / "tablica-dohodov-i-rashodov-kubysh.xlsx").stat().st_size > 5000
     page = (LANDING / "tablica-dohodov-i-rashodov" / "index.html").read_text(encoding="utf-8")
     assert 'href="/files/tablica-dohodov-i-rashodov-kubysh.xlsx"' in page and "js-download" in page
+
+
+def test_main_rating_markup_matches_visible_rating():
+    # Рейтинг синхронизирует scripts/sync_app_rating.py из iTunes lookup, руками не вписывать
+    text = (LANDING / "index.html").read_text(encoding="utf-8")
+    rating = re.search(r'"ratingValue": "(\d\.\d)",\n    "ratingCount": "(\d+)"', text)
+    if "aggregateRating" not in text:
+        return
+    assert rating, "aggregateRating без ratingValue/ratingCount"
+    visible = re.findall(r"★ (\d,\d) в App Store", text)
+    assert visible and set(visible) == {rating.group(1).replace(".", ",")}
