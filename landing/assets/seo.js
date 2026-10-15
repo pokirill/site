@@ -72,7 +72,9 @@
   function rule(){var o=document.getElementById('rule-output');if(!o)return;var i=n('r-income');o.value='Нужды '+money(i*.5)+' · желания '+money(i*.3)+' · накопления '+money(i*.2);o.textContent=o.value}
   ['b-income','b-mandatory','b-goals','b-days'].forEach(function(id){var e=document.getElementById(id);if(e)e.addEventListener('input',budget)});
   ['r-income'].forEach(function(id){var e=document.getElementById(id);if(e)e.addEventListener('input',rule)});
-  budget();rule();
+  function deposit(){var o=document.getElementById('deposit-output');if(!o)return;var s=n('d-sum'),r=n('d-rate'),m=Math.max(1,n('d-months'));var inc=s*r/100*m/12;o.value='Доход примерно '+money(inc)+' за '+m+' мес., это '+money(inc/m)+' в месяц';o.textContent=o.value}
+  ['d-sum','d-rate','d-months'].forEach(function(id){var e=document.getElementById(id);if(e)e.addEventListener('input',deposit)});
+  budget();rule();deposit();
   ['target','start','months'].forEach(function(id){var e=document.getElementById(id);if(e)e.addEventListener('input',savings)});
   ['essential','cushion-months'].forEach(function(id){var e=document.getElementById(id);if(e)e.addEventListener('input',cushion)});
 })();
