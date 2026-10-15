@@ -3,5 +3,6 @@ Allow: /
 
 User-agent: *
 Allow: /
+Clean-param: utm_source&utm_medium&utm_campaign&utm_content&utm_term&yclid&ysclid&ct&ppid
 
 Sitemap: https://kubysh.com/sitemap.xml
