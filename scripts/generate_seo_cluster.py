@@ -678,7 +678,7 @@ def page(slug: str, cfg: dict) -> str:
     faq_html = "".join(f'<details><summary>{html.escape(q)}</summary><p>{html.escape(a)}</p></details>' for q,a in cfg["faq"])
     faq_schema = [{"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":a}} for q,a in cfg["faq"]]
     schema = {"@context":"https://schema.org","@graph":[
-        {"@type":"Organization","@id":"https://kubysh.com/#org","name":SITE_NAME,"url":SITE_URL,"logo":{"@type":"ImageObject","url":"https://kubysh.com/icon-192.png","width":192,"height":192}},
+        {"@type":"Organization","@id":"https://kubysh.com/#org","name":SITE_NAME,"url":SITE_URL,"sameAs":["https://apps.apple.com/app/id6778792103"],"logo":{"@type":"ImageObject","url":"https://kubysh.com/icon-192.png","width":192,"height":192}},
         {"@type":"WebSite","@id":"https://kubysh.com/#website","url":SITE_URL,"name":"Кубыш — финансовый навигатор","inLanguage":"ru-RU","publisher":{"@id":"https://kubysh.com/#org"}},
         {"@type":"BreadcrumbList","@id":f"{canonical}#breadcrumbs","itemListElement":[{"@type":"ListItem","position":1,"name":"Кубыш","item":SITE_URL},{"@type":"ListItem","position":2,"name":"Личные финансы","item":"https://kubysh.com/lichnye-finansy/"},{"@type":"ListItem","position":3,"name":cfg["h1"],"item":canonical}]},
         {"@type":"Article","@id":f"{canonical}#article","headline":cfg["h1"],"description":cfg["desc"],"image":SOCIAL_IMAGE,"inLanguage":"ru-RU","datePublished":cfg.get("published",PUBLISHED_DATE),"dateModified":cfg.get("modified",MODIFIED_DATE),"author":{"@type":"Person","name":"Кирилл Попов","url":"https://kubysh.com/o-proekte/","image":"https://kubysh.com/img/kirill-popov.jpg","jobTitle":"Создатель приложения Кубыш"},"publisher":{"@id":"https://kubysh.com/#org"},"isPartOf":{"@id":"https://kubysh.com/#website"},"mainEntityOfPage":canonical,"citation":[url for _,url in SOURCES+cfg.get("sources",[])]},
@@ -693,7 +693,7 @@ def hub() -> str:
     title = "Материалы Кубыша: личные финансы, история и методология"
     desc = "История Кубыша и Кирилла Попова, методология расчётов, гайды и калькуляторы по бюджету, расходам, накоплениям, подушке и финансовым целям."
     schema={"@context":"https://schema.org","@graph":[
-        {"@type":"Organization","@id":"https://kubysh.com/#org","name":SITE_NAME,"url":SITE_URL},
+        {"@type":"Organization","@id":"https://kubysh.com/#org","name":SITE_NAME,"url":SITE_URL,"sameAs":["https://apps.apple.com/app/id6778792103"]},
         {"@type":"WebSite","@id":"https://kubysh.com/#website","url":SITE_URL,"name":"Кубыш — финансовый навигатор","inLanguage":"ru-RU","publisher":{"@id":"https://kubysh.com/#org"}},
         {"@type":"CollectionPage","@id":f"{canonical}#page","name":"Материалы Кубыша","url":canonical,"description":desc,"inLanguage":"ru-RU","dateModified":HUB_MODIFIED_DATE,"isPartOf":{"@id":"https://kubysh.com/#website"},"about":["Кубыш","Кирилл Попов","личные финансы","бюджет","расходы","накопления"],"hasPart":[{"@id":"https://kubysh.com/o-proekte/#page"},{"@id":"https://kubysh.com/metodologiya/#page"}]+[{"@id":f"https://kubysh.com/{slug}/#article"} for slug in PAGES]},
         {"@type":"BreadcrumbList","@id":f"{canonical}#breadcrumbs","itemListElement":[{"@type":"ListItem","position":1,"name":"Кубыш","item":SITE_URL},{"@type":"ListItem","position":2,"name":"Материалы","item":canonical}]}
@@ -707,7 +707,7 @@ def methodology() -> str:
     title = "Методология финансовых материалов — Кубыш"
     desc = "Как команда Кубыша готовит материалы о личных финансах: источники, расчёты, обновления, границы образовательного контента."
     schema={"@context":"https://schema.org","@graph":[
-        {"@type":"Organization","@id":"https://kubysh.com/#org","name":SITE_NAME,"url":SITE_URL},
+        {"@type":"Organization","@id":"https://kubysh.com/#org","name":SITE_NAME,"url":SITE_URL,"sameAs":["https://apps.apple.com/app/id6778792103"]},
         {"@type":"AboutPage","@id":f"{canonical}#page","url":canonical,"name":title,"description":desc,"inLanguage":"ru-RU","dateModified":MODIFIED_DATE,"about":{"@id":"https://kubysh.com/#org"},"citation":[url for _,url in SOURCES]},
         {"@type":"BreadcrumbList","@id":f"{canonical}#breadcrumbs","itemListElement":[{"@type":"ListItem","position":1,"name":"Кубыш","item":SITE_URL},{"@type":"ListItem","position":2,"name":"Методология","item":canonical}]}
     ]}
