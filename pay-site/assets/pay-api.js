@@ -52,6 +52,7 @@
       store(ACCOUNT_KEY, JSON.stringify(acc));
     },
     clear: function () {
+      store('kubysh_checkout_context', null);
       store(TOKEN_KEY, null);
       store(ACCOUNT_KEY, null);
       delete memory[TOKEN_KEY];
@@ -126,6 +127,7 @@
 
   var Api = {
     auth: function (provider, payload) {
+      payload.checkout_context = read('kubysh_checkout_context') || null;
       return request('/web/auth/' + provider, {
         method: 'POST', body: payload, auth: false,
       });
@@ -139,7 +141,19 @@
     plans: function () { return request('/web/plans', { auth: false }); },
     subscription: function () { return request('/web/subscription'); },
     startPayment: function (plan) {
-      return request('/web/payments/start', { method: 'POST', body: { plan: plan } });
+      return request('/web/payments/start', { method: 'POST', body: {
+        plan: plan, checkout_context: read('kubysh_checkout_context') || null,
+      } });
+    },
+    openCheckout: function (ticket) {
+      return request('/web/checkout/open', { method: 'POST', auth: false, body: { ticket: ticket } })
+        .then(function (data) {
+          // A device handoff replaces any old browser account, never pays for it silently.
+          Session.clear();
+          store('kubysh_checkout_context', data.checkout_context);
+          if (data.session_token) Session.save(data);
+          return data;
+        });
     },
     cancel: function () {
       return request('/web/subscription/cancel', { method: 'POST' });

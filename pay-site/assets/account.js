@@ -396,7 +396,20 @@
     // Разбора возврата из адресной строки здесь больше нет: токен приходит в
     // колбэк Apple (режим popup) и в URL не попадает вообще. Это убирает целый
     // канал утечки - историю браузера, логи прокси и Referer.
-    if (Session.isSignedIn()) {
+    var ticket = window.PayHandoffTicket;
+    window.PayHandoffTicket = null;
+    if (ticket) {
+      history.replaceState(null, '', window.location.pathname + window.location.search);
+      show('state-loading');
+      Api.openCheckout(ticket).then(function () {
+        if (Session.isSignedIn()) afterSignIn();
+        else show('state-signin');
+      }).catch(function () {
+        Session.clear();
+        show('state-signin');
+        showError('signin-error', 'Ссылка истекла. Открой личный кабинет ещё раз из приложения.');
+      });
+    } else if (Session.isSignedIn()) {
       afterSignIn();
     } else {
       show('state-signin');

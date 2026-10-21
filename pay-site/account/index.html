@@ -15,8 +15,9 @@
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="stylesheet" href="/assets/pay.css?v=20260913a">
-<link rel="stylesheet" href="/assets/checkout-polish.css?v=20260915c">
+<link rel="stylesheet" href="/assets/checkout-polish.css?v=20261020a">
 <script src="/assets/pay-frame-guard.js?v=20260902b"></script>
+<script src="/assets/pay-handoff.js?v=20261013"></script>
 <!-- Сторонних аналитик и трекеров здесь нет сознательно: на странице ПД и деньги. -->
 </head>
 <body>
@@ -102,6 +103,11 @@
       <span>Данные карты Кубыш не видит</span>
       <span>Продление отключается здесь</span>
     </p>
+
+    <aside class="checkout-invite" aria-label="Приглашение друга">
+      <strong class="ink">Пригласи друга — период бесплатно вам обоим</strong>
+      <span>Когда друг запишет в Кубыше 3 траты, у вас обоих появится +1 бесплатный период. Приглашение — в приложении: рейтинг друзей → «Пригласить».</span>
+    </aside>
 
     <div class="terms">
       <strong class="ink">Перед оплатой</strong>
@@ -189,10 +195,10 @@
 </footer>
 
 <script src="/assets/pay-config.js?v=20260915b"></script>
-<script src="/assets/pay-api.js?v=20260913a"></script>
+<script src="/assets/pay-api.js?v=20261013"></script>
 <!-- Грузим SDK ДО обработчика клика: popup Apple должен открываться в рамках user gesture. -->
 <script src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/ru_RU/appleid.auth.js"></script>
 <script src="/assets/pay-auth.js?v=20260915b"></script>
-<script src="/assets/account.js?v=20260913a"></script>
+<script src="/assets/account.js?v=20261013"></script>
 </body>
 </html>

@@ -100,6 +100,23 @@
   color: var(--lime);
 }
 
+/* INVITE-PAY-1: предложение пригласить друга на странице оплаты. */
+.checkout-invite {
+  display: grid;
+  gap: 4px;
+  margin: 0 0 14px;
+  padding: 12px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.035);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.checkout-invite span {
+  color: var(--muted);
+}
+
 #state-plans .terms {
   margin-top: 8px;
   background: rgba(255, 255, 255, 0.035);
