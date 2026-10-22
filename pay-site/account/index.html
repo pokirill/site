@@ -35,8 +35,26 @@
   </section>
 
   <section id="state-signin" class="hidden" hidden>
-    <h1>Войди, чтобы продолжить</h1>
-    <p class="lead">Используй тот же Apple ID, что и в Кубыше. Так оплата попадёт именно в твой аккаунт — отдельный пароль не нужен.</p>
+    <h1>Продолжим твой план</h1>
+    <p class="lead">Войди тем же Apple ID, что и в Кубыше, — бюджет, серия и прогноз целей останутся на месте. Отдельный пароль не нужен.</p>
+    <div class="checkout-value" aria-label="Что продолжится">
+      <div class="value-point">
+        <strong>Бюджет на день</strong>
+        <span>Каждый день видно, сколько можно потратить спокойно.</span>
+      </div>
+      <div class="value-point">
+        <strong>Итоги периода</strong>
+        <span>Подробный разбор трат и советы, что поменять.</span>
+      </div>
+      <div class="value-point">
+        <strong>Подушка и цели</strong>
+        <span>Прогноз, когда накопишь, — с каждой получкой точнее.</span>
+      </div>
+      <div class="value-point">
+        <strong>Серия и уровень</strong>
+        <span>Задания дня, баллы и кубок месяца никуда не денутся.</span>
+      </div>
+    </div>
 
     <div id="signin-error" class="notice notice--error hidden" role="alert"></div>
 
@@ -94,6 +112,10 @@
       </div>
     </div>
 
+    <aside class="checkout-invite" aria-label="Поддержка команды">
+      <strong class="ink">Подписка — это поддержка Кубыша</strong>
+      <span>Её получает небольшая команда, которая делает Кубыш каждый день, а Кубыш — токены, чтобы разбирать твои траты и подсказывать.</span>
+    </aside>
     <div id="plans-error" class="notice notice--error hidden" role="alert"></div>
 
     <div class="plans" id="plans-list" role="group" aria-label="Тарифы"></div>
@@ -125,7 +147,7 @@
         <a href="/privacy/">политикой обработки персональных данных</a>.</span>
     </label>
 
-    <button type="button" class="btn btn-primary" id="pay-btn" disabled>Перейти к оплате</button>
+    <button type="button" class="btn btn-primary" id="pay-btn" disabled>Продолжить с Кубышем</button>
     <p class="small muted gap-sm" id="pay-hint">Выбери тариф и отметь согласие с условиями.</p>
   </section>
 
