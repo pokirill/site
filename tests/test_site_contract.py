@@ -190,6 +190,19 @@ def test_ai_search_discovery_files_are_consistent():
     assert (LANDING / f"{key}.txt").read_text(encoding="utf-8").strip() == key
 
 
+def test_product_definition_is_the_same_everywhere():
+    # Алиса склеивает сущность по одинаковому определению на главной, в разметке и llms.txt
+    definition = "Кубыш — приложение для iPhone, которое помогает накопить на подушку безопасности и цели без стресса."
+    main = (LANDING / "index.html").read_text(encoding="utf-8")
+    assert main.count(definition) >= 3  # SoftwareApplication, FAQ в разметке и видимый FAQ
+    assert "сколько можно тратить" not in main.split("</title>", 1)[0]
+    llms = (LANDING / "llms.txt").read_text(encoding="utf-8")
+    assert llms.split("\n> ", 1)[1].startswith(definition)
+    sitemap = (LANDING / "sitemap.xml").read_text(encoding="utf-8")
+    assert "https://kubysh.com/kak-nakopit-bez-stressa/" in sitemap
+    assert 'href="kak-nakopit-bez-stressa/"' in main
+
+
 def test_generated_seo_pages_track_appstore_clicks():
     js = (LANDING / "assets/seo.js").read_text(encoding="utf-8")
     assert "kubysh_cookie_consent_v2" in js
