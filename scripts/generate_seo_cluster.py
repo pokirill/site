@@ -15,7 +15,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 LANDING = ROOT / "landing"
 # Спецстраница App Store «Лендинг» (ppid): переходы с сайта видны отдельно в App Store Connect
-APP_STORE = "https://apps.apple.com/us/app/%D0%BA%D1%83%D0%B1%D1%8B%D1%88-%D0%BB%D0%B8%D1%87%D0%BD%D1%8B%D0%B5-%D1%84%D0%B8%D0%BD%D0%B0%D0%BD%D1%81%D1%8B-%D0%B1%D1%8E%D0%B4%D0%B6%D0%B5%D1%82/id6778792103?ppid=ad248954-9df5-4e1e-9f9e-236a70021ad9"
+APP_STORE = "https://apps.apple.com/ru/app/id6778792103?ppid=ad248954-9df5-4e1e-9f9e-236a70021ad9"
 MAIN_MODIFIED_DATE = "2026-10-24"
 PUBLISHED_DATE = "2026-09-15"
 MODIFIED_DATE = "2026-09-18"
