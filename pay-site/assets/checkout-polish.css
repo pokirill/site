@@ -166,3 +166,85 @@
   font-size: 14px;
   font-weight: 500;
 }
+
+/* PAY-CHECKOUT-3: тарифы и оплата на первом экране, объяснение ниже кнопки. */
+.checkout-anchor {
+  margin: -4px 0 12px;
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+#state-plans #pay-btn {
+  margin-top: 4px;
+}
+
+/* Согласие тихое, но не спрятанное: явная отметка обязательна для регулярных списаний. */
+.consent--quiet {
+  margin: 12px 0 0;
+  font-size: 12px;
+  gap: 8px;
+}
+
+.consent--quiet input {
+  width: 18px;
+  height: 18px;
+}
+
+.consent--attention {
+  color: var(--ink);
+  animation: consent-nudge 0.4s ease-in-out;
+}
+
+.consent--attention input {
+  outline: 2px solid var(--lime);
+  outline-offset: 2px;
+}
+
+@keyframes consent-nudge {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .consent--attention { animation: none; }
+}
+
+#state-plans .checkout-trust {
+  margin: 14px 0 22px;
+  justify-content: center;
+}
+
+.checkout-value-title {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 16px;
+}
+
+@media (min-width: 520px) {
+  .checkout-value-title { grid-column: 1 / -1; }
+}
+
+.checkout-founder {
+  display: grid;
+  gap: 8px;
+  margin: 0 0 18px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.035);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.checkout-founder span { color: rgba(255, 255, 255, 0.78); }
+.checkout-founder a { color: var(--lime); }
+
+/* INVITE-PAY-2: приглашение друга - тихая альтернатива внизу, а не карточка у кнопки. */
+.checkout-invite-quiet {
+  margin: 0 0 8px;
+  color: var(--muted-2);
+  font-size: 12px;
+  line-height: 1.5;
+}

@@ -156,6 +156,44 @@
     });
   }
 
+  /* ---------- Откуда пришел человек ---------- */
+
+  // PAY-CONTEXT-1: placement приходит с сервера при открытии чекаута из приложения.
+  // sessionStorage, а не localStorage: заход на сайт напрямую позже не должен
+  // получить заголовок про закрытый период.
+  var CONTEXT_KEY = 'kubysh_checkout_placement';
+  var CONTEXTS = {
+    close_period: {
+      title: 'Период закрыт. Продолжим план?',
+      lead: 'Ты уже видел Кубыш в деле: план до получки, бюджет на день, итоги периода. ' +
+            'Подписка открывает следующий период, а серия, цели и вся история остаются на месте.'
+    },
+    // support появится с PAY-PLACEMENT-SUPPORT-1 (iOS 1.7.6), до этого кнопка поддержки шлет cabinet.
+    support: {
+      title: 'Спасибо, что решил поддержать Кубыш',
+      lead: 'Ты уже знаешь, как он помогает: спокойный план до получки, бюджет на день и цели с понятными сроками. ' +
+            'Подписка сохраняет все это и дает Кубышу работать дальше.'
+    },
+    cabinet: {
+      title: 'Кубыш живет на подписках',
+      lead: 'Ты уже знаешь, как он помогает: спокойный план до получки, бюджет на день и цели с понятными сроками. ' +
+            'Подписка сохраняет все это и дает Кубышу работать дальше.'
+    }
+  };
+
+  function savePlacement(placement) {
+    try { sessionStorage.setItem(CONTEXT_KEY, placement || ''); } catch (e) { /* приватный режим */ }
+  }
+
+  function applyContext() {
+    var placement = null;
+    try { placement = sessionStorage.getItem(CONTEXT_KEY); } catch (e) { placement = null; }
+    var context = CONTEXTS[placement];
+    if (!context) return;
+    $('plans-title').textContent = context.title;
+    $('plans-lead').textContent = context.lead;
+  }
+
   /* ---------- Тарифы ---------- */
 
   function renderPlans() {
@@ -240,6 +278,19 @@
       period.textContent = 'Списание ' + U.formatMoney(plan.price, state.currency) +
         ' ' + every + ' с карты, которой оплатил.';
     }
+    var button = $('pay-btn');
+    if (plan && button && !button.disabled) {
+      button.textContent = 'Оплатить ' + U.formatMoney(plan.price, state.currency);
+    }
+    // Цена в день против пакетика растворимого кофе (15-30 ₽ в магазине): сравнение
+    // верно для обоих тарифов, пока день дешевле 15 ₽.
+    var anchor = $('plans-anchor');
+    if (plan && anchor) {
+      var perDay = Math.round(plan.price / 100 / (code === 'year' ? 365 : 30));
+      anchor.hidden = perDay >= 15;
+      anchor.textContent = 'Это ' + perDay + ' ₽ в день. Дешевле пакетика растворимого кофе, ' +
+        'а помогает дожить до получки спокойно и дойти до целей.';
+    }
     updatePayButton();
   }
 
@@ -249,13 +300,14 @@
     var hint = $('pay-hint');
     if (!button || !consent) return;
 
-    var ready = !!state.selectedPlan && consent.checked;
-    button.disabled = !ready;
-
+    // Кнопка активна всегда: «мертвая» серая кнопка выглядит как сбой. Без
+    // согласия нажатие подсвечивает галочку (см. bindPay). Ставить галочку за
+    // человека нельзя: согласие на регулярные списания должно быть явным.
+    if (consent.checked) $('consent-row').classList.remove('consent--attention');
     if (hint) {
-      if (!state.selectedPlan) hint.textContent = 'Выбери тариф и отметь согласие с условиями.';
-      else if (!consent.checked) hint.textContent = 'Отметь согласие с условиями, чтобы продолжить.';
-      else hint.textContent = 'Дальше откроется страница оплаты Т-Банка.';
+      hint.textContent = consent.checked || !hint.dataset.nudged
+        ? 'Дальше откроется страница оплаты Т-Банка.'
+        : 'Отметь согласие с условиями, и откроем оплату.';
     }
   }
 
@@ -267,6 +319,15 @@
     if (!button) return;
     button.addEventListener('click', function () {
       if (!state.selectedPlan) return;
+      if (!consent || !consent.checked) {
+        var row = $('consent-row');
+        row.classList.remove('consent--attention');
+        void row.offsetWidth; // перезапуск анимации при повторном нажатии
+        row.classList.add('consent--attention');
+        $('pay-hint').dataset.nudged = '1';
+        updatePayButton();
+        return;
+      }
       hideError('plans-error');
       busy(button, true, 'Готовим оплату…');
 
@@ -399,6 +460,7 @@
         showError('plans-error', 'Тарифы сейчас недоступны. Попробуй обновить страницу.');
         return;
       }
+      applyContext();
       renderPlans();
       show('state-plans');
     }).catch(function (error) {
@@ -422,7 +484,8 @@
     if (ticket) {
       history.replaceState(null, '', window.location.pathname + window.location.search);
       show('state-loading');
-      Api.openCheckout(ticket).then(function () {
+      Api.openCheckout(ticket).then(function (data) {
+        savePlacement(data && data.placement);
         if (Session.isSignedIn()) afterSignIn();
         else show('state-signin');
       }).catch(function () {

@@ -15,7 +15,7 @@
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="stylesheet" href="/assets/pay.css?v=20260913a">
-<link rel="stylesheet" href="/assets/checkout-polish.css?v=20261026a">
+<link rel="stylesheet" href="/assets/checkout-polish.css?v=20261026b">
 <script src="/assets/pay-frame-guard.js?v=20260902b"></script>
 <script src="/assets/pay-handoff.js?v=20261013"></script>
 <!-- Сторонних аналитик и трекеров здесь нет сознательно: на странице ПД и деньги. -->
@@ -90,35 +90,32 @@
   </section>
 
   <section id="state-plans" class="hidden" hidden>
-    <h1>Спокойно тратить сегодня. Не сдвигать важное завтра.</h1>
-    <p class="lead">Кубыш приведёт к подушке и целям без тревоги и стресса: строит маршрут между получками и подсказывает, сколько оптимально потратить сейчас.</p>
+    <!-- PAY-CONTEXT-1: заголовок и подзаголовок меняет account.js по источнику перехода. -->
+    <h1 id="plans-title">Спокойно тратить сегодня. Не сдвигать важное завтра.</h1>
+    <p class="lead" id="plans-lead">Кубыш приведет к подушке и целям без тревоги и стресса: строит план до получки и подсказывает, сколько оптимально потратить сегодня.</p>
 
-    <div class="checkout-value" aria-label="Что даёт подписка">
-      <div class="value-point">
-        <strong>На сегодня</strong>
-        <span>Сразу видно, сколько оптимально потратить сегодня.</span>
-      </div>
-      <div class="value-point">
-        <strong>До получки</strong>
-        <span>План пересчитывается после трат, а не остаётся старой таблицей.</span>
-      </div>
-      <div class="value-point">
-        <strong>По целям</strong>
-        <span>Видно, как покупка влияет на сроки важных накоплений.</span>
-      </div>
-      <div class="value-point">
-        <strong>Без банка</strong>
-        <span>Не нужен доступ к счетам: скриншот или ручной ввод.</span>
-      </div>
-    </div>
-
-    <aside class="checkout-invite" aria-label="Поддержка команды">
-      <strong class="ink">Подписка — это поддержка Кубыша</strong>
-      <span>Её получает небольшая команда, которая делает Кубыш каждый день, а Кубыш — токены, чтобы разбирать твои траты и подсказывать.</span>
-    </aside>
     <div id="plans-error" class="notice notice--error hidden" role="alert"></div>
 
     <div class="plans" id="plans-list" role="group" aria-label="Тарифы"></div>
+
+    <p class="checkout-anchor" id="plans-anchor" hidden></p>
+
+    <div class="terms">
+      <ul>
+        <li id="terms-period">Списание раз в выбранный период с карты, которой оплатил.</li>
+        <li>Продление автоматическое. Отключить его можно здесь в любой момент, доступ сохранится до конца оплаченного срока.</li>
+      </ul>
+    </div>
+
+    <button type="button" class="btn btn-primary" id="pay-btn">Оплатить</button>
+
+    <label class="consent consent--quiet" id="consent-row">
+      <input type="checkbox" id="consent">
+      <span>Соглашаюсь с <a href="/offer/">офертой</a>,
+        <a href="/recurrent/">порядком регулярных операций</a> и
+        <a href="/privacy/">политикой обработки персональных данных</a>.</span>
+    </label>
+    <p class="small muted gap-sm" id="pay-hint">Дальше откроется страница оплаты Т-Банка.</p>
 
     <p class="checkout-trust" aria-label="Безопасность оплаты">
       <span>Оплата на стороне Т-Банка</span>
@@ -126,29 +123,35 @@
       <span>Продление отключается здесь</span>
     </p>
 
-    <aside class="checkout-invite" aria-label="Приглашение друга">
-      <strong class="ink">Пригласи друга — период бесплатно вам обоим</strong>
-      <span>Когда друг запишет в Кубыше 3 траты, у вас обоих появится +1 бесплатный период. Приглашение — в приложении: рейтинг друзей → «Пригласить».</span>
-    </aside>
-
-    <div class="terms">
-      <strong class="ink">Перед оплатой</strong>
-      <ul>
-        <li id="terms-period">Списание раз в выбранный период с карты, которой оплатил.</li>
-        <li>Подписка продлевается автоматически. Отключить продление можно здесь же в любой момент — доступ сохранится до конца оплаченного срока.</li>
-        <li>Условия: <a href="/offer/">оферта</a>, <a href="/recurrent/">порядок регулярных операций</a>, <a href="/privacy/">политика обработки персональных данных</a>.</li>
-      </ul>
+    <div class="checkout-value" aria-label="Что откроет подписка">
+      <strong class="checkout-value-title">Что откроет подписка</strong>
+      <div class="value-point">
+        <strong>Новый период</strong>
+        <span>План до следующей получки, который пересчитывается после каждой траты.</span>
+      </div>
+      <div class="value-point">
+        <strong>Бюджет на день</strong>
+        <span>Каждый день видно, сколько оптимально потратить, чтобы спокойно дожить до получки.</span>
+      </div>
+      <div class="value-point">
+        <strong>Итоги и разбор</strong>
+        <span>Куда ушли деньги за период и где получится сберечь в следующем.</span>
+      </div>
+      <div class="value-point">
+        <strong>Цели с датами</strong>
+        <span>Когда накопишь на подушку и мечту, и как каждая покупка сдвигает срок.</span>
+      </div>
     </div>
 
-    <label class="consent">
-      <input type="checkbox" id="consent">
-      <span>Соглашаюсь с <a href="/offer/">офертой</a>,
-        <a href="/recurrent/">порядком регулярных операций</a> и
-        <a href="/privacy/">политикой обработки персональных данных</a>.</span>
-    </label>
+    <aside class="checkout-founder" aria-label="От основателя">
+      <strong class="ink">Кубыш делает независимая команда</strong>
+      <span>Без инвесторов, без рекламы и без продажи твоих данных. Серверы и разбор трат оплачивают только подписки, поэтому каждая из них дает Кубышу работать дальше.</span>
+      <span>Что-то не понравилось или есть идея? Напиши мне в Телеграм <a href="https://t.me/popov_kirill_a" target="_blank" rel="noopener">@popov_kirill_a</a>. Кирилл, основатель Кубыша</span>
+    </aside>
 
-    <button type="button" class="btn btn-primary" id="pay-btn" disabled>Продолжить с Кубышем</button>
-    <p class="small muted gap-sm" id="pay-hint">Выбери тариф и отметь согласие с условиями.</p>
+    <p class="checkout-invite-quiet">
+      Пока не готов платить? Пригласи друга: когда он запишет в Кубыше 3 траты, вам обоим откроется бесплатный период. Приглашение в приложении: рейтинг друзей, «Пригласить».
+    </p>
   </section>
 
   <section id="state-active" class="hidden" hidden>
@@ -221,6 +224,6 @@
 <!-- Грузим SDK ДО обработчика клика: popup Apple должен открываться в рамках user gesture. -->
 <script src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/ru_RU/appleid.auth.js"></script>
 <script src="/assets/pay-auth.js?v=20260915b"></script>
-<script src="/assets/account.js?v=20261026a"></script>
+<script src="/assets/account.js?v=20261026b"></script>
 </body>
 </html>
