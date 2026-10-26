@@ -170,6 +170,8 @@
              (order[b.code] === undefined ? 9 : order[b.code]);
     });
 
+    var month = sorted.filter(function (p) { return p.code === 'month'; })[0];
+
     sorted.forEach(function (plan) {
       var button = document.createElement('button');
       button.type = 'button';
@@ -177,9 +179,9 @@
       button.setAttribute('aria-pressed', 'false');
       button.dataset.plan = plan.code;
 
-      var note = plan.code === 'year'
-        ? U.formatMoneyRounded(plan.per_month, state.currency) +
-          ' в месяц. Все цели в работе, и год можно не думать о деньгах'
+      var isYear = plan.code === 'year';
+      var note = isYear
+        ? 'Все цели в работе, и год можно не думать о деньгах'
         : 'Если ещё присматриваешься';
 
       button.innerHTML =
@@ -187,12 +189,31 @@
           '<span class="plan-title"></span>' +
           '<span class="plan-price"></span>' +
         '</span>' +
+        (isYear ? '<span class="plan-total"></span>' : '') +
         '<span class="plan-note"></span>';
 
       // Через textContent, а не в шаблон: название приходит с сервера
       button.querySelector('.plan-title').textContent = plan.title || PLAN_TITLES[plan.code] || plan.code;
-      button.querySelector('.plan-price').textContent = U.formatMoney(plan.price, state.currency);
       button.querySelector('.plan-note').textContent = note;
+
+      if (isYear) {
+        // PRICE-2: в годе главная цифра - цена месяца, списание за год рядом и мельче.
+        // Сумма списания всё равно названа явно: здесь и в блоке «Перед оплатой».
+        var price = button.querySelector('.plan-price');
+        price.textContent = U.formatMoneyRounded(plan.per_month, state.currency);
+        var unit = document.createElement('span');
+        unit.className = 'plan-unit';
+        unit.textContent = '/мес';
+        price.appendChild(unit);
+
+        var total = U.formatMoney(plan.price, state.currency) + ' за год';
+        // «По цене 7 месяцев» понятнее процента скидки и не переносится на телефоне.
+        var months = month ? Math.ceil(plan.price / month.price) : 12;
+        if (months < 12) total += ' · по цене ' + months + ' месяцев';
+        button.querySelector('.plan-total').textContent = total;
+      } else {
+        button.querySelector('.plan-price').textContent = U.formatMoney(plan.price, state.currency);
+      }
 
       button.addEventListener('click', function () { selectPlan(plan.code); });
       list.appendChild(button);

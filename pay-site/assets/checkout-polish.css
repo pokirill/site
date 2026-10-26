@@ -52,6 +52,8 @@
 
 #state-plans .plan {
   min-height: 92px;
+  /* Safari красит текст кнопки системным синим, если цвет не задан. */
+  color: var(--ink);
 }
 
 /* Год остаётся рекомендуемым вариантом, но не выглядит выбранным сам по себе. */
@@ -141,4 +143,26 @@
     gap: 4px;
     min-height: 104px;
   }
+}
+
+/* PRICE-2: в годе крупно цена месяца, сумма за год строкой ниже. */
+#state-plans .plan--year .plan-price {
+  color: var(--lime);
+  font-size: 34px;
+  line-height: 1;
+}
+
+#state-plans .plan-unit {
+  margin-left: 2px;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+#state-plans .plan-total {
+  display: block;
+  margin-top: 8px;
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 500;
 }
