@@ -190,8 +190,74 @@
     try { placement = sessionStorage.getItem(CONTEXT_KEY); } catch (e) { placement = null; }
     var context = CONTEXTS[placement];
     if (!context) return;
-    $('plans-title').textContent = context.title;
-    $('plans-lead').textContent = context.lead;
+    var personal = placement === 'close_period' ? personalContext(readFact()) : null;
+    $('plans-title').textContent = (personal || context).title;
+    $('plans-lead').textContent = (personal || context).lead;
+  }
+
+  /* ---------- PAYWALL-PERSONAL-1: довод из приложения ---------- */
+
+  // Те же цифры, что человек только что видел на пейволе. Суммы считает приложение,
+  // сайт их только показывает. Обещание: «Комфортно сегодня, спокойно завтра».
+  function readFact() {
+    var raw = null;
+    try { raw = sessionStorage.getItem('kubysh_checkout_fact'); } catch (e) { raw = null; }
+    if (!raw) return null;
+    var parts = raw.split(':');
+    var amount = parseInt(parts[1], 10);
+    if (!(amount > 0)) return null;
+    return { kind: parts[0], amount: amount, days: parseInt(parts[2], 10) || 0 };
+  }
+
+  function readDepositRub() {
+    var raw = null;
+    try { raw = sessionStorage.getItem('kubysh_checkout_deposit'); } catch (e) { raw = null; }
+    var rub = parseInt(raw, 10);
+    return rub > 0 ? rub : null;
+  }
+
+  function rub(amount) { return U.formatMoney(amount * 100, 'RUB'); }
+
+  function daysWord(n) {
+    var m10 = n % 10, m100 = n % 100;
+    if (m10 === 1 && m100 !== 11) return 'день';
+    if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return 'дня';
+    return 'дней';
+  }
+
+  function personalContext(fact) {
+    if (!fact) return null;
+    var tail = 'Подписка открывает следующий период: сумма на день, подушка и цели по плану. ' +
+               'Серия, цели и вся история остаются на месте.';
+    if (fact.kind === 'shortfall_avoided') {
+      return {
+        title: 'Ты дошёл до получки без минуса',
+        lead: 'За ' + fact.days + ' ' + daysWord(fact.days) + ' до получки Кубыш увидел, что может не хватить ' +
+              rub(fact.amount) + ', и ты успел выровнять траты. ' + tail
+      };
+    }
+    if (fact.kind === 'saved') {
+      return { title: 'За период ты сэкономил ' + rub(fact.amount), lead: 'Эти деньги остались у тебя. ' + tail };
+    }
+    if (fact.kind === 'accumulated') {
+      return { title: 'С Кубышем ты накопил ' + rub(fact.amount), lead: tail };
+    }
+    return null;
+  }
+
+  // Вклад против цены подписки в месяц: показываем, только если вклад приносит больше.
+  function updateDepositLine(plan) {
+    var line = $('plans-deposit');
+    if (!line) return;
+    var deposit = readDepositRub();
+    var perMonthKopecks = plan ? (plan.code === 'year' ? plan.per_month : plan.price) : null;
+    if (!deposit || !perMonthKopecks || deposit * 100 <= perMonthKopecks) {
+      line.hidden = true;
+      return;
+    }
+    line.textContent = 'Вклад, который Кубыш подобрал под твои накопления, по сегодняшним ставкам приносит около ' +
+      rub(deposit) + ' в месяц. Подписка стоит ' + U.formatMoneyRounded(perMonthKopecks, state.currency) + ' в месяц.';
+    line.hidden = false;
   }
 
   /* ---------- Тарифы ---------- */
@@ -284,6 +350,7 @@
     }
     // Цена в день против пакетика растворимого кофе (15-30 ₽ в магазине): сравнение
     // верно для обоих тарифов, пока день дешевле 15 ₽.
+    updateDepositLine(plan);
     var anchor = $('plans-anchor');
     if (plan && anchor) {
       var perDay = Math.round(plan.price / 100 / (code === 'year' ? 365 : 30));
