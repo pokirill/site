@@ -223,10 +223,11 @@
 </footer>
 
 <script src="/assets/pay-config.js?v=20260915b"></script>
-<script src="/assets/pay-api.js?v=20261013"></script>
+<script src="/assets/pay-api.js?v=20261030"></script>
 <!-- Грузим SDK ДО обработчика клика: popup Apple должен открываться в рамках user gesture. -->
-<script src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/ru_RU/appleid.auth.js"></script>
+<!-- CHECKOUT-STEPS-1: async — пока скрипт Apple грузится, кабинет уже принимает билет из приложения. -->
+<script async src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/ru_RU/appleid.auth.js"></script>
 <script src="/assets/pay-auth.js?v=20260915b"></script>
-<script src="/assets/account.js?v=20261029"></script>
+<script src="/assets/account.js?v=20261030"></script>
 </body>
 </html>

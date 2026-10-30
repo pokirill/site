@@ -95,6 +95,7 @@
     var timer = controller ? setTimeout(function () { controller.abort(); }, options.timeoutMs || 20000) : null;
 
     return fetch(CFG.apiBase + path, {
+      keepalive: !!options.keepalive,
       method: options.method || 'GET',
       headers: headers,
       body: options.body ? JSON.stringify(options.body) : undefined,
@@ -154,6 +155,18 @@
           if (data.session_token) Session.save(data);
           return data;
         });
+    },
+    // CHECKOUT-STEPS-1: где человек остановился на сайте. Пишет сервер, только для перехода из
+    // приложения (есть контекст чекаута). Без ожидания и без ошибок для человека: отметка не
+    // должна мешать оплате. Повтор безвреден, сервер пишет шаг один раз на чекаут.
+    step: function (name, plan) {
+      var context = read('kubysh_checkout_context');
+      if (!context) return;
+      try {
+        request('/web/checkout/step', { method: 'POST', auth: false, keepalive: true, timeoutMs: 5000,
+          body: { checkout_context: context, step: name, plan: plan || null } })
+          .catch(function () { /* отметка не важнее оплаты */ });
+      } catch (e) { /* то же */ }
     },
     cancel: function () {
       return request('/web/subscription/cancel', { method: 'POST' });

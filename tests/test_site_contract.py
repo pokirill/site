@@ -291,6 +291,8 @@ def test_account_loads_apple_sdk_before_click_handler():
     assert "appleid.auth.js" in html
     assert "/assets/pay-auth.js" in html
     assert html.index("appleid.auth.js") < html.index("/assets/pay-auth.js")
+    # CHECKOUT-STEPS-1: синхронный скрипт Apple держал весь кабинет на спиннере, билет не принимался.
+    assert '<script async src="https://appleid.cdn-apple.com' in html
 
     auth_js = (PAY / "assets/pay-auth.js").read_text(encoding="utf-8")
     assert "sdkReady()" in auth_js

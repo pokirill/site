@@ -134,7 +134,8 @@
 
     // Нормальный путь: SDK уже загружен самой страницей, поэтому signIn()
     // вызывается прямо в обработчике клика и popup не теряет user activation.
-    // Запасной путь нужен только старому закешированному HTML без preload.
+    // Запасной путь: страница грузит SDK асинхронно (CHECKOUT-STEPS-1), и если человек нажал
+    // раньше, чем SDK пришёл, грузим его здесь. Popup в этом редком случае Safari может заблокировать.
     var signInPromise = sdkReady()
       ? beginAppleSignIn(nonce, state)
       : loadSdk().then(function () { return beginAppleSignIn(nonce, state); });

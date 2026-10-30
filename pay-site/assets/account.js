@@ -26,7 +26,11 @@
 
   function $(id) { return document.getElementById(id); }
 
+  // CHECKOUT-STEPS-1: какой экран кабинета увидел человек.
+  var STEP_BY_STATE = { 'state-signin': 'signin_shown', 'state-contact': 'contact_shown', 'state-plans': 'plans_shown' };
+
   function show(id) {
+    if (STEP_BY_STATE[id]) Api.step(STEP_BY_STATE[id]);
     var sections = ['state-loading', 'state-signin', 'state-contact',
                     'state-plans', 'state-active', 'state-confirm-cancel'];
     sections.forEach(function (s) {
@@ -319,7 +323,10 @@
         button.querySelector('.plan-price').textContent = U.formatMoney(plan.price, state.currency);
       }
 
-      button.addEventListener('click', function () { selectPlan(plan.code); });
+      button.addEventListener('click', function () {
+        selectPlan(plan.code);
+        Api.step('plan_selected', plan.code); // только нажатие человека, не тариф по умолчанию
+      });
       list.appendChild(button);
     });
 
@@ -380,12 +387,16 @@
 
   function bindPay() {
     var consent = $('consent');
-    if (consent) consent.addEventListener('change', updatePayButton);
+    if (consent) consent.addEventListener('change', function () {
+      if (consent.checked) Api.step('consent_checked', state.selectedPlan);
+      updatePayButton();
+    });
 
     var button = $('pay-btn');
     if (!button) return;
     button.addEventListener('click', function () {
       if (!state.selectedPlan) return;
+      Api.step('pay_tapped', state.selectedPlan); // нажатие, даже если галочки ещё нет
       if (!consent || !consent.checked) {
         var row = $('consent-row');
         row.classList.remove('consent--attention');
