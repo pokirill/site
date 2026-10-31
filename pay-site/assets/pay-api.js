@@ -159,12 +159,15 @@
     // CHECKOUT-STEPS-1: где человек остановился на сайте. Пишет сервер, только для перехода из
     // приложения (есть контекст чекаута). Без ожидания и без ошибок для человека: отметка не
     // должна мешать оплате. Повтор безвреден, сервер пишет шаг один раз на чекаут.
-    step: function (name, plan) {
+    step: function (name, plan, variant) {
       var context = read('kubysh_checkout_context');
       if (!context) return;
+      var body = { checkout_context: context, step: name, plan: plan || null };
+      // PAY-PLACEMENT-FLAGS-1: какой текст увидел человек. Только на показах экранов.
+      if (variant) body.variant = variant;
       try {
         request('/web/checkout/step', { method: 'POST', auth: false, keepalive: true, timeoutMs: 5000,
-          body: { checkout_context: context, step: name, plan: plan || null } })
+          body: body })
           .catch(function () { /* отметка не важнее оплаты */ });
       } catch (e) { /* то же */ }
     },

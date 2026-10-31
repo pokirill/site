@@ -16,6 +16,14 @@
       }
       if (deposit && /^\d{1,9}$/.test(deposit)) sessionStorage.setItem('kubysh_checkout_deposit', deposit);
       else sessionStorage.removeItem('kubysh_checkout_deposit');
+      // PAY-PLACEMENT-FLAGS-1 (iOS 1.7.6): флаги источника — только счётчики и итог недели, без идентификаторов.
+      // days — дней с Кубышем, tx — трат в периоде, week — неделя в плане (under) или сверх (over) на N ₽.
+      var FLAGS = { days: /^\d{1,4}$/, tx: /^\d{1,5}$/, week: /^(under|over):\d{1,9}$/ };
+      Object.keys(FLAGS).forEach(function (key) {
+        var value = params.get(key);
+        if (value && FLAGS[key].test(value)) sessionStorage.setItem('kubysh_checkout_' + key, value);
+        else sessionStorage.removeItem('kubysh_checkout_' + key);
+      });
     } catch (e) { /* приватный режим: просто без личной строки */ }
     history.replaceState(null, '', window.location.pathname + window.location.search);
   }

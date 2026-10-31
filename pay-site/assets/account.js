@@ -30,7 +30,9 @@
   var STEP_BY_STATE = { 'state-signin': 'signin_shown', 'state-contact': 'contact_shown', 'state-plans': 'plans_shown' };
 
   function show(id) {
-    if (STEP_BY_STATE[id]) Api.step(STEP_BY_STATE[id]);
+    if (id === 'state-signin') applySigninContext();
+    // PAY-PLACEMENT-FLAGS-1: вариант текста — к шагу, чтобы сравнить конверсию текстов.
+    if (STEP_BY_STATE[id]) Api.step(STEP_BY_STATE[id], null, resolveContext().variant);
     var sections = ['state-loading', 'state-signin', 'state-contact',
                     'state-plans', 'state-active', 'state-confirm-cancel'];
     sections.forEach(function (s) {
@@ -172,7 +174,6 @@
       lead: 'Ты уже видел Кубыш в деле: план до получки, бюджет на день, итоги периода. ' +
             'Подписка открывает следующий период, а серия, цели и вся история остаются на месте.'
     },
-    // support появится с PAY-PLACEMENT-SUPPORT-1 (iOS 1.7.6), до этого кнопка поддержки шлет cabinet.
     support: {
       title: 'Спасибо, что решил поддержать Кубыш',
       lead: 'Ты уже знаешь, как он помогает: спокойный план до получки, бюджет на день и цели с понятными сроками. ' +
@@ -182,21 +183,155 @@
       title: 'Кубыш живет на подписках',
       lead: 'Ты уже знаешь, как он помогает: спокойный план до получки, бюджет на день и цели с понятными сроками. ' +
             'Подписка сохраняет все это и дает Кубышу работать дальше.'
+    },
+    // PAY-PLACEMENT-FLAGS-1 (iOS 1.7.6): плитка «Из банков» (bank_tile) и экран «Банки и счета» (bank_list).
+    // Банки открываются подписчикам по очереди (пилот), поэтому не обещаем подключение сразу после оплаты.
+    bank_tile: bankBaseContext(),
+    bank_list: bankBaseContext(),
+    // PAY-PLACEMENT-FLAGS-1: кнопка в пятничных итогах недели.
+    weekly_digest: {
+      title: 'Итоги каждой недели и план до получки',
+      lead: 'Кубыш разбирает неделю, подсказывает, сколько оптимально потратить на выходных, и держит план до получки. ' +
+            'Подписка сохраняет это на следующие периоды, а серия, цели и история остаются на месте.'
     }
   };
+
+  function bankBaseContext() {
+    return {
+      title: 'Траты из банка сами придут в план',
+      lead: 'С подпиской Кубыш забирает траты из банка и сам пересчитывает бюджет на день, без скриншотов и ручного ввода. ' +
+            'Банки подключаем подписчикам по очереди, пока команда проверяет каждое подключение. До этого траты быстро вносятся скриншотом.'
+    };
+  }
+
+  // Экран входа под источник: цель PAY-PLACEMENT-FLAGS-1 — больше входов на сайте.
+  var SIGNIN = {
+    support: {
+      title: 'Спасибо, что решил поддержать Кубыш',
+      lead: 'Войди тем же Apple ID, что и в Кубыше: поддержка привяжется к твоему плану, а бюджет, серия и цели останутся на месте.'
+    },
+    bank_tile: {
+      title: 'Подключим банк к твоему плану',
+      lead: 'Войди тем же Apple ID, что и в Кубыше: доступ к банкам привяжется к тебе, а не к телефону. Бюджет, серия и цели останутся на месте.'
+    },
+    weekly_digest: {
+      title: 'Продолжим твои недели с Кубышем',
+      lead: 'Войди тем же Apple ID, что и в Кубыше: итоги недель, бюджет на день и прогноз целей останутся на месте.'
+    }
+  };
+  SIGNIN.bank_list = SIGNIN.bank_tile;
 
   function savePlacement(placement) {
     try { sessionStorage.setItem(CONTEXT_KEY, placement || ''); } catch (e) { /* приватный режим */ }
   }
 
+  function readPlacement() {
+    try { return sessionStorage.getItem(CONTEXT_KEY) || null; } catch (e) { return null; }
+  }
+
+  // Флаги из приложения (pay-handoff.js уже проверил формат). Только счётчики и итог недели.
+  function readFlag(key) {
+    try { return sessionStorage.getItem('kubysh_checkout_' + key) || null; } catch (e) { return null; }
+  }
+
+  function readCount(key) {
+    var n = parseInt(readFlag(key), 10);
+    return n > 0 ? n : 0;
+  }
+
+  function readWeek() {
+    var raw = readFlag('week');
+    if (!raw) return null;
+    var parts = raw.split(':');
+    var amount = parseInt(parts[1], 10);
+    return amount > 0 ? { kind: parts[0], amount: amount } : null;
+  }
+
+  function txWord(n) {
+    var m10 = n % 10, m100 = n % 100;
+    if (m10 === 1 && m100 !== 11) return 'трату';
+    if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return 'траты';
+    return 'трат';
+  }
+
+  /* Что показать и под каким именем варианта. Вариант уходит серверу вместе с шагом
+     (CHECKOUT-STEPS-1), чтобы конверсию в вход и оплату можно было сравнить по текстам. */
+  function resolveContext() {
+    var placement = readPlacement();
+    var base = CONTEXTS[placement];
+    if (!base) return { variant: placement ? 'unknown' : 'direct', plans: null, signin: null };
+    var key = placement.indexOf('bank_') === 0 ? 'bank' : placement;
+    var personal = null;
+    var kind = 'base';
+
+    if (placement === 'close_period') {
+      var fact = readFact();
+      personal = personalContext(fact);
+      if (personal) kind = fact.kind;
+    } else if (placement === 'support') {
+      personal = supportContext(readCount('days'), readCount('tx'));
+      if (personal) kind = 'personal';
+    } else if (key === 'bank') {
+      personal = bankContext(readCount('days'));
+      if (personal) kind = 'personal';
+    } else if (placement === 'weekly_digest') {
+      var week = readWeek();
+      personal = weekContext(week);
+      if (personal) kind = week.kind;
+    }
+    return { variant: key + '_' + kind, plans: personal || base, signin: SIGNIN[placement] || null };
+  }
+
+  function supportContext(days, tx) {
+    if (!days) return null;
+    var done = 'Ты с Кубышем ' + days + ' ' + daysWord(days) +
+               (tx ? ' и записал ' + tx + ' ' + txWord(tx) + ' в этом периоде' : '') + '. ';
+    return {
+      title: 'Спасибо, что решил поддержать Кубыш',
+      lead: done + 'Подписка платит маленькой команде и дает Кубышу токены, чтобы и дальше разбирать твои траты. ' +
+            'План, серия и вся история остаются на месте.'
+    };
+  }
+
+  function bankContext(days) {
+    if (!days) return null;
+    var base = bankBaseContext();
+    return {
+      title: base.title,
+      lead: 'Ты с Кубышем ' + days + ' ' + daysWord(days) + '. ' + base.lead
+    };
+  }
+
+  function weekContext(week) {
+    if (!week) return null;
+    var tail = 'Подписка сохраняет итоги недель, бюджет на день и прогноз по целям на следующие периоды.';
+    if (week.kind === 'under') {
+      return {
+        title: 'Неделя в плане, запас ' + rub(week.amount),
+        lead: 'Кубыш держит такой темп весь период: подсказывает, сколько оптимально потратить, и пересчитывает план после трат. ' + tail
+      };
+    }
+    if (week.kind === 'over') {
+      return {
+        title: 'Неделя сверх плана на ' + rub(week.amount) + ', а план уже пересчитан',
+        lead: 'Так Кубыш работает каждый день: план до получки подстраивается под траты, без тревоги и таблиц. ' + tail
+      };
+    }
+    return null;
+  }
+
   function applyContext() {
-    var placement = null;
-    try { placement = sessionStorage.getItem(CONTEXT_KEY); } catch (e) { placement = null; }
-    var context = CONTEXTS[placement];
-    if (!context) return;
-    var personal = placement === 'close_period' ? personalContext(readFact()) : null;
-    $('plans-title').textContent = (personal || context).title;
-    $('plans-lead').textContent = (personal || context).lead;
+    var context = resolveContext();
+    if (!context.plans) return;
+    $('plans-title').textContent = context.plans.title;
+    $('plans-lead').textContent = context.plans.lead;
+  }
+
+  function applySigninContext() {
+    var context = resolveContext();
+    if (!context.signin) return;
+    $('signin-title').textContent = context.signin.title;
+    $('signin-lead').textContent = context.signin.lead;
   }
 
   /* ---------- PAYWALL-PERSONAL-1: довод из приложения ---------- */

@@ -330,3 +330,16 @@ def test_main_rating_markup_matches_visible_rating():
     assert rating, "aggregateRating без ratingValue/ratingCount"
     visible = re.findall(r"★ (\d,\d) в App Store", text)
     assert visible and set(visible) == {rating.group(1).replace(".", ",")}
+
+
+def test_checkout_placement_flags_reach_signin_and_plans():
+    # PAY-PLACEMENT-FLAGS-1: флаги из приложения — только счётчики и итог недели, строгий формат.
+    handoff = (PAY / "assets/pay-handoff.js").read_text(encoding="utf-8")
+    for flag in ("days:", "tx:", "week:"):
+        assert flag in handoff
+    account = (PAY / "assets/account.js").read_text(encoding="utf-8")
+    for placement in ("support:", "bank_tile:", "bank_list:", "weekly_digest:"):
+        assert placement in account
+    assert "resolveContext().variant" in account
+    html = (PAY / "account/index.html").read_text(encoding="utf-8")
+    assert 'id="signin-title"' in html and 'id="signin-lead"' in html
