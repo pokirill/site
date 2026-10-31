@@ -564,6 +564,39 @@
     });
   }
 
+  /* PAY-TRIBUTE-1: оплата картой другой страны. Те же тариф и согласие с офертой, что у Т-Банка. */
+  function bindAltPay() {
+    var button = $('alt-pay-btn');
+    if (!button) return;
+    button.addEventListener('click', function () {
+      if (!state.selectedPlan) return;
+      var consent = $('consent');
+      if (!consent || !consent.checked) {
+        var row = $('consent-row');
+        row.classList.remove('consent--attention');
+        void row.offsetWidth;
+        row.classList.add('consent--attention');
+        row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+      hideError('plans-error');
+      busy(button, true, 'Готовим оплату…');
+      Api.startTributePayment(state.selectedPlan).then(function (data) {
+        if (!data || !data.payment_url) {
+          throw new U.ApiError('Не удалось открыть оплату. Попробуй ещё раз.', 0);
+        }
+        window.location.href = data.payment_url;
+      }).catch(function (error) {
+        busy(button, false);
+        if (error && error.status === 503) {
+          notice('plans-error', error.message, 'info');
+          return;
+        }
+        showError('plans-error', error.message);
+      });
+    });
+  }
+
   /* ---------- Активная подписка ---------- */
 
   function renderActive(sub) {
@@ -675,6 +708,9 @@
       }
       applyContext();
       renderPlans();
+      // PAY-TRIBUTE-1: второй способ только если сервер его включил (ключ Tribute заведён).
+      var alt = $('alt-pay');
+      if (alt) alt.hidden = ((data && data.alt_providers) || []).indexOf('tribute') === -1;
       show('state-plans');
     }).catch(function (error) {
       show('state-plans');
@@ -686,6 +722,7 @@
     bindSignIn();
     bindContact();
     bindPay();
+    bindAltPay();
     bindCancel();
     bindSignOut();
 

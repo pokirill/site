@@ -343,3 +343,13 @@ def test_checkout_placement_flags_reach_signin_and_plans():
     assert "resolveContext().variant" in account
     html = (PAY / "account/index.html").read_text(encoding="utf-8")
     assert 'id="signin-title"' in html and 'id="signin-lead"' in html
+
+
+def test_tribute_alt_payment_is_server_switched():
+    # PAY-TRIBUTE-1: кнопка оплаты картой другой страны скрыта, пока сервер не отдал alt_providers.
+    html = (PAY / "account/index.html").read_text(encoding="utf-8")
+    assert 'id="alt-pay" hidden' in html and 'id="alt-pay-btn"' in html
+    account = (PAY / "assets/account.js").read_text(encoding="utf-8")
+    assert "alt_providers" in account and "startTributePayment" in account
+    api = (PAY / "assets/pay-api.js").read_text(encoding="utf-8")
+    assert "/web/payments/tribute/start" in api

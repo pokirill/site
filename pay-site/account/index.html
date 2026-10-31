@@ -120,6 +120,15 @@
     </label>
     <p class="small muted gap-sm" id="pay-hint">Дальше откроется страница оплаты Т-Банка.</p>
 
+    <!-- PAY-TRIBUTE-1: карты, выпущенные не в России, Т-Банк не принимает. Блок показывает account.js,
+         если сервер отдал alt_providers: ["tribute"]. -->
+    <div class="alt-pay" id="alt-pay" hidden>
+      <strong class="ink">Карта не из России?</strong>
+      <span class="small muted">Оплати картой любой страны через Tribute. Продление отключается здесь же, в кабинете.</span>
+      <button type="button" class="btn btn-ghost" id="alt-pay-btn">Оплатить картой другой страны</button>
+      <span class="small muted">Карта Kaspi не проходит? Попробуй другую карту или в форме оплаты выбери «Российская карта» и введи свою.</span>
+    </div>
+
     <p class="checkout-trust" aria-label="Безопасность оплаты">
       <span>Оплата на стороне Т-Банка</span>
       <span>Данные карты Кубыш не видит</span>
@@ -223,11 +232,11 @@
 </footer>
 
 <script src="/assets/pay-config.js?v=20260915b"></script>
-<script src="/assets/pay-api.js?v=20261031"></script>
+<script src="/assets/pay-api.js?v=20261101"></script>
 <!-- Грузим SDK ДО обработчика клика: popup Apple должен открываться в рамках user gesture. -->
 <!-- CHECKOUT-STEPS-1: async — пока скрипт Apple грузится, кабинет уже принимает билет из приложения. -->
 <script async src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/ru_RU/appleid.auth.js"></script>
 <script src="/assets/pay-auth.js?v=20260915b"></script>
-<script src="/assets/account.js?v=20261031"></script>
+<script src="/assets/account.js?v=20261101"></script>
 </body>
 </html>

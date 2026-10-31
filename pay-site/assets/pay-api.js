@@ -146,6 +146,12 @@
         plan: plan, checkout_context: read('kubysh_checkout_context') || null,
       } });
     },
+    // PAY-TRIBUTE-1: оплата картой другой страны. Сервер создаёт заказ в Tribute и отдаёт payment_url.
+    startTributePayment: function (plan) {
+      return request('/web/payments/tribute/start', { method: 'POST', body: {
+        plan: plan, checkout_context: read('kubysh_checkout_context') || null,
+      } });
+    },
     openCheckout: function (ticket) {
       return request('/web/checkout/open', { method: 'POST', auth: false, body: { ticket: ticket } })
         .then(function (data) {

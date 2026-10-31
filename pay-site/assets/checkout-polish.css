@@ -248,3 +248,16 @@
   font-size: 12px;
   line-height: 1.5;
 }
+
+/* PAY-TRIBUTE-1: второй способ оплаты — тихий блок под основной кнопкой. */
+.alt-pay {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 20px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+}
+.alt-pay[hidden] { display: none; }
+.alt-pay .btn { margin-top: 4px; }
