@@ -2,7 +2,16 @@
 (function () {
   'use strict';
   var params = new URLSearchParams(window.location.hash.slice(1));
-  window.PayHandoffTicket = params.get('checkout_handoff');
+  // HANDOFF-QUERY-1 (02.11): Safari при холодном запуске из приложения терял фрагмент — страница открывалась
+  // без билета и показывала вход вместо тарифов (≈40% переходов). Сервер теперь кладёт билет в query;
+  // фрагмент читаем для старых ссылок. Билет одноразовый и живёт 30 минут, из адреса убирается сразу.
+  var query = new URLSearchParams(window.location.search);
+  window.PayHandoffTicket = params.get('checkout_handoff') || query.get('checkout_handoff');
+  if (query.has('checkout_handoff')) {
+    query.delete('checkout_handoff');
+    var rest = query.toString();
+    history.replaceState(null, '', window.location.pathname + (rest ? '?' + rest : '') + window.location.hash);
+  }
   if (window.PayHandoffTicket) {
     // PAYWALL-PERSONAL-1: довод пейвола из приложения (только суммы). Во фрагменте он не уходит на
     // сервер; проверяет и показывает его account.js, здесь только переносим в sessionStorage.
