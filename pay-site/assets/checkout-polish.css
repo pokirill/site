@@ -261,3 +261,12 @@
 }
 .alt-pay[hidden] { display: none; }
 .alt-pay .btn { margin-top: 4px; }
+
+/* PAY-PLANS-1: отмена рядом с кнопкой оплаты — видно до нажатия. */
+.cancel-note {
+  margin: 4px 0 10px;
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--ink, #111);
+  font-weight: 500;
+}

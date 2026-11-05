@@ -15,7 +15,7 @@
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="stylesheet" href="/assets/pay.css?v=20260913a">
-<link rel="stylesheet" href="/assets/checkout-polish.css?v=20261026b">
+<link rel="stylesheet" href="/assets/checkout-polish.css?v=20261105">
 <script src="/assets/pay-frame-guard.js?v=20260902b"></script>
 <script src="/assets/pay-handoff.js?v=20261102"></script>
 <!-- Сторонних аналитик и трекеров здесь нет сознательно: на странице ПД и деньги. -->
@@ -110,6 +110,9 @@
       </ul>
     </div>
 
+    <!-- PAY-PLANS-1 (05.11): тарифы увидели 10, «Оплатить» нажал 1. Страх «потом не отпишусь» снимаем у кнопки,
+         а не в списке условий. Отмена — кнопка в кабинете + подтверждение, поэтому «в пару нажатий», не «в один тап». -->
+    <p class="cancel-note" id="cancel-note">Отменить можно в любой момент здесь же, в кабинете, — в пару нажатий, без звонков и писем.</p>
     <button type="button" class="btn btn-primary" id="pay-btn">Оплатить</button>
 
     <label class="consent consent--quiet" id="consent-row">
