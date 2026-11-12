@@ -744,6 +744,27 @@ _kk["sections"].insert(1, ("Как правильно откладывать д�
  "Если зарплата приходит дважды, откладывайте с каждой выплаты пропорционально: с аванса меньше, с зарплаты больше."]))
 _kk["faq"].insert(0, ("Как правильно откладывать деньги с зарплаты?", "В день получки: сначала обязательные платежи, затем 10–20% на отдельный накопительный счет, остаток на жизнь до следующей зарплаты."))
 
+
+# 12.11.2026 Google Search Console: показы с позиций 21–31 по этим запросам
+_kp = PAGES["kuda-polozhit-dengi-pod-procent"]
+_kp["modified"] = "2026-11-12"
+_kp["sections"].insert(1, ("Накопительный счет с лестничным начислением процентов", [
+ "Лестничное начисление значит, что ставка зависит от уровня: чем дольше деньги лежат без снятий или чем больше остаток, тем выше процент. В разных банках лестница устроена по-разному, поэтому всегда открывайте условия и смотрите, от чего именно растет ставка: от срока или от суммы.",
+ "Лестница по сроку подходит для денег, которые точно не понадобятся несколько месяцев: отпуск через полгода, первоначальный взнос. Если снять раньше, ставка может откатиться к первой ступени.",
+ "Лестница по сумме подходит для подушки безопасности: деньги доступны в любой момент, а процент выше на большом остатке. Сравнивайте итоговый доход за ваш срок, а не максимальную ставку в рекламе: до верхней ступени можно просто не дойти.",
+ "Как выбрать: запишите сумму и срок цели и посчитайте доход в каждом варианте. Кубыш делает это сам: подбирает вклады и накопительные счета под сроки ваших целей, учитывает повышенные ставки для новых и зарплатных клиентов и показывает доход в месяц, а открываете счет вы на сайте банка."]))
+_kp["faq"].insert(0, ("Что такое накопительный счет с лестничным начислением процентов?", "Это счет, где ставка растет ступенями: с каждым периодом хранения без снятий или с ростом остатка. Перед открытием проверьте, от чего зависит ставка и что будет при снятии."))
+_bm = PAGES["byudzhet-na-mesyats"]
+_bm["modified"] = "2026-11-12"
+for _i,(_h,_p) in enumerate(_bm["sections"]):
+    if _h.startswith("Бюджет на месяц для семьи"):
+        _bm["sections"][_i] = ("Как составить бюджет семьи на месяц", [
+         "Формула та же, что и для личного бюджета, но сначала договоренность: какие расходы общие, а какие личные. Общие обычно жилье, коммунальные платежи, продукты, дети, общие цели.",
+         "Шаги: 1) сложите доходы обоих за период с датами выплат; 2) вычтите общие обязательные платежи; 3) отложите на общие цели, например подушку на 3–6 месяцев общих расходов; 4) остаток разделите на общие траты на жизнь и личные суммы каждого.",
+         "Пример: доходы 160 000 ₽ и 110 000 ₽, всего 270 000 ₽. Общие обязательные 140 000 ₽, общие цели 40 000 ₽. Остается 90 000 ₽: например, 50 000 ₽ на общие продукты и быт и по 20 000 ₽ личных денег каждому, которые никто не обсуждает.",
+         "Личные суммы снимают половину семейных споров о деньгах: каждый тратит свое без отчета. Кубыш рассчитан на личный бюджет, поэтому для семьи удобно, когда каждый ведет свою часть в своем приложении, а общие цели и платежи согласованы заранее."])
+_bm["faq"].append(("Как составить бюджет семьи на месяц?", "Сложите доходы обоих, вычтите общие обязательные платежи и взносы на общие цели, остаток разделите на общие траты и личные суммы каждого."))
+
 MERGED = {'planirovanie-byudzheta': 'byudzhet-na-mesyats', 'planirovshchik-byudzheta': 'byudzhet-na-mesyats', 'kontrol-finansov': 'byudzhet-na-mesyats', 'finansovye-celi': 'kak-kopit-dengi', 'kak-nakopit-na-otpusk': 'kak-kopit-dengi', 'kak-nakopit-na-svadbu': 'kak-kopit-dengi', 'kalkulyator-finansovoy-podushki': 'finansovaya-podushka', 'kalkulyator-nakopleniy': 'prilozhenie-kopilka', 'analiz-rashodov': 'kuda-uhodyat-dengi', 'kak-ekonomit-dengi': 'kuda-uhodyat-dengi'}
 for _old in MERGED:
     PAGES.pop(_old, None)
@@ -837,8 +858,8 @@ def methodology() -> str:
 
 def about() -> str:
     canonical = "https://kubysh.com/o-proekte/"
-    title = "Кирилл Попов и история приложения Кубыш"
-    desc = "Как Кирилл Попов создал Кубыш: от личного вопроса о деньгах до iOS-приложения, которое показывает, сколько оптимально потратить сегодня до получки."
+    title = "Кирилл Попов — основатель Кубыша, Product Lead: история, подход и статьи"
+    desc = "Кирилл Попов, Product Lead с 7-летним опытом и основатель приложения Кубыш: как он строит AI-first продукт для личных финансов, его принципы и статьи на Хабре и vc.ru."
     person_id = f"{canonical}#kirill-popov"
     articles = [
         {
@@ -860,9 +881,12 @@ def about() -> str:
     schema = {"@context": "https://schema.org", "@graph": [
         {"@type": "Person", "@id": person_id, "name": "Кирилл Попов", "url": canonical,
          "image": {"@type": "ImageObject", "url": ABOUT_IMAGE, "width": 746, "height": 810},
-         "jobTitle": "Создатель приложения «Кубыш»",
+         "jobTitle": "Основатель приложения «Кубыш», Product Lead",
+         "alternateName": "Kirill Popov",
+         "worksFor": {"@id": "https://kubysh.com/#org"},
+         "knowsAbout": ["управление продуктом", "AI-first разработка", "личные финансы", "финансовое планирование", "исследования пользователей"],
          "description": "Product Lead с семилетним опытом в цифровых продуктах и создатель приложения для личных финансов «Кубыш».",
-         "sameAs": ["https://habr.com/ru/users/popov_kirill_a/", "https://vc.ru/id6066630"],
+         "sameAs": ["https://habr.com/ru/users/popov_kirill_a/", "https://vc.ru/id6066630", "https://dzen.ru/id/6a760d1bca0dcf6002c04e3a"],
          "subjectOf": [{"@type": "Article", "headline": item["title"], "url": item["url"]} for item in articles]},
         {"@type": "Organization", "@id": "https://kubysh.com/#org", "name": SITE_NAME, "url": SITE_URL,
          "founder": {"@id": person_id}},
@@ -891,8 +915,9 @@ def about() -> str:
 <link rel="stylesheet" href="/assets/seo.css?v={SEO_ASSET_VERSION}"><link rel="stylesheet" href="/assets/about.css?v=20260918c"><script defer src="/assets/seo.js?v={SEO_JS_VERSION}"></script><script type="application/ld+json">{json.dumps(schema, ensure_ascii=False)}</script></head>
 <body><header><div class="about-wrap top"><a class="logo" href="/">Кубы<span>ш</span></a><nav class="topnav" aria-label="Основная навигация"><a class="hub" href="/lichnye-finansy/">Личные финансы</a><a class="install js-appstore" href="/go/appstore?from=seo">Установить</a></nav></div></header>
 <main class="about-main">
-<section class="about-wrap about-hero"><div class="about-hero-copy"><p class="about-kicker">О проекте</p><p class="about-name">Кирилл Попов</p><h1>От личного вопроса <span>к Кубышу</span></h1><p class="about-lead">Кубыш начался с простого вопроса: сколько оптимально потратить сегодня, чтобы денег хватило до получки и важные планы не сдвинулись.</p><p class="about-role"><strong>Создатель Кубыша</strong><span>Product Lead</span><span>7 лет в цифровых продуктах</span></p></div><figure class="about-photo-wrap"><img class="about-photo" src="/img/kirill-popov.jpg" width="746" height="810" alt="Кирилл Попов с кошкой Фичей" fetchpriority="high"><figcaption class="about-caption"><span>Кирилл Попов, создатель Кубыша</span><span>Фича, специалист по связям с общественностью</span></figcaption></figure></section>
+<section class="about-wrap about-hero"><div class="about-hero-copy"><p class="about-kicker">О проекте</p><p class="about-name">Кирилл Попов</p><h1>Кирилл Попов: <span>от личного вопроса к Кубышу</span></h1><p class="about-lead">Кубыш начался с простого вопроса: сколько оптимально потратить сегодня, чтобы денег хватило до получки и важные планы не сдвинулись.</p><p class="about-role"><strong>Создатель Кубыша</strong><span>Product Lead</span><span>7 лет в цифровых продуктах</span></p></div><figure class="about-photo-wrap"><img class="about-photo" src="/img/kirill-popov.jpg" width="746" height="810" alt="Кирилл Попов с кошкой Фичей" fetchpriority="high"><figcaption class="about-caption"><span>Кирилл Попов, создатель Кубыша</span><span>Фича, специалист по связям с общественностью</span></figcaption></figure></section>
 <section class="about-wrap about-section"><div class="about-copy"><p class="about-section-label">Личный мотив</p><h2>Почему появился Кубыш</h2><p>У Кирилла было несколько целей и обычная жизнь между ними: обязательные платежи, покупки, отпуск и траты, которые невозможно держать в голове одновременно. Готовые инструменты помогали посмотреть назад или копить на одну цель, но не отвечали, какое финансовое действие безопасно прямо сейчас.</p><p>В декабре 2025 года Кирилл начал собирать собственный инструмент. Он не был мобильным разработчиком, зато семь лет строил цифровые продукты и умел превращать задачу человека в работающий сценарий.</p><div class="about-quote">Не еще один отчет о прошлом, а спокойный ответ на вопрос: сколько оптимально потратить сегодня</div></div></section>
+<section class="about-wrap about-section"><div class="about-copy"><p class="about-section-label">Об авторе</p><h2>Кто такой Кирилл Попов</h2><p>Кирилл Попов прошел путь от Project Manager до Product Lead: около 7 лет он делал крупные цифровые продукты в корпоративной среде, от идеи до промышленной эксплуатации. Кода он не пишет и мобильной разработкой раньше не занимался.</p><p>Кубыш стал его попыткой проверить новую модель компании: небольшая команда, где каждый усилен своим набором ИИ-инструментов, делает продукт уровня крупной организации. Кирилл ведет продукт целиком: исследования и интервью с пользователями, логику финансового плана, тексты и запуск, а разработку и публикацию собирает вместе с ИИ.</p><p>Главный принцип, который он переносит из корпоративных продуктов: расчет денег должен быть проверяемым. Поэтому суммы и даты в Кубыше считает математическая модель, а языковая модель только объясняет готовый ответ и помогает найти неочевидное.</p><p>Кирилл открыто пишет, как устроена работа: где ИИ помог, где был бесполезен и где пользователи разрушили гипотезу. Это не история успеха, а дневник эксперимента.</p></div></section>
 <section class="about-wrap about-section"><p class="about-section-label">Доверие к расчету</p><h2>Три принципа продукта</h2><div class="about-principles"><article class="about-principle"><span class="about-principle-mark" aria-hidden="true">01</span><b>Сначала спокойствие</b><p>Кубыш показывает доступную сумму на сегодня и хватит ли денег до следующей получки.</p></article><article class="about-principle"><span class="about-principle-mark" aria-hidden="true">02</span><b>Деньги считает устройство</b><p>Финансовая модель работает на устройстве и не передает расчеты языковой модели.</p></article><article class="about-principle"><span class="about-principle-mark" aria-hidden="true">03</span><b>ИИ не считает деньги</b><p>Он объясняет готовый расчет человеческим языком, но не участвует в финансовой математике.</p></article></div></section>
 <section class="about-wrap about-section"><p class="about-section-label">Путь продукта</p><h2>Как идея стала приложением</h2><div class="about-timeline"><article class="about-step"><strong>Декабрь 2025</strong><span>Начался личный эксперимент: можно ли собрать финансовый навигатор без опыта мобильной разработки.</span></article><article class="about-step"><strong>9 июля 2026</strong><span>Первая версия Кубыша появилась в App Store после семи месяцев разработки и проверки гипотез.</span></article><article class="about-step"><strong>Сейчас</strong><span>Кубыш развивается вокруг реальных сценариев: получки, обязательных платежей, ежедневных трат и целей.</span></article></div></section>
 <section class="about-wrap about-section"><div class="about-copy"><p class="about-section-label">Публикации автора</p><h2>История от первого лица</h2><p>Кирилл открыто пишет о создании Кубыша, работе с ИИ, запуске в App Store и продуктовых ошибках. Это не пересказ со стороны, а дневник разработки с конкретными решениями и цифрами.</p></div><div class="about-articles">{article_cards}</div></section>
