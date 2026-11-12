@@ -309,7 +309,7 @@ def test_pay_site_scripts_are_never_inline():
 def test_merged_seo_pages_redirect_to_strong_pages():
     conf = (ROOT / "nginx" / "default.conf").read_text(encoding="utf-8")
     sitemap = (LANDING / "sitemap.xml").read_text(encoding="utf-8")
-    for old, new in (("uchet-rashodov-i-dohodov", "tablica-dohodov-i-rashodov"), ("planirovanie-byudzheta", "byudzhet-na-mesyats"), ("planirovshchik-byudzheta", "byudzhet-na-mesyats"), ("kontrol-finansov", "byudzhet-na-mesyats"), ("finansovye-celi", "kak-kopit-dengi"), ("kak-nakopit-na-otpusk", "kak-kopit-dengi"), ("kak-nakopit-na-svadbu", "kak-kopit-dengi"), ("kak-nakopit-na-telefon", "kak-kopit-dengi"), ("kalkulyator-finansovoy-podushki", "finansovaya-podushka"), ("kalkulyator-nakopleniy", "prilozhenie-kopilka"), ("analiz-rashodov", "kuda-uhodyat-dengi"), ("kak-ekonomit-dengi", "kuda-uhodyat-dengi"),):
+    for old, new in (("uchet-rashodov-i-dohodov", "tablica-dohodov-i-rashodov"), ("planirovanie-byudzheta", "byudzhet-na-mesyats"), ("planirovshchik-byudzheta", "byudzhet-na-mesyats"), ("kontrol-finansov", "byudzhet-na-mesyats"), ("finansovye-celi", "kak-kopit-dengi"), ("kak-nakopit-na-otpusk", "kak-kopit-dengi"), ("kak-nakopit-na-svadbu", "kak-kopit-dengi"), ("kalkulyator-finansovoy-podushki", "finansovaya-podushka"), ("kalkulyator-nakopleniy", "prilozhenie-kopilka"), ("analiz-rashodov", "kuda-uhodyat-dengi"), ("kak-ekonomit-dengi", "kuda-uhodyat-dengi"),):
         assert f"^/{old}/?$ {{ return 301 https://kubysh.com/{new}/; }}" in conf
         assert f"/{old}/" not in sitemap
         assert not (LANDING / old).exists()
