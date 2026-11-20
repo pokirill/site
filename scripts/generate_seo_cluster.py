@@ -765,6 +765,21 @@ for _i,(_h,_p) in enumerate(_bm["sections"]):
          "Личные суммы снимают половину семейных споров о деньгах: каждый тратит свое без отчета. Кубыш рассчитан на личный бюджет, поэтому для семьи удобно, когда каждый ведет свою часть в своем приложении, а общие цели и платежи согласованы заранее."])
 _bm["faq"].append(("Как составить бюджет семьи на месяц?", "Сложите доходы обоих, вычтите общие обязательные платежи и взносы на общие цели, остаток разделите на общие траты и личные суммы каждого."))
 
+# 20.11.2026 Вебмастер: показы есть, кликов нет. «копилка приложение ios» 4,6, «приложение для накопления
+# денег на цель» 6,3, «…apple» 3,7; таблица: хвосты «скачать», «шаблон», «на месяц» 5–12. Title и description
+# под эти формулировки + досрочное погашение кредитов из 1.8.1 (формулировки ASO_V1.8.1 в маркетосе).
+_DEBT_POINT = "Помогает закрыть кредит раньше: сколько вносить досрочно, новая дата закрытия и сколько меньше переплатите"
+_k["title"] = "Копилка на iPhone: приложение для накопления денег на цель"
+_k["desc"] = ("Копилка для iOS: несколько целей, сумма в месяц и дата для каждой, план от зарплаты. "
+              "Кубыш помогает и закрыть кредит раньше: покажет новую дату закрытия и сколько меньше переплатите.")
+_k["modified"] = "2026-11-20"
+_k["app"]["points"].insert(3, _DEBT_POINT)
+_t["title"] = "Таблица доходов и расходов на месяц: шаблон Excel скачать бесплатно"
+_t["desc"] = ("Готовый шаблон Excel и Google Таблиц бесплатно: доходы, обязательные платежи, траты по дням и бюджет на день. "
+              "Если есть кредит, Кубыш подскажет, как закрыть его раньше.")
+_t["modified"] = "2026-11-20"
+_t["app"]["points"].insert(3, _DEBT_POINT)
+
 MERGED = {'planirovanie-byudzheta': 'byudzhet-na-mesyats', 'planirovshchik-byudzheta': 'byudzhet-na-mesyats', 'kontrol-finansov': 'byudzhet-na-mesyats', 'finansovye-celi': 'kak-kopit-dengi', 'kak-nakopit-na-otpusk': 'kak-kopit-dengi', 'kak-nakopit-na-svadbu': 'kak-kopit-dengi', 'kalkulyator-finansovoy-podushki': 'finansovaya-podushka', 'kalkulyator-nakopleniy': 'prilozhenie-kopilka', 'analiz-rashodov': 'kuda-uhodyat-dengi', 'kak-ekonomit-dengi': 'kuda-uhodyat-dengi'}
 for _old in MERGED:
     PAGES.pop(_old, None)
@@ -933,7 +948,7 @@ def sitemap() -> str:
     rows=[]
     for slug in unique:
         loc="https://kubysh.com/" + (f"{slug}/" if slug else "")
-        lastmod = PAGES[slug].get("modified", MODIFIED_DATE) if slug in PAGES and "modified" in PAGES[slug] else MAIN_MODIFIED_DATE if slug == "" else HUB_MODIFIED_DATE if slug == "lichnye-finansy" else MODIFIED_DATE if slug in PAGES or slug in (
+        lastmod = "2026-11-19" if slug == "o-proekte" else PAGES[slug].get("modified", MODIFIED_DATE) if slug in PAGES and "modified" in PAGES[slug] else MAIN_MODIFIED_DATE if slug == "" else HUB_MODIFIED_DATE if slug == "lichnye-finansy" else MODIFIED_DATE if slug in PAGES or slug in (
             "metodologiya", "o-proekte", "skolko-mozhno-tratit",
             "finansovaya-podushka", "alternativa-dzen-mani",
         ) else "2026-09-16"
@@ -1014,7 +1029,9 @@ def main() -> None:
         f'Обновлено {MODIFIED_DATE}. Материалы образовательные',
         f'Обновлено {HUB_MODIFIED_DATE}. Материалы образовательные',
     )
-    for slug,body in (("lichnye-finansy",hub_body),("metodologiya",methodology()),("o-proekte",about())):
+    # /o-proekte/ с 19.11.2026 правится руками (контакты, «открыт к предложениям»); about() — устаревшая версия,
+    # генератор ее больше не пишет, иначе затирает страницу.
+    for slug,body in (("lichnye-finansy",hub_body),("metodologiya",methodology())):
         d=LANDING/slug; d.mkdir(exist_ok=True); (d/"index.html").write_text(body,encoding="utf-8")
     (LANDING/"sitemap.xml").write_text(sitemap(),encoding="utf-8")
     (LANDING/"llms.txt").write_text(llms(),encoding="utf-8")
