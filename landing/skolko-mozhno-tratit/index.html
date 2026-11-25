@@ -207,7 +207,7 @@ footer .links a{color:var(--lime);text-decoration:none}
  ]
 }
 </script>
-</head>
+<link rel="stylesheet" href="/assets/calculators.css?v=20261124"><script defer src="/assets/calculators.js?v=20261124"></script></head>
 <body>
 <header><div class="wrap">
   <a class="logo" href="/">Кубы<span>ш</span></a>
@@ -217,7 +217,7 @@ footer .links a{color:var(--lime);text-decoration:none}
 <main><div class="wrap">
   <nav class="crumbs"><a href="/">Кубыш</a> → Сколько можно тратить в день</nav>
   <h1>Сколько можно тратить в день, чтобы хватило до зарплаты</h1>
-  <p class="lead">Дневной лимит — это остаток после обязательных платежей и накоплений, делённый на число дней до следующей получки. При 62 000 ₽ на карте и 40 000 ₽ обязательных платежей реально свободными остаются около 1 200 ₽ в день.</p>
+  <p class="lead">Дневной лимит — это остаток после обязательных платежей и накоплений, делённый на число дней до следующей получки. При 62 000 ₽ на карте и 40 000 ₽ обязательных платежей реально свободными остаются около 1 200 ₽ в день.</p><nav class="kb-calc-nav" aria-label="Навигация калькуляторов"><a href="/">← Главная</a><a href="/kalkulyatory/">Сменить расчёт →</a></nav><section class="kb-calculator ym-hide-content" data-kb-calculator="daily" aria-label="Сколько оптимально потратить в день до следующей выплаты"><h2>Сколько оптимально потратить в день до следующей выплаты</h2><div class="kb-fields"><label for="kb-balance">Доступные деньги, ₽<input id="kb-balance" data-field="balance" class="ym-disable-keys" type="number" inputmode="numeric" min="0" max="1000000000" step="1" value="30000" required autocomplete="off"></label><label for="kb-bills">Неоплаченные обязательства, ₽<input id="kb-bills" data-field="bills" class="ym-disable-keys" type="number" inputmode="numeric" min="0" max="1000000000" step="1" value="10000" required autocomplete="off"></label><label for="kb-save">Запланированные накопления, ₽<input id="kb-save" data-field="save" class="ym-disable-keys" type="number" inputmode="numeric" min="0" max="1000000000" step="1" value="5000" required autocomplete="off"></label><label for="kb-days">Дней до дохода<input id="kb-days" data-field="days" class="ym-disable-keys" type="number" inputmode="numeric" min="1" max="365" step="1" value="10" required autocomplete="off"></label></div><output class="kb-result" aria-live="polite"><span>Ориентир в день</span><strong>1 500 ₽</strong><small>На весь период: 15 000 ₽.</small></output><noscript><p class="kb-calc-note">Для пересчёта включите JavaScript. Сейчас показан пример.</p></noscript><p class="kb-calc-note">Из остатка вычитаются неоплаченные обязательства и накопления. Остаток делится на дни; отрицательная сумма означает дефицит, а не доступный лимит. Расчёт выполняется в браузере; значения не отправляются калькулятором на сервер.</p></section>
   
 <h2>Формула</h2>
 <p>Дневной лимит считается в три действия. Сначала из дохода вычитаются

@@ -1035,6 +1035,8 @@ def main() -> None:
         d=LANDING/slug; d.mkdir(exist_ok=True); (d/"index.html").write_text(body,encoding="utf-8")
     (LANDING/"sitemap.xml").write_text(sitemap(),encoding="utf-8")
     (LANDING/"llms.txt").write_text(llms(),encoding="utf-8")
+    from seo_release_20261124 import apply_release
+    apply_release(LANDING)
     print(f"generated {len(PAGES)+3} SEO pages")
 
 if __name__ == "__main__":
