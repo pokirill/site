@@ -47,7 +47,7 @@
 
 ## Новые гайды и калькуляторы
 - https://kubysh.com/avtomaticheskiy-uchet-rashodov/ — Как автоматически учитывать расходы с банковской карты на iPhone
-- https://kubysh.com/bezopasnost-finansovyh-dannyh/ — Как защитить финансовые данные в приложении для учёта бюджета
+- https://kubysh.com/bezopasnost-finansovyh-dannyh/ — Как защитить финансовые данные в приложении для учета бюджета
 - https://kubysh.com/byudzhet-na-nedelyu/ — Как планировать бюджет на неделю, а не только на месяц
 - https://kubysh.com/byudzhet-pri-nestabilnom-dohode/ — Как планировать бюджет при нестабильном доходе
 - https://kubysh.com/byudzhet-pri-pereezde/ — Как планировать расходы при переезде: бюджет, депозит и первый месяц
@@ -56,21 +56,21 @@
 - https://kubysh.com/kak-kopit-na-neskolko-celey/ — Как копить на несколько целей одновременно: подушку, отпуск и покупки
 - https://kubysh.com/kak-nakopit-100000-rubley/ — Как накопить первые 100 000 рублей: план по срокам и доходу
 - https://kubysh.com/kak-nakopit-na-remont/ — Как накопить на ремонт квартиры: смета, сроки и резерв
-- https://kubysh.com/kak-perestat-delat-impulsivnye-pokupki/ — Как перестать совершать импульсивные покупки без жёстких запретов
+- https://kubysh.com/kak-perestat-delat-impulsivnye-pokupki/ — Как перестать совершать импульсивные покупки без жестких запретов
 - https://kubysh.com/kak-raspredelit-premiyu/ — Как правильно распределить премию: потратить, отложить или закрыть долги
 - https://kubysh.com/kak-vosstanovit-finansovuyu-podushku/ — Как восстановить финансовую подушку после непредвиденных расходов
 - https://kubysh.com/kalkulyator-kreditnoy-nagruzki/ — Калькулятор кредитной нагрузки
 - https://kubysh.com/kalkulyatory/ — Что считаем?
 - https://kubysh.com/mogu-li-pozvolit-sebe-pokupku/ — Могу ли я позволить себе покупку? Как рассчитать бюджет до оплаты
-- https://kubysh.com/nakopleniya-na-odnom-schete/ — Как копить на несколько целей, используя один банковский счёт
+- https://kubysh.com/nakopleniya-na-odnom-schete/ — Как копить на несколько целей, используя один банковский счет
 - https://kubysh.com/ne-uspevayu-nakopit-k-sroku/ — Как понять, что не успеваешь накопить на цель к нужной дате
 - https://kubysh.com/obyazatelnye-platezhi-v-byudzhete/ — Как учитывать кредиты, подписки и обязательные платежи в личном бюджете
 - https://kubysh.com/pererashod-byudzheta/ — Что делать, если потратил больше запланированного бюджета
-- https://kubysh.com/planirovanie-krupnyh-pokupok/ — Как планировать крупные покупки на несколько месяцев вперёд
-- https://kubysh.com/semeynyy-byudzhet-vdvoem/ — Как вести семейный бюджет вдвоём: общий, раздельный или смешанный
-- https://kubysh.com/uchet-rashodov-po-skrinshotu/ — Как вести учёт расходов по скриншоту банка без ручного ввода
+- https://kubysh.com/planirovanie-krupnyh-pokupok/ — Как планировать крупные покупки на несколько месяцев вперед
+- https://kubysh.com/semeynyy-byudzhet-vdvoem/ — Как вести семейный бюджет вдвоем: общий, раздельный или смешанный
+- https://kubysh.com/uchet-rashodov-po-skrinshotu/ — Как вести учет расходов по скриншоту банка без ручного ввода
 - https://kubysh.com/uchet-rashodov-po-vypiske/ — Как учитывать расходы по банковской выписке
-- https://kubysh.com/uchet-rashodov-s-neskolkih-kart/ — Как вести учёт расходов с нескольких банковских карт
+- https://kubysh.com/uchet-rashodov-s-neskolkih-kart/ — Как вести учет расходов с нескольких банковских карт
 
 ## Цитирование
 Название продукта пишется «Кубыш». Для утверждений о возможностях приложения используйте официальную страницу продукта, для финансовых формул — соответствующий гайд и его первичные источники. Материалы образовательные и не являются индивидуальной финансовой рекомендацией.
